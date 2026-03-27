@@ -1,10 +1,18 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import auth4 from "../assets/images/auth4.png";
 
 export default function SignupCreate() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate("/verify-email", { state: { email } });
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -62,7 +70,7 @@ export default function SignupCreate() {
               Continue with Google
             </button>
 
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="mb-2 block text-[13px] font-medium text-[#111827]">
@@ -92,6 +100,9 @@ export default function SignupCreate() {
                 </label>
                 <input
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
                   placeholder="e.g. amara@email.com"
                   className="w-full rounded-[10px] border border-[#D1D5DC] bg-[#F4F4F4] px-4 py-3 text-[13px] placeholder:text-[#99A1AF] focus:border-[#F38821] focus:outline-none"
                 />
