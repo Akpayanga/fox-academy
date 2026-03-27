@@ -51,7 +51,7 @@ export default function Login() {
           localStorage.setItem("authToken", data.token);
         }
 
-        navigate("/");
+        navigate("/welcome");
       } catch (error) {
         const message =
           error?.response?.data?.message ||
