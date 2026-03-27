@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import FeatureCard from "../components/FeatureCard";
 import auth1 from "../assets/images/auth1.png";
 import { AppWindow, UsersRound, Activity } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Landing() {
   return (
@@ -12,7 +13,7 @@ export default function Landing() {
         <div className="mx-auto grid w-full max-w-[1280px] gap-12 px-5 py-14 md:grid-cols-[1fr_540px] md:items-center md:px-10">
           <div>
             <p className="mb-5 text-sm font-semibold uppercase tracking-wide text-[#4B5563]">
-              TRUEMINDS INNOVATIONS — INTERNAL LEARNING PLATFORM
+              FOXACADEMY INNOVATIONS — INTERNAL LEARNING PLATFORM
             </p>
 
             <h1 className="text-5xl font-bold leading-[1.2] text-[#374151] md:text-[48px]">
@@ -31,13 +32,19 @@ export default function Landing() {
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">
-              <button className="rounded-xl bg-[#F38821] px-6 py-3 text-lg font-semibold text-white transition hover:bg-[#e37b1d]">
+              <Link
+                to="/signup"
+                className="rounded-xl bg-[#F38821] px-6 py-3 text-lg font-semibold text-white transition hover:bg-[#e37b1d]"
+              >
                 Join with Invite Code
-              </button>
+              </Link>
 
-              <button className="rounded-xl border border-[#F38821] px-6 py-3 text-lg font-semibold text-[#F38821] transition hover:bg-[#FFF7ED]">
+              <Link
+                to="/login"
+                className="rounded-xl border border-[#F38821] px-6 py-3 text-lg font-semibold text-[#F38821] transition hover:bg-[#FFF7ED]"
+              >
                 Log In to Your Account
-              </button>
+              </Link>
             </div>
 
             <p className="mt-5 text-base text-[#6B7280]">
@@ -75,7 +82,7 @@ export default function Landing() {
 
       <footer className="mt-24 border-t border-[#F38821]">
         <div className="mx-auto flex w-full max-w-[1280px] flex-col items-start justify-between gap-4 px-5 py-6 text-sm text-[#6B7280] md:flex-row md:items-center md:px-10">
-          <p className="text-base font-semibold text-[#F38821]">TalentFlow</p>
+          <p className="text-base font-semibold text-[#F38821]">FoxAcademy</p>
           <div className="flex flex-wrap items-center gap-6">
             <a href="#" className="hover:text-[#111827]">
               Support@truemindsltd.com

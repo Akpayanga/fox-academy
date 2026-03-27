@@ -1,11 +1,23 @@
-import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Landing from "./pages/Landing";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import SignupCreate from "./pages/SignupCreate";
+import ForgotPassword from "./pages/ForgotPassword";
+import ForgotPasswordSent from "./pages/ForgotPasswordSent";
 
 function App() {
   return (
-    <div>
-      <Landing />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup/create" element={<SignupCreate />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/forgot-password/sent" element={<ForgotPasswordSent />} />
+      </Routes>
+    </Router>
   );
 }
 
