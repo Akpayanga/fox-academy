@@ -1,11 +1,14 @@
-import React from "react";
-import { ChevronRight } from "lucide-react";
+import React from 'react';
+import { ChevronRight } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
 import auth5 from "../assets/images/auth5.png";
 
 /**
  * Re-implemented Welcome page to exactly match the provided visual design.
  */
 const Welcome = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex min-h-screen flex-col items-center bg-white px-4 py-12 md:py-16">
       {/* 1. Progress Indicator (Flat Segments) */}
@@ -46,6 +49,7 @@ const Welcome = () => {
 
         <button
           type="button"
+          onClick={() => navigate("/onboarding/profile")}
           className="inline-flex items-center gap-2 rounded-lg bg-[#F38821] px-10 py-3.5 text-lg font-semibold text-white transition-colors hover:bg-[#e37b1d]"
         >
           Lets get Started

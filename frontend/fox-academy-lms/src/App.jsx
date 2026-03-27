@@ -7,6 +7,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ForgotPasswordSent from "./pages/ForgotPasswordSent";
 import EmailVerification from "./pages/EmailVerification";
 import Welcome from "./pages/Welcome";
+import SetProfile from "./pages/SetProfile";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/forgot-password/sent" element={<ForgotPasswordSent />} />
         <Route path="/welcome" element={<Welcome />} />
+        <Route path="/onboarding/profile" element={<SetProfile />} />
       </Routes>
     </Router>
   );
