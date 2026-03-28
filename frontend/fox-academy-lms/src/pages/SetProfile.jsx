@@ -23,6 +23,11 @@ const SetProfile = () => {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate("/onboarding/team");
+  };
+
   return (
     <div className="flex min-h-screen flex-col items-center bg-white px-4 py-12 md:py-16">
       <input
@@ -79,7 +84,8 @@ const SetProfile = () => {
       </div>
 
       {/* 4. Form Section */}
-      <form className="w-full max-w-md space-y-8">
+      <form onSubmit={handleSubmit} className="w-full max-w-md space-y-8">
+
         {/* What do you go by? */}
         <div className="space-y-2">
           <label className="text-sm font-bold text-[#111827]">

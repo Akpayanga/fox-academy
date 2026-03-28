@@ -8,6 +8,8 @@ import ForgotPasswordSent from "./pages/ForgotPasswordSent";
 import EmailVerification from "./pages/EmailVerification";
 import Welcome from "./pages/Welcome";
 import SetProfile from "./pages/SetProfile";
+import JoinTeam from "./pages/JoinTeam";
+
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
         <Route path="/forgot-password/sent" element={<ForgotPasswordSent />} />
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/onboarding/profile" element={<SetProfile />} />
+        <Route path="/onboarding/team" element={<JoinTeam />} />
+
       </Routes>
     </Router>
   );
