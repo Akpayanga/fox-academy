@@ -9,6 +9,8 @@ import EmailVerification from "./pages/EmailVerification";
 import Welcome from "./pages/Welcome";
 import SetProfile from "./pages/SetProfile";
 import JoinTeam from "./pages/JoinTeam";
+import LearnPreview from "./pages/LearnPreview";
+
 
 
 function App() {
@@ -25,6 +27,8 @@ function App() {
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/onboarding/profile" element={<SetProfile />} />
         <Route path="/onboarding/team" element={<JoinTeam />} />
+        <Route path="/onboarding/learn" element={<LearnPreview />} />
+
 
       </Routes>
     </Router>

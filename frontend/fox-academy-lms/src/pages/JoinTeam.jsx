@@ -128,9 +128,10 @@ const JoinTeam = () => {
       {/* 5. Action Buttons */}
       <div className="flex w-full max-w-3xl flex-col items-center space-y-6">
         <button
-          onClick={() => navigate("/onboarding/step4")} // Assumed next step
+          onClick={() => navigate("/onboarding/learn")} 
           className="group flex w-full items-center justify-center gap-2 rounded-full border border-[#F38821] bg-white py-4 text-lg font-bold text-[#F38821] transition-all hover:bg-[#FFF8F1] active:scale-[0.98]"
         >
+
           Continue
           <ChevronRight size={22} className="transition-transform group-hover:translate-x-1" />
         </button>
