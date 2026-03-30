@@ -106,7 +106,7 @@ const LearnPreview = () => {
         </p>
         
         <button
-          onClick={() => navigate("/onboarding/step5")} // Placeholder next step
+          onClick={() => navigate("/onboarding/complete")} 
           className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[#F38821] py-4.5 text-lg font-bold text-white shadow-lg transition-all hover:bg-[#e37b1d] active:scale-[0.98]"
         >
           Go to My Dashboard

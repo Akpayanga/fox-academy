@@ -10,6 +10,8 @@ import Welcome from "./pages/Welcome";
 import SetProfile from "./pages/SetProfile";
 import JoinTeam from "./pages/JoinTeam";
 import LearnPreview from "./pages/LearnPreview";
+import OnboardingComplete from "./pages/OnboardingComplete";
+
 
 
 
@@ -28,6 +30,8 @@ function App() {
         <Route path="/onboarding/profile" element={<SetProfile />} />
         <Route path="/onboarding/team" element={<JoinTeam />} />
         <Route path="/onboarding/learn" element={<LearnPreview />} />
+        <Route path="/onboarding/complete" element={<OnboardingComplete />} />
+
 
 
       </Routes>
