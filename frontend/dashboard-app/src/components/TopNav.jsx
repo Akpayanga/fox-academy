@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom"; // <-- Imported NavLink here
 import profile from "../assets/profile.png";
 
 const TopNav = () => {
@@ -17,34 +18,66 @@ const TopNav = () => {
 
         {/* DESKTOP NAVIGATION LINKS */}
         <nav className="hidden lg:flex justify-center items-center gap-8 h-full">
-          <a
-            href="#"
-            className="h-full flex items-center text-sm font-bold text-[#f38821] relative"
+          {/* DASHBOARD LINK */}
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive
+                ? "h-full flex items-center text-sm font-bold text-[#f38821] relative"
+                : "h-full flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 transition relative"
+            }
           >
-            My Learning
-            <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#f38821] rounded-t-full"></span>
-          </a>
+            {({ isActive }) => (
+              <>
+                Dashboard
+                {/* Only show the orange line if this page is active! */}
+                {isActive && (
+                  <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#f38821] rounded-t-full"></span>
+                )}
+              </>
+            )}
+          </NavLink>
+
+          {/* MY LEARNING LINK */}
+          <NavLink
+            to="/my-learning"
+            className={({ isActive }) =>
+              isActive
+                ? "h-full flex items-center text-sm font-bold text-[#f38821] relative"
+                : "h-full flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 transition relative"
+            }
+          >
+            {({ isActive }) => (
+              <>
+                My Learning
+                {isActive && (
+                  <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#f38821] rounded-t-full"></span>
+                )}
+              </>
+            )}
+          </NavLink>
+
           <a
             href="#"
-            className="text-sm font-medium text-gray-500 hover:text-gray-900 transition"
+            className="h-full flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 transition"
           >
             Assignments
           </a>
           <a
             href="#"
-            className="py-4 text-sm font-medium text-gray-500 border-b border-gray-50"
+            className="h-full flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 transition"
           >
             Progress
           </a>
           <a
             href="#"
-            className="py-4 text-sm font-medium text-gray-500 border-b border-gray-50"
+            className="h-full flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 transition"
           >
             Resources
           </a>
           <a
             href="#"
-            className="text-sm font-medium text-gray-500 hover:text-gray-900 transition"
+            className="h-full flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 transition"
           >
             Community
           </a>
@@ -52,15 +85,11 @@ const TopNav = () => {
 
         {/* USER PROFILE & MOBILE MENU BUTTON */}
         <div className="flex items-center gap-3 md:gap-6">
-          {/* 3. The Hamburger Button */}
-          {/* onClick tells React to flip the state from false to true (or true to false) */}
           <button
             className="text-gray-500 lg:hidden p-1 transition-colors hover:bg-gray-50 rounded"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {/* Conditional Rendering: If open, show an 'X'. If closed, show the 'Hamburger' */}
             {isMobileMenuOpen ? (
-              // The "X" Icon
               <svg
                 width="24"
                 height="24"
@@ -75,7 +104,6 @@ const TopNav = () => {
                 />
               </svg>
             ) : (
-              // The "Hamburger" Icon
               <svg
                 width="24"
                 height="24"
@@ -100,16 +128,33 @@ const TopNav = () => {
         </div>
       </div>
 
-      {/* 4. THE MOBILE DROPDOWN MENU */}
-      {/* This block of code ONLY shows up if 'isMobileMenuOpen' is true */}
+      {/* THE MOBILE DROPDOWN MENU */}
       {isMobileMenuOpen && (
         <div className="lg:hidden absolute top-[64px] left-0 w-full bg-white border-b border-gray-100 shadow-lg flex flex-col py-2 px-4 animate-fade-in">
-          <a
-            href="#"
-            className="py-4 text-sm font-bold text-[#f38821] border-b border-gray-50"
+          <NavLink
+            to="/"
+            onClick={() => setIsMobileMenuOpen(false)} // Closes menu when clicked
+            className={({ isActive }) =>
+              isActive
+                ? "py-4 text-sm font-bold text-[#f38821] border-b border-gray-50"
+                : "py-4 text-sm font-medium text-gray-500 hover:text-gray-900 transition border-b border-gray-50"
+            }
+          >
+            Dashboard
+          </NavLink>
+
+          <NavLink
+            to="/my-learning"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className={({ isActive }) =>
+              isActive
+                ? "py-4 text-sm font-bold text-[#f38821] border-b border-gray-50"
+                : "py-4 text-sm font-medium text-gray-500 hover:text-gray-900 transition border-b border-gray-50"
+            }
           >
             My Learning
-          </a>
+          </NavLink>
+
           <a
             href="#"
             className="py-4 text-sm font-medium text-gray-500 border-b border-gray-50"
