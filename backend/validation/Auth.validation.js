@@ -1,29 +1,35 @@
 const Joi = require("joi");
 
-const registerSchema = Joi.object({
+// Pre-register schema (students/instructors)
+exports.preRegisterSchema = Joi.object({
+  firstName: Joi.string().required(),
+  lastName: Joi.string().required(),
   email: Joi.string().email().required(),
-  password: Joi.string().min(8).required(),
-  provider: Joi.string().valid("local", "google").default("local"),
+  role: Joi.string().valid("student", "instructor").required(),
 });
 
-const loginSchema = Joi.object({
+// Admin register schema (normal flow)
+exports.adminRegisterSchema = Joi.object({
+  firstName: Joi.string().required(),
+  lastName: Joi.string().required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(8).required(),
+});
+
+// Login schema (local or Google)
+exports.loginSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(8),
   provider: Joi.string().valid("local", "google").default("local"),
 });
 
-const forgotPasswordSchema = Joi.object({
+// Forgot password schema
+exports.forgotPasswordSchema = Joi.object({
   email: Joi.string().email().required(),
 });
 
-const resetPasswordSchema = Joi.object({
+// Reset password schema
+exports.resetPasswordSchema = Joi.object({
   token: Joi.string().required(),
   newPassword: Joi.string().min(8).required(),
 });
-
-module.exports = {
-  registerSchema,
-  loginSchema,
-  forgotPasswordSchema,
-  resetPasswordSchema,
-};

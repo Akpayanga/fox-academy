@@ -7,8 +7,10 @@ const connectDB = require("./config/database");
 require("./config/passport.config");
 
 // Import your routes
-const authRoutes = require("./routes/Auth.route");
+const authRoutes = require("./routes/UserInstructor.Auth.route");
 const passwordRoutes = require("./routes/password.route");
+const adminAuthRoutes = require("./routes/admin.auth.route");
+const auditRoutes = require("./routes/audit.route");
 
 const app = express(); 
 
@@ -23,6 +25,8 @@ connectDB();
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/auth", passwordRoutes);
+app.use("/api/v1/auth/admin", adminAuthRoutes);
+app.use("/api/v1/audit", auditRoutes);
 
 app.get("/", (req, res) => {
   res.send("API running...");

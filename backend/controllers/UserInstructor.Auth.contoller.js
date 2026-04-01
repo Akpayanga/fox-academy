@@ -4,60 +4,76 @@ const { success } = require("../utilities/response");
 const { generateAccessToken, generateRefreshToken, verifyToken } = require("../utilities/jwt");
 const crypto = require("crypto");
 const { sendVerificationEmail } = require("../utilities/email.util");
+const { recordAudit } = require("../utilities/audit.util");
 
-//register
-exports.register = async (req, res, next) => {
+// Pre-register (students/instructors)
+exports.preRegister = async (req, res, next) => {
   try {
-    const { firstName, lastName, email, password, provider, role } = req.body;
+    const { firstName, lastName, email, role } = req.body;
+    if (!["student", "instructor"].includes(role)) throw new ApiError(400, "Invalid role");
 
-    let user = await User.findOne({ email, provider });
+    let user = await User.findOne({ email, provider: "local" });
     if (user) throw new ApiError(400, "User already exists");
 
-    const token = crypto.randomBytes(32).toString("hex");
+    const invitationCode = crypto.randomBytes(6).toString("hex").toUpperCase();
+    const token = generateRefreshToken({ email });
 
     user = await User.create({
       firstName,
       lastName,
       email,
-      password,
-      provider,
       role,
-      isVerified: false,
+      preRegistered: true,
+      invitationCode,
       verificationToken: token,
-      verificationTokenExpiry: Date.now() + 3600000, // 1 hour
+      verificationTokenExpiry: Date.now() + 10 * 60 * 1000,
     });
 
-    await sendVerificationEmail(user.email, token);
+    await sendVerificationEmail(email, token, invitationCode);
+    await recordAudit({ userId: user._id, action: "PRE_REGISTER", details: `${role} pre-registered`, req });
 
-    return success(res, null, "Registration successful. Please verify your email.");
-  } catch (err) {
-    next(err);
-  }
+    return success(res, null, "Pre-registration successful. Check your email in 10 minutes.");
+  } catch (err) { next(err); }
 };
-// VERIFY EMAIL
-exports.verifyEmail = async (req, res, next) => {
+
+// Verify invitation
+exports.verifyInvitation = async (req, res, next) => {
   try {
-    const { token } = req.query;
+    const { token, code } = req.body;
+    const decoded = verifyToken(token, process.env.JWT_REFRESH_SECRET);
+    const user = await User.findOne({ email: decoded.email, preRegistered: true });
 
-    const user = await User.findOne({
-      verificationToken: token,
-      verificationTokenExpiry: { $gt: Date.now() },
-    });
+    if (!user || user.verificationToken !== token || user.verificationTokenExpiry < Date.now()) {
+      throw new ApiError(400, "Invalid or expired token");
+    }
+    if (user.invitationCode !== code) throw new ApiError(400, "Invalid invitation code");
 
-    if (!user) throw new ApiError(400, "Invalid or expired token");
-
+    user.isInvited = true;
     user.isVerified = true;
     user.verificationToken = null;
-    user.verificationTokenExpiry = null;
-
+    user.invitationCode = null;
     await user.save();
 
-    return success(res, null, "Email verified successfully");
-  } catch (err) {
-    next(err);
-  }
+    await recordAudit({ userId: user._id, action: "VERIFY_INVITATION", details: "Invitation verified", req });
+    return success(res, null, "Invitation verified. Continue registration.");
+  } catch (err) { next(err); }
 };
 
+// Complete registration
+exports.completeRegistration = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email, isInvited: true, preRegistered: true });
+    if (!user) throw new ApiError(404, "User not found or not invited");
+
+    user.password = password;
+    user.preRegistered = false;
+    await user.save();
+
+    await recordAudit({ userId: user._id, action: "COMPLETE_REGISTRATION", details: "User set password", req });
+    return success(res, user, "Registration completed successfully");
+  } catch (err) { next(err); }
+};
 
 // LOGIN
 exports.login = async (req, res, next) => {
@@ -66,27 +82,24 @@ exports.login = async (req, res, next) => {
 
     const user = await User.findOne({ email, provider }).notDeleted();
     if (!user) throw new ApiError(404, "User not found");
-
-    if (!user.isVerified) {
-      throw new ApiError(403, "Account not verified. Please check your email.");
-    }
+    if (!user.isVerified) throw new ApiError(403, "Account not verified");
 
     if (provider === "local") {
       const isMatch = await user.comparePassword(password);
       if (!isMatch) throw new ApiError(401, "Invalid credentials");
     }
 
-    // Generate tokens
     const accessToken = generateAccessToken({ id: user._id, role: user.role });
     const refreshToken = generateRefreshToken({ id: user._id });
 
-    // Send refresh token in secure HTTP-only cookie
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // only https in production
+      secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
+
+    await recordAudit({ userId: user._id, action: "LOGIN", details: "User logged in", req });
 
     return success(res, { user, accessToken }, "Login successful");
   } catch (err) {
@@ -94,15 +107,17 @@ exports.login = async (req, res, next) => {
   }
 };
 
-
-// GOOGLE LOGIN HANDLER
-exports.googleLogin = async (req, res, next) => {
+exports.googleUserInstructorLogin = async (req, res, next) => {
   try {
-    if (!req.user) {
-      throw new ApiError(403, "Please verify your email before logging in");
-    }
+    if (!req.user) throw new ApiError(403, "Please verify your invitation before logging in");
 
     const { user, token } = req.user;
+
+    if (!["student", "instructor"].includes(user.role)) {
+      throw new ApiError(403, "Google login restricted to students/instructors here");
+    }
+
+    await recordAudit({ userId: user._id, action: "USER_GOOGLE_LOGIN", details: `${user.role} logged in via Google`, req });
 
     return success(res, { user, token }, "Google login successful");
   } catch (err) {
@@ -121,27 +136,28 @@ exports.refreshToken = async (req, res, next) => {
     if (!user) throw new ApiError(404, "User not found");
 
     const newAccessToken = generateAccessToken({ id: user._id, role: user.role });
+    await recordAudit({ userId: user._id, action: "REFRESH_TOKEN", details: "Access token refreshed", req });
+
     return success(res, { accessToken: newAccessToken }, "Access token refreshed");
   } catch (err) {
     next(err);
   }
 };
 
-
 // FORGOT PASSWORD
 exports.forgotPassword = async (req, res, next) => {
   try {
     const { email } = req.body;
-
     const user = await User.findOne({ email, provider: "local" }).notDeleted();
     if (!user) throw new ApiError(404, "User not found");
 
-    const resetToken = generateToken({ id: user._id }, "1h");
+    const resetToken = generateAccessToken({ id: user._id });
     user.resetToken = resetToken;
-    user.resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour
+    user.resetTokenExpiry = new Date(Date.now() + 3600000);
     await user.save();
 
-    // TODO: send resetToken via email
+    await recordAudit({ userId: user._id, action: "FORGOT_PASSWORD", details: "Reset token generated", req });
+
     return success(res, { resetToken }, "Password reset token generated");
   } catch (err) {
     next(err);
@@ -159,10 +175,12 @@ exports.resetPassword = async (req, res, next) => {
       throw new ApiError(400, "Invalid or expired token");
     }
 
-    user.password = newPassword; // will be hashed by pre-save hook
+    user.password = newPassword;
     user.resetToken = null;
     user.resetTokenExpiry = null;
     await user.save();
+
+    await recordAudit({ userId: user._id, action: "RESET_PASSWORD", details: "Password reset", req });
 
     return success(res, null, "Password reset successful");
   } catch (err) {
@@ -170,6 +188,19 @@ exports.resetPassword = async (req, res, next) => {
   }
 };
 
+// PROFILE
+exports.profile = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id).notDeleted();
+    if (!user) throw new ApiError(404, "User not found");
+
+    await recordAudit({ userId: user._id, action: "PROFILE_VIEW", details: "Profile fetched", req });
+
+    return success(res, user, "Profile fetched successfully");
+  } catch (err) {
+    next(err);
+  }
+};
 // PROFILE (example protected route)
 exports.profile = async (req, res, next) => {
   try {
@@ -226,6 +257,7 @@ exports.completeProfile = async (req, res, next) => {
 exports.logout = async (req, res, next) => {
   try {
     res.clearCookie("refreshToken");
+    await recordAudit({ userId: req.user?.id, action: "LOGOUT", details: "User logged out", req });
     return success(res, null, "Logout successful. Redirecting to login...");
   } catch (err) {
     next(err);

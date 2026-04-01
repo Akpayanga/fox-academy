@@ -21,11 +21,14 @@ const userSchema = new mongoose.Schema(
     verificationToken: { type: String, default: null },
     verificationTokenExpiry: { type: Date, default: null },
 
+    // Invitation flow
+    invitationCode: { type: String, default: null },
+    isInvited: { type: Boolean, default: false },
+    preRegistered: { type: Boolean, default: false }, // for step 1
+
     // Onboarding
     studentId: { type: String, unique: true, sparse: true },
-    course: {
-      type: String,
-      enum: ["backend", "cybersecurity", "frontend", "product design"],
+    course: {type: String,enum: ["backend", "cybersecurity", "frontend", "product design"],
       required: function () {
         return this.isVerified; 
       },
