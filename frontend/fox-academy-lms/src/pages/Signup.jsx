@@ -1,13 +1,24 @@
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 import auth3 from "../assets/images/auth3.png";
 
 export default function Signup() {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Temporary mock values representing data prefilled from backend application records.
+  const applicant = {
+    fullName: "Amara Okoro",
+    email: "amara@example.com",
+    phone: "+234 000 000 0000",
+    discipline: "UI/UX Design",
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate("/signup/create");
+    navigate("/login");
   };
 
   return (
@@ -41,38 +52,115 @@ export default function Signup() {
             </div>
 
             <h1 className="mb-2 text-[28px] font-bold leading-tight text-[#111827]">
-              You&apos;ve Been Invited
+              Complete Your Account Setup
             </h1>
             <p className="mb-8 text-[16px] leading-relaxed text-[#374151]">
-              FoxAcademy is an invite-only platform. Enter the invite code shared
-              by your cohort coordinator to get started.
+              Your profile information has been prefilled from your application.
+              Create and confirm your password to activate your account.
             </p>
 
-            <form onSubmit={handleSubmit}>
-              <div className="mb-6">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
                 <label className="mb-2 block text-[13px] font-medium text-[#111827]">
-                  Invite Code
+                  Full Name
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. TM-2025-COHORT4"
-                  className="w-full rounded-[10px] border border-[#D1D5DC] bg-white px-4 py-3 text-[13px] text-[#111827] placeholder:text-[#99A1AF] focus:border-[#F38821] focus:outline-none"
+                  value={applicant.fullName}
+                  readOnly
+                  className="w-full rounded-[10px] border border-[#D1D5DC] bg-[#EEF0F3] px-4 py-3 text-[13px] text-[#4B5563]"
                 />
-                <p className="mt-2 text-[11px] text-[#6B7280]">
-                  Check your email or WhatsApp message from Fox Academy for your
-                  code.
-                </p>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-[13px] font-medium text-[#111827]">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  value={applicant.email}
+                  readOnly
+                  className="w-full rounded-[10px] border border-[#D1D5DC] bg-[#EEF0F3] px-4 py-3 text-[13px] text-[#4B5563]"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <div>
+                  <label className="mb-2 block text-[13px] font-medium text-[#111827]">
+                    Phone Number
+                  </label>
+                  <input
+                    type="text"
+                    value={applicant.phone}
+                    readOnly
+                    className="w-full rounded-[10px] border border-[#D1D5DC] bg-[#EEF0F3] px-4 py-3 text-[13px] text-[#4B5563]"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-[13px] font-medium text-[#111827]">
+                    Primary Discipline
+                  </label>
+                  <input
+                    type="text"
+                    value={applicant.discipline}
+                    readOnly
+                    className="w-full rounded-[10px] border border-[#D1D5DC] bg-[#EEF0F3] px-4 py-3 text-[13px] text-[#4B5563]"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-[13px] font-medium text-[#111827]">
+                  Create Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Minimum 8 characters"
+                    className="w-full rounded-[10px] border border-[#D1D5DC] bg-white px-4 py-3 pr-11 text-[13px] placeholder:text-[#99A1AF] focus:border-[#F38821] focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#99A1AF]"
+                    aria-label="Toggle password visibility"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-[13px] font-medium text-[#111827]">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Re-enter your password"
+                    className="w-full rounded-[10px] border border-[#D1D5DC] bg-white px-4 py-3 pr-11 text-[13px] placeholder:text-[#99A1AF] focus:border-[#F38821] focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword((prev) => !prev)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#99A1AF]"
+                    aria-label="Toggle confirm password visibility"
+                  >
+                    {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
               </div>
 
               <button
                 type="submit"
-                className="mb-8 w-full rounded-[10px] bg-[#F38821] px-4 py-3 text-[16px] font-bold text-white transition hover:bg-[#e37b1d]"
+                className="w-full rounded-[10px] bg-[#F38821] px-4 py-3 text-[16px] font-bold text-white transition hover:bg-[#e37b1d]"
               >
-                Continue
+                Create My Account
               </button>
             </form>
 
-            <p className="text-center text-[13px] text-[#6B7280]">
+            <p className="mt-8 text-center text-[13px] text-[#6B7280]">
               Already have an account?{" "}
               <Link to="/login" className="font-bold text-[16px] text-[#F38821] hover:underline">
                 Log In

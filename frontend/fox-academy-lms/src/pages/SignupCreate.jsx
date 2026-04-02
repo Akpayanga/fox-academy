@@ -9,9 +9,9 @@ export default function SignupCreate() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    navigate("/verify-email", { state: { email } });
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    navigate("/application");
   };
 
   return (
@@ -71,6 +71,7 @@ export default function SignupCreate() {
             </button>
 
             <form onSubmit={handleSubmit} className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="mb-2 block text-[13px] font-medium text-[#111827]">

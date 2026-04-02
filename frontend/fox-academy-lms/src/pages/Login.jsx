@@ -226,7 +226,7 @@ export default function Login() {
               <p className="text-[#374151] text-sm">
                 New to TalentFlow?{" "}
                 <Link
-                  to="/signup"
+                  to="/application"
                   className="text-[#F38821] hover:text-[#e37b1d] font-medium"
                 >
                   Join with an Invite Code

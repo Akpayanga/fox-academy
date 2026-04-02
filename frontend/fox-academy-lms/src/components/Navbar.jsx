@@ -23,7 +23,7 @@ export default function Navbar() {
 
         
           <Link
-            to="/signup"
+            to="/application"
             className="rounded-xl bg-[#F38821] px-5 py-2 text-sm text-white transition hover:bg-[#e37b1d]"
           >
             Join with Invite Code

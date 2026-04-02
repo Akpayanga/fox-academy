@@ -33,7 +33,7 @@ export default function Landing() {
 
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
-                to="/signup"
+                to="/application"
                 className="rounded-xl bg-[#F38821] px-6 py-3 text-lg font-semibold text-white transition hover:bg-[#e37b1d]"
               >
                 Join with Invite Code
