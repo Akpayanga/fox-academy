@@ -11,6 +11,10 @@ const authRoutes = require("./routes/UserInstructor.Auth.route");
 const passwordRoutes = require("./routes/password.route");
 const adminAuthRoutes = require("./routes/admin.auth.route");
 const auditRoutes = require("./routes/audit.route");
+const dashboardRoutes = require("./routes/dashboard.route");
+const assignmentRoutes = require("./routes/assignment.route");
+const courseRoutes = require("./routes/course.route");
+const applicationRoutes = require("./routes/application.route");
 
 const app = express(); 
 
@@ -27,6 +31,10 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/auth", passwordRoutes);
 app.use("/api/v1/auth/admin", adminAuthRoutes);
 app.use("/api/v1/audit", auditRoutes);
+app.use("/api/v1/dashboard", dashboardRoutes);
+app.use("/api/v1/assignments", assignmentRoutes);
+app.use("/api/v1/courses", courseRoutes);
+app.use("/api/v1/applications", applicationRoutes);
 
 app.get("/", (req, res) => {
   res.send("API running...");
