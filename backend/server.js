@@ -15,17 +15,18 @@ const dashboardRoutes = require("./routes/dashboard.route");
 const assignmentRoutes = require("./routes/assignment.route");
 const courseRoutes = require("./routes/course.route");
 const applicationRoutes = require("./routes/application.route");
+const learningRoutes = require("./routes/learning.route");
+const discussionRoutes = require("./routes/discussion.route");
 
-const app = express(); 
+const app = express();
 
 // Middleware
-app.use(cors({ origin: "http://localhost:3000", credentials: true })); 
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(express.json());
 app.use(passport.initialize());
 app.use(cookieParser());
 
 connectDB();
-
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/auth", passwordRoutes);
@@ -35,6 +36,8 @@ app.use("/api/v1/dashboard", dashboardRoutes);
 app.use("/api/v1/assignments", assignmentRoutes);
 app.use("/api/v1/courses", courseRoutes);
 app.use("/api/v1/applications", applicationRoutes);
+app.use("/api/v1/learning", learningRoutes);
+app.use("/api/v1/community", discussionRoutes);
 
 app.get("/", (req, res) => {
   res.send("API running...");
