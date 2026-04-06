@@ -1,5 +1,6 @@
 import success_graph from "../assets/images/success_graph.png";
 import { ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function WelcomeBanner({ name, progress }) {
   return (
@@ -26,9 +27,12 @@ export function WelcomeBanner({ name, progress }) {
              </div>
           </div>
 
-          <button className="mt-4 flex items-center gap-2 rounded-xl bg-[#F38821] px-6 py-3 text-sm font-bold text-white transition-all hover:bg-[#e37b1d] hover:shadow-lg hover:shadow-orange-100">
+          <Link 
+            to="/learning/module"
+            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#F38821] px-6 py-3 text-sm font-bold text-white transition-all hover:bg-[#e37b1d] hover:shadow-lg hover:shadow-orange-100"
+          >
             Continue Learning <ChevronRight size={18} />
-          </button>
+          </Link>
         </div>
 
         <div className="relative h-48 w-full shrink-0 overflow-hidden rounded-2xl md:h-56 md:w-80">

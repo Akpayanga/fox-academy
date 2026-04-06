@@ -1,6 +1,7 @@
 import { PlayCircle, Lock } from "lucide-react";
+import { Link } from "react-router-dom";
 
-export default function CourseCard({ thumbnail, category, title, progress, isUnlocked = true, unlockMessage }) {
+export default function CourseCard({ thumbnail, category, title, progress, isUnlocked = true, unlockMessage, to = "/learning/module" }) {
   return (
     <div className={`flex flex-col gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm md:flex-row md:items-center ${!isUnlocked ? 'opacity-80' : ''}`}>
       {/* Thumbnail */}
@@ -48,12 +49,12 @@ export default function CourseCard({ thumbnail, category, title, progress, isUnl
 
       {/* Action */}
       <div className="shrink-0">
-        <button 
-          disabled={!isUnlocked}
+        <Link 
+          to={isUnlocked ? to : "#"}
           className={`flex w-full items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all md:w-auto
             ${isUnlocked 
               ? 'bg-[#F38821] text-white hover:bg-[#e37b1d] shadow-md shadow-orange-200' 
-              : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+              : 'bg-gray-100 text-gray-400 cursor-not-allowed pointer-events-none'
             }`}
         >
           {isUnlocked ? (
@@ -67,7 +68,7 @@ export default function CourseCard({ thumbnail, category, title, progress, isUnl
                Start Video
              </>
           )}
-        </button>
+        </Link>
       </div>
     </div>
   );

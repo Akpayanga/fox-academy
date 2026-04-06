@@ -1,4 +1,5 @@
 import { Play, Lock, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function ModuleCard({ moduleNumber, title, progress, status }) {
   const isLocked = status === "Locked";
@@ -48,16 +49,22 @@ export default function ModuleCard({ moduleNumber, title, progress, status }) {
             Locked
           </button>
         ) : isNotStarted ? (
-          <button className="group flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-3 text-sm font-bold text-[#F38821] transition-all hover:bg-orange-50 hover:border-[#F38821]">
+          <Link 
+            to="/learning/module"
+            className="group flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-3 text-sm font-bold text-[#F38821] transition-all hover:bg-orange-50 hover:border-[#F38821]"
+          >
             <Play size={14} className="fill-[#F38821]" />
             Start Course
             <ChevronRight size={14} className="transition-transform group-hover:translate-x-1" />
-          </button>
+          </Link>
         ) : (
-          <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#F38821] py-3 text-sm font-bold text-white shadow-md shadow-orange-100 transition-all hover:bg-[#e37b1d] hover:shadow-lg">
+          <Link 
+            to="/learning/module"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#F38821] py-3 text-sm font-bold text-white shadow-md shadow-orange-100 transition-all hover:bg-[#e37b1d] hover:shadow-lg"
+          >
             <Play size={14} fill="currentColor" fillOpacity={0.4} />
             Replay Video
-          </button>
+          </Link>
         )}
       </div>
     </div>

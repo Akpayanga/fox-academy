@@ -15,6 +15,7 @@ import ApplicationForm from "./pages/ApplicationForm";
 import ApplicationReceived from "./pages/ApplicationReceived";
 import Dashboard from "./pages/Dashboard";
 import MyLearning from "./pages/MyLearning";
+import ModuleDetail from "./pages/ModuleDetail";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path="/onboarding/complete" element={<OnboardingComplete />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/learning" element={<MyLearning />} />
+        <Route path="/learning/module" element={<ModuleDetail />} />
       </Routes>
     </Router>
   );
