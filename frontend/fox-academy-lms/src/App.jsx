@@ -48,6 +48,15 @@ function App() {
         <Route path="/community/discussion/:id" element={<DiscussionDetail />} />
         <Route path="/community/create" element={<CreateDiscussion />} />
         <Route path="/progress" element={<Progress />} />
+        
+        {/* Onboarding & Password Flow */}
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/forgot-password/sent" element={<ForgotPasswordSent />} />
+        <Route path="/welcome" element={<Welcome />} />
+        <Route path="/onboarding/profile" element={<SetProfile />} />
+        <Route path="/onboarding/team" element={<JoinTeam />} />
+        <Route path="/onboarding/learn" element={<LearnPreview />} />
+        <Route path="/onboarding/complete" element={<OnboardingComplete />} />
       </Routes>
     </Router>
   );
