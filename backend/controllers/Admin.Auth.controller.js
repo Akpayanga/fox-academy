@@ -36,6 +36,7 @@ exports.adminRegister = async (req, res, next) => {
 exports.adminVerifyEmail = async (req, res, next) => {
   try {
     const { token } = req.query;
+
     const user = await User.findOne({
       verificationToken: token,
       verificationTokenExpiry: { $gt: Date.now() },
@@ -48,8 +49,11 @@ exports.adminVerifyEmail = async (req, res, next) => {
     user.verificationTokenExpiry = null;
     await user.save();
 
-    await recordAudit({ userId: user._id, action: "ADMIN_VERIFY_EMAIL", details: "Admin email verified", req });
+    await recordAudit({ userId: user._id, action: "ADMIN_VERIFY_EMAIL", 
+      details: "Admin email verified", req });
+
     return success(res, null, "Admin email verified successfully");
+    
   } catch (err) { next(err); }
 };
 

@@ -1,4 +1,4 @@
-const emailQueue = require("../queues/emailQueue");
+const emailQueue = require("../queue/emailqueue");
 
 exports.enqueueVerificationEmail = async (email, token, code) => {
   await emailQueue.add(
