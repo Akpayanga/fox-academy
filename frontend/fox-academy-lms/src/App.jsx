@@ -18,6 +18,7 @@ import MyLearning from "./pages/MyLearning";
 import ModuleDetail from "./pages/ModuleDetail";
 import Assignments from "./pages/Assignments";
 import UserPersonaAssignment from "./pages/UserPersonaAssignment";
+import Resources from "./pages/Resources";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
         <Route path="/learning/module" element={<ModuleDetail />} />
         <Route path="/assignments" element={<Assignments />} />
         <Route path="/assignments/user-persona" element={<UserPersonaAssignment />} />
+        <Route path="/resources" element={<Resources />} />
       </Routes>
     </Router>
   );
