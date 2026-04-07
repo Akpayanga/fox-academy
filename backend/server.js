@@ -15,6 +15,9 @@ const dashboardRoutes = require("./routes/dashboard.route");
 const assignmentRoutes = require("./routes/assignment.route");
 const courseRoutes = require("./routes/course.route");
 const applicationRoutes = require("./routes/application.route");
+const notificationRoutes = require("./routes/Notification.route");
+const courseProgressRoutes = require("./routes/courseProgress.routes");
+const mediaRoutes = require("./routes/media.route");
 
 const app = express(); 
 
@@ -35,6 +38,10 @@ app.use("/api/v1/dashboard", dashboardRoutes);
 app.use("/api/v1/assignments", assignmentRoutes);
 app.use("/api/v1/courses", courseRoutes);
 app.use("/api/v1/applications", applicationRoutes);
+
+app.use("/api/v1/notifications", notificationRoutes);
+app.use("/api/v1/course-progress", courseProgressRoutes);
+app.use("/api/v1/media", mediaRoutes);
 
 app.get("/", (req, res) => {
   res.send("API running...");

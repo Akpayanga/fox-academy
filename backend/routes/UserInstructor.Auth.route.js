@@ -3,7 +3,12 @@ const router = express.Router();
 const userInstructorAuth = require("../controllers/UserInstructor.Auth.contoller");
 const validate = require("../middleware/validate.middleware");
 const requireRole = require("../middleware/role.middleware");
-const {preRegisterSchema,loginSchema,forgotPasswordSchema,resetPasswordSchema,} = require("../validation/Auth.validation");
+const {preRegisterSchema,loginSchema,
+    forgotPasswordSchema,
+    resetPasswordSchema,} = require("../validation/Auth.validation");
+const auth = require("../middleware/Auth.middle");
+const requireOnboarding = require("../middleware/Require.Onboarding middleware");
+const passport = require("passport");
 
 // Invitation flows
 router.post("/pre-register", validate(preRegisterSchema), userInstructorAuth.preRegister);
@@ -24,7 +29,10 @@ router.post("/complete-profile", auth, requireRole("student"), userInstructorAut
 router.post("/logout", auth, userInstructorAuth.logout);
 
 // GOOGLE AUTH for students/instructors
-router.get("/google", passport.authenticate("google-user-instructor", { scope: ["profile", "email"] }));
-router.get("/google/callback", passport.authenticate("google-user-instructor", { session: false }), userInstructorAuth.googleUserInstructorLogin);
+router.get("/google", passport.authenticate("google-user-instructor", 
+            { scope: ["profile", "email"] }));
+
+router.get("/google/callback", passport.authenticate("google-user-instructor", 
+            { session: false }), userInstructorAuth.googleUserInstructorLogin);
 
 module.exports = router;
