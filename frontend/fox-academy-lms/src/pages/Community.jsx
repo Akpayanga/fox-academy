@@ -108,9 +108,12 @@ const Community = () => {
               </div>
             </div>
             
-            <button className="rounded-2xl bg-[#F38821] px-6 py-4 text-[12px] font-black tracking-widest text-white uppercase transition-all hover:bg-[#e37b1d] shadow-xl shadow-orange-100">
+            <Link 
+              to="/community/create"
+              className="rounded-2xl bg-[#F38821] px-6 py-4 text-[12px] font-black tracking-widest text-white uppercase transition-all hover:bg-[#e37b1d] shadow-xl shadow-orange-100"
+            >
               Start Discusion
-            </button>
+            </Link>
           </div>
 
           {/* Feed Controls */}

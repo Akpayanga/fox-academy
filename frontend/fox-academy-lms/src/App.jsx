@@ -22,6 +22,7 @@ import UserPersonaAssignment from "./pages/UserPersonaAssignment";
 import Resources from "./pages/Resources";
 import Community from "./pages/Community";
 import DiscussionDetail from "./pages/DiscussionDetail";
+import CreateDiscussion from "./pages/CreateDiscussion";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
         <Route path="/resources" element={<Resources />} />
         <Route path="/community" element={<Community />} />
         <Route path="/community/discussion/:id" element={<DiscussionDetail />} />
+        <Route path="/community/create" element={<CreateDiscussion />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/forgot-password/sent" element={<ForgotPasswordSent />} />
         <Route path="/welcome" element={<Welcome />} />
