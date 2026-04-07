@@ -9,7 +9,7 @@ function SyllabusItem({ moduleNumber, title, status, progress }) {
 
   return (
     <Link 
-      to={isLocked ? "#" : "/learning/module"}
+      to={isLocked ? "#" : "/mylearning/module"}
       className={`block p-4 transition-all ${isCurrent ? 'bg-orange-50/50 border-y border-orange-100' : 'hover:bg-gray-50'} ${isLocked ? 'cursor-default' : 'cursor-pointer'}`}
     >
       <div className="flex gap-4">
@@ -85,7 +85,7 @@ export default function SyllabusSidebar() {
 
       {/* Up Next Card */}
       <Link 
-        to="/learning"
+        to="/mylearning"
         className="relative block overflow-hidden rounded-2xl bg-[#F38821] p-6 text-white shadow-lg shadow-orange-100 transition-transform hover:scale-[1.02] cursor-pointer"
       >
         <div className="relative z-10 flex gap-4">

@@ -28,7 +28,7 @@ export function WelcomeBanner({ name, progress }) {
           </div>
 
           <Link 
-            to="/learning/module"
+            to="/mylearning/module"
             className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#F38821] px-6 py-3 text-sm font-bold text-white transition-all hover:bg-[#e37b1d] hover:shadow-lg hover:shadow-orange-100"
           >
             Continue Learning <ChevronRight size={18} />

@@ -20,6 +20,7 @@ import ModuleDetail from "./pages/ModuleDetail";
 import Assignments from "./pages/Assignments";
 import UserPersonaAssignment from "./pages/UserPersonaAssignment";
 import Resources from "./pages/Resources";
+import Community from "./pages/Community";
 
 function App() {
   return (
@@ -35,11 +36,12 @@ function App() {
         <Route path="/application/success/link/:token" element={<ApplicationReceived />} />
         <Route path="/application/accepted" element={<ApplicationAccepted />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/learning" element={<MyLearning />} />
-        <Route path="/learning/module" element={<ModuleDetail />} />
+        <Route path="/mylearning" element={<MyLearning />} />
+        <Route path="/mylearning/module" element={<ModuleDetail />} />
         <Route path="/assignments" element={<Assignments />} />
         <Route path="/assignments/user-persona" element={<UserPersonaAssignment />} />
         <Route path="/resources" element={<Resources />} />
+        <Route path="/community" element={<Community />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/forgot-password/sent" element={<ForgotPasswordSent />} />
         <Route path="/welcome" element={<Welcome />} />

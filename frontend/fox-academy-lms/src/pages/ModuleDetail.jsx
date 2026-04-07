@@ -13,7 +13,7 @@ export default function ModuleDetail() {
       <main className="mx-auto max-w-[1440px] px-6 py-8">
         {/* Breadcrumbs */}
         <nav className="mb-6 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400">
-          <Link to="/learning" className="hover:text-[#F38821]">MY LEARNING</Link>
+          <Link to="/mylearning" className="hover:text-[#F38821]">MY LEARNING</Link>
           <span className="text-gray-300">/</span>
           <span className="text-gray-300">CONDUCT UX RESEARCH...</span>
           <span className="text-gray-300">/</span>
