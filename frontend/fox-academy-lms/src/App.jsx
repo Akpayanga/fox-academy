@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import SignupCreate from "./pages/SignupCreate";
+import Start from "./pages/Start";
 import ForgotPassword from "./pages/ForgotPassword";
 import ForgotPasswordSent from "./pages/ForgotPasswordSent";
 import EmailVerification from "./pages/EmailVerification";
@@ -18,6 +18,7 @@ import MyLearning from "./pages/MyLearning";
 import ModuleDetail from "./pages/ModuleDetail";
 import Assignments from "./pages/Assignments";
 import UserPersonaAssignment from "./pages/UserPersonaAssignment";
+import ApplicationAccepted from "./pages/ApplicationAccepted";
 
 function App() {
   return (
@@ -26,11 +27,12 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/signup/create" element={<SignupCreate />} />
+        <Route path="/start" element={<Start />} />
         <Route path="/verify-email" element={<EmailVerification />} />
         <Route path="/application" element={<ApplicationForm />} />
         <Route path="/application/success" element={<ApplicationReceived />} />
         <Route path="/application/success/link/:token" element={<ApplicationReceived />} />
+        <Route path="/application/accepted" element={<ApplicationAccepted />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/forgot-password/sent" element={<ForgotPasswordSent />} />
         <Route path="/welcome" element={<Welcome />} />

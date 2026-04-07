@@ -18,7 +18,7 @@ export default function Signup() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate("/login");
+    navigate("/verify-email");
   };
 
   return (
