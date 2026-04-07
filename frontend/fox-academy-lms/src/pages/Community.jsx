@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import DashboardNavbar from "../components/DashboardNavbar";
 import { 
   ChevronDown, 
@@ -147,7 +148,7 @@ const Community = () => {
           {/* Posts Feed */}
           <div className="space-y-6">
             {/* Pinned Post */}
-            <div className="relative overflow-hidden rounded-[32px] bg-[#4F46E5] p-10 text-white shadow-2xl shadow-indigo-100">
+            <Link to="/community/discussion/1" className="block relative overflow-hidden rounded-[32px] bg-[#4F46E5] p-10 text-white shadow-2xl shadow-indigo-100 hover:scale-[1.01] transition-transform">
               <Pin className="absolute right-8 top-8 opacity-40" size={24} />
               
               <div className="flex items-center gap-3 mb-6">
@@ -174,10 +175,10 @@ const Community = () => {
                   <Eye size={16} /> 1.2k views
                 </div>
               </div>
-            </div>
+            </Link>
 
             {/* Normal Discussion Post */}
-            <div className="rounded-[32px] bg-white border border-gray-100 p-10 shadow-sm transition-all hover:shadow-xl hover:shadow-gray-50 group">
+            <Link to="/community/discussion/1" className="block rounded-[32px] bg-white border border-gray-100 p-10 shadow-sm transition-all hover:shadow-xl hover:shadow-gray-50 group">
               <div className="flex items-start justify-between mb-8">
                 <div className="flex items-center gap-4">
                   <div className="h-12 w-12 rounded-2xl overflow-hidden shadow-md">
@@ -204,10 +205,10 @@ const Community = () => {
               <button className="flex items-center gap-2 text-[11px] font-black text-[#F38821] tracking-widest uppercase py-3 px-6 rounded-xl bg-orange-50/50 hover:bg-orange-50">
                 <MessageSquare size={14} /> 8 replies
               </button>
-            </div>
+            </Link>
 
             {/* Another Discussion Post */}
-            <div className="rounded-[32px] bg-white border border-gray-100 p-10 shadow-sm transition-all hover:shadow-xl hover:shadow-gray-50 group">
+            <Link to="/community/discussion/1" className="block rounded-[32px] bg-white border border-gray-100 p-10 shadow-sm transition-all hover:shadow-xl hover:shadow-gray-50 group">
               <div className="flex items-start justify-between mb-8">
                 <div className="flex items-center gap-4">
                   <div className="h-12 w-12 rounded-2xl overflow-hidden shadow-md">
@@ -234,7 +235,7 @@ const Community = () => {
               <button className="flex items-center gap-2 text-[11px] font-black text-[#F38821] tracking-widest uppercase py-3 px-6 rounded-xl bg-orange-50/50 hover:bg-orange-50">
                 <MessageSquare size={14} /> 22 replies
               </button>
-            </div>
+            </Link>
           </div>
         </section>
 
