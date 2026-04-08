@@ -1,6 +1,6 @@
 const Assignment = require("../models/assignment.model");
 const Submission = require("../models/submission.model");
-const AuditLog = require("../models/AuditLog.model");
+const { recordAudit } = require("../utilities/audit.util");
 const { success } = require("../utilities/response");
 const ApiError = require("../utilities/apiError.util");
 
@@ -12,7 +12,7 @@ exports.getAssignments = async (req, res, next) => {
   try {
     const userId = req.user._id;
 
-     // Get all assignments
+    // Get all assignments
     const assignments = await Assignment.find().populate("linkedCourseId");
 
     // Get all submissions for this user to determine status
@@ -20,7 +20,9 @@ exports.getAssignments = async (req, res, next) => {
 
     // Combine assignment data with submission status
     const result = assignments.map((assignment) => {
-      const submission = submissions.find(s => s.assignmentId.toString() === assignment._id.toString());
+      const submission = submissions.find(
+        (s) => s.assignmentId.toString() === assignment._id.toString(),
+      );
       return {
         ...assignment.toObject(),
         status: submission ? submission.status : "pending",
@@ -29,20 +31,27 @@ exports.getAssignments = async (req, res, next) => {
     });
 
     // Grouping
-    const pending = result.filter(a => a.status === "pending" || a.status === "in-progress");
-    const submitted = result.filter(a => a.status === "submitted");
-    const graded = result.filter(a => a.status === "graded");
+    const pending = result.filter(
+      (a) => a.status === "pending" || a.status === "in-progress",
+    );
+    const submitted = result.filter((a) => a.status === "submitted");
+    const graded = result.filter((a) => a.status === "graded");
 
     // Audit log
-    await AuditLog.create({
+    await recordAudit({
       userId,
       action: "ASSIGNMENTS_FETCH",
       details: "User fetched assignments list",
-      ipAddress: req.ip,
-      userAgent: req.headers["user-agent"]
+      req,
+      status: "success",
+      resourceType: "Assignment",
     });
 
-    return success(res, { all: result, pending, submitted, graded }, "Assignments fetched");
+    return success(
+      res,
+      { all: result, pending, submitted, graded },
+      "Assignments fetched",
+    );
   } catch (err) {
     next(err);
   }
@@ -65,15 +74,21 @@ exports.getAssignmentById = async (req, res, next) => {
     const submission = await Submission.findOne({ userId, assignmentId: id });
 
     // Audit log
-    await AuditLog.create({
+    await recordAudit({
       userId,
       action: "ASSIGNMENT_VIEW",
       details: `Viewed assignment ${id}`,
-      ipAddress: req.ip,
-      userAgent: req.headers["user-agent"]
+      req,
+      status: "success",
+      resourceId: id,
+      resourceType: "Assignment",
     });
 
-    return success(res, { ...assignment.toObject(), userSubmission: submission || null }, "Assignment retrieved");
+    return success(
+      res,
+      { ...assignment.toObject(), userSubmission: submission || null },
+      "Assignment retrieved",
+    );
   } catch (err) {
     next(err);
   }
@@ -113,12 +128,14 @@ exports.submitAssignment = async (req, res, next) => {
     }
 
     // Audit log
-    await AuditLog.create({
+    await recordAudit({
       userId,
       action: "ASSIGNMENT_SUBMIT",
       details: `Submitted assignment ${id}`,
-      ipAddress: req.ip,
-      userAgent: req.headers["user-agent"]
+      req,
+      status: "success",
+      resourceId: id,
+      resourceType: "Assignment",
     });
 
     return success(res, submission, "Assignment submitted successfully");

@@ -8,12 +8,7 @@ const requireRole = require("../middleware/role.middleware");
 const auth = require("../middleware/Auth.middle"); 
 const requireOnboarding = require("../middleware/Require.Onboarding.middleware");
 
-const {
-  preRegisterSchema,
-  loginSchema,
-  forgotPasswordSchema,
-  resetPasswordSchema,
-} = require("../validation/Auth.validation");
+const {preRegisterSchema,loginSchema,forgotPasswordSchema,resetPasswordSchema,completeStudentProfileSchema,completeMentorProfileSchema} = require("../validation/Auth.validation");
 
 // Invitation flows
 router.post("/pre-register", validate(preRegisterSchema), userInstructorAuth.preRegister);
@@ -28,7 +23,12 @@ router.post("/reset-password", validate(resetPasswordSchema), userInstructorAuth
 
 // Profile & onboarding
 router.get("/profile", auth, requireOnboarding, userInstructorAuth.profile);
-router.post("/complete-profile", auth, requireRole("student"), userInstructorAuth.completeProfile);
+
+// Student profile completion
+router.post("/complete-student-profile",auth,requireRole("student"), validate(completeStudentProfileSchema), userInstructorAuth.completeStudentProfile);
+
+// Mentor profile completion
+router.post("/complete-mentor-profile",auth,requireRole("instructor"),validate(completeMentorProfileSchema), userInstructorAuth.completeMentorProfile);
 
 // Logout
 router.post("/logout", auth, userInstructorAuth.logout);

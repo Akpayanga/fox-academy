@@ -1,5 +1,5 @@
 const Application = require("../models/application.model");
-const AuditLog = require("../models/AuditLog.model");
+const { recordAudit } = require("../utilities/audit.util");
 const { success } = require("../utilities/response");
 const ApiError = require("../utilities/apiError.util");
 
@@ -9,11 +9,25 @@ const ApiError = require("../utilities/apiError.util");
 
 exports.submitApplication = async (req, res, next) => {
   try {
-    const { fullName, email, phoneNumber, primaryDiscipline, expertiseLevel, personalStatement, portfolioUrl, githubLinkedin } = req.body;
+    const {
+      fullName,
+      email,
+      phoneNumber,
+      primaryDiscipline,
+      expertiseLevel,
+      personalStatement,
+      portfolioUrl,
+      githubLinkedin,
+    } = req.body;
 
     const existing = await Application.findOne({ email });
     if (existing) {
-      return next(new ApiError(400, "An application with this email has already been submitted."));
+      return next(
+        new ApiError(
+          400,
+          "An application with this email has already been submitted.",
+        ),
+      );
     }
 
     const application = await Application.create({
@@ -24,16 +38,18 @@ exports.submitApplication = async (req, res, next) => {
       expertiseLevel,
       personalStatement,
       portfolioUrl,
-      githubLinkedin
+      githubLinkedin,
     });
 
     // Audit log
-    await AuditLog.create({
-      userId: null, // applicant may not be logged in
+    await recordAudit({
+      userId: null,
       action: "APPLICATION_SUBMIT",
       details: `Application submitted for ${email}`,
-      ipAddress: req.ip,
-      userAgent: req.headers["user-agent"]
+      req,
+      status: "success",
+      resourceId: application._id,
+      resourceType: "Application",
     });
 
     return success(res, application, "Application submitted successfully!");
@@ -55,15 +71,21 @@ exports.getApplicationStatus = async (req, res, next) => {
     }
 
     // Audit log
-    await AuditLog.create({
-      userId: null,
-      action: "APPLICATION_STATUS",
-      details: `Status checked for ${email}`,
-      ipAddress: req.ip,
-      userAgent: req.headers["user-agent"]
-    });
+    await recordAudit({
+  userId: null,
+  action: "APPLICATION_STATUS",
+  details: `Status checked for ${email}`,
+  req,
+  status: "success",
+  resourceId: application._id,
+  resourceType: "Application",
+});
 
-    return success(res, { status: application.status }, "Application status retrieved");
+    return success(
+      res,
+      { status: application.status },
+      "Application status retrieved",
+    );
   } catch (err) {
     next(err);
   }

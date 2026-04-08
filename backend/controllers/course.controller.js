@@ -1,5 +1,5 @@
 const Course = require("../models/course.model");
-const AuditLog = require("../models/AuditLog.model");
+const { recordAudit } = require("../utilities/audit.util");
 const { success } = require("../utilities/response");
 const ApiError = require("../utilities/apiError.util");
 
@@ -17,12 +17,13 @@ exports.getCourses = async (req, res, next) => {
     }
 
     // Audit log
-    await AuditLog.create({
+    await recordAudit({
       userId: req.user?._id || null,
       action: "COURSES_FETCH",
       details: `Fetched courses for phase ${phase || 1}`,
-      ipAddress: req.ip,
-      userAgent: req.headers["user-agent"]
+      req,
+      status: "success",
+      resourceType: "Course",
     });
 
     return success(res, courses, "Courses fetched");
@@ -44,12 +45,14 @@ exports.getCourseById = async (req, res, next) => {
     }
 
     // Audit log
-    await AuditLog.create({
+    await recordAudit({
       userId: req.user?._id || null,
       action: "COURSE_VIEW",
       details: `Viewed course ${id}`,
-      ipAddress: req.ip,
-      userAgent: req.headers["user-agent"]
+      req,
+      status: "success",
+      resourceId: id,
+      resourceType: "Course",
     });
 
     return success(res, course, "Course retrieved");

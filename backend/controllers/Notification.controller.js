@@ -1,51 +1,74 @@
-const Notification = require('../models/Notification.model')
+const Notification = require("../models/Notification.model");
+const { success } = require("../utilities/response");
+const ApiError = require("../utilities/apiError.util");
+const { recordAudit } = require("../utilities/audit.util");
 
-const getNotifyList = async (req, res) => {
+// Get notifications for a user
+const getNotifyList = async (req, res, next) => {
   try {
     const { userId, message } = req.body;
 
     const NotifyUser = await Notification.find({
       message: userId,
-      message: message,
+      message,
       isRead: { $nin: [userId] },
-    }).populate( "message")
-    .select("message notiType");
+    })
+      .populate("message")
+      .select("message notiType");
 
-    res.status(200).json({ NotifyUser });
+    //audit log
+    await recordAudit({
+      userId,
+      action: "NOTIFICATIONS_FETCH",
+      details: "Fetched notifications",
+      req,
+      status: "success",
+      resourceType: "Notification",
+    });
 
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return success(res, NotifyUser, "Notifications fetched successfully");
+  } catch (err) {
+    next(err);
   }
 };
 
-// MARK READ NOTIFICATION
-const markNotifyAsRead = async (req, res) => {
+// Mark notifications as read
+const markNotifyAsRead = async (req, res, next) => {
   try {
     const { userId } = req.user;
-
     const { id, isReadType } = req.query;
 
-    // CHECK TO MARK ALL NOTIFICATION AS READ
     if (isReadType === "all") {
-      await Notify.updateMany(
+      await Notification.updateMany(
         { message: userId, isRead: { $nin: [userId] } },
         { $push: { isRead: userId } },
-        { new: true }
+        { new: true },
       );
-      // return res.status(200).json({ notify });
+      return success(res, null, "All notifications marked as read");
     } else {
-      await Notify.findByIdAndUpdate(
+      const notify = await Notification.findByIdAndUpdate(
         { _id: id, isRead: { $nin: [userId] } },
         { $push: { isRead: userId } },
-        { new: true }
+        { new: true },
       );
 
-      res.status(200).json({ status: true, message: "Done" });
+      if (!notify) throw new ApiError(404, "Notification not found");
 
+      //audit log
+      await recordAudit({
+        userId,
+        action: "NOTIFICATION_READ",
+        details: `Notification ${id} marked as read`,
+        req,
+        status: "success",
+        resourceId: id,
+        resourceType: "Notification",
+      });
+
+      return success(res, notify, "Notification marked as read");
     }
-    
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
+  } catch (err) {
+    next(err);
   }
 };
 

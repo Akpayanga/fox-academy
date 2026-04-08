@@ -27,10 +27,25 @@ exports.adminRegister = async (req, res, next) => {
     });
 
     await enqueueVerificationEmail(user.email, token, null);
-    await recordAudit({ userId: user._id, action: "ADMIN_REGISTER", details: "Admin registered", req });
+    await recordAudit({
+      userId: user._id,
+      action: "ADMIN_REGISTER",
+      details: "Admin registered",
+      req,
+      status: "success",
+      resourceId: user._id,
+      resourceType: "User",
+      metadata: { role: "admin" },
+    });
 
-    return success(res, null, "Admin registration successful. Please verify your email.");
-  } catch (err) { next(err); }
+    return success(
+      res,
+      null,
+      "Admin registration successful. Please verify your email.",
+    );
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.adminVerifyEmail = async (req, res, next) => {
@@ -48,24 +63,42 @@ exports.adminVerifyEmail = async (req, res, next) => {
     user.verificationToken = null;
     user.verificationTokenExpiry = null;
     await user.save();
-
-    await recordAudit({ userId: user._id, action: "ADMIN_VERIFY_EMAIL", 
-      details: "Admin email verified", req });
+    await recordAudit({
+      userId: user._id,
+      action: "ADMIN_VERIFY_EMAIL",
+      details: "Admin email verified",
+      req,
+      status: "success",
+      resourceId: user._id,
+      resourceType: "User",
+      metadata: { role: "admin" },
+    });
 
     return success(res, null, "Admin email verified successfully");
-    
-  } catch (err) { next(err); }
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.googleAdminLogin = async (req, res, next) => {
   try {
-    if (!req.user) throw new ApiError(403, "Please verify your email before logging in");
+    if (!req.user)
+      throw new ApiError(403, "Please verify your email before logging in");
 
     const { user, token } = req.user;
 
-    if (user.role !== "admin") throw new ApiError(403, "Google login restricted to admins here");
-
-    await recordAudit({ userId: user._id, action: "ADMIN_GOOGLE_LOGIN", details: "Admin logged in via Google", req });
+    if (user.role !== "admin")
+      throw new ApiError(403, "Google login restricted to admins here");
+    await recordAudit({
+      userId: user._id,
+      action: "ADMIN_GOOGLE_LOGIN",
+      details: "Admin logged in via Google",
+      req,
+      status: "success",
+      resourceId: user._id,
+      resourceType: "User",
+      metadata: { role: "admin" },
+    });
 
     return success(res, { user, token }, "Admin Google login successful");
   } catch (err) {
