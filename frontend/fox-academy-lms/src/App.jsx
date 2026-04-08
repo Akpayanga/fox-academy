@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -12,8 +12,8 @@ import JoinTeam from "./pages/JoinTeam";
 import LearnPreview from "./pages/LearnPreview";
 import OnboardingComplete from "./pages/OnboardingComplete";
 import WatchCourse from "./pages/WatchCourse";
-
-
+import Progress from "./pages/TeamDirectory";
+import WorkBoard from "./pages/WorkBoard";
 
 function App() {
   return (
@@ -32,7 +32,12 @@ function App() {
         <Route path="/onboarding/learn" element={<LearnPreview />} />
         <Route path="/onboarding/complete" element={<OnboardingComplete />} />
         <Route path="/watch-course" element={<WatchCourse />} />
-        <Route path="/course/:courseId/module/:moduleId" element={<WatchCourse />} />
+        <Route
+          path="/course/:courseId/module/:moduleId"
+          element={<WatchCourse />}
+        />
+        <Route path="/team" element={<Progress />} />
+        <Route path="/work-board" element={<WorkBoard />} />
       </Routes>
     </Router>
   );
