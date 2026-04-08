@@ -16,12 +16,13 @@ const dashboardRoutes = require("./routes/dashboard.route");
 const assignmentRoutes = require("./routes/assignment.route");
 const courseRoutes = require("./routes/course.route");
 const applicationRoutes = require("./routes/application.route");
-const errorHandler = require("./middleware/errrorHandler.middleware");
+const errorHandler = require("./middleware/errorHandler.middleware");
 const notificationRoutes = require("./routes/Notification.route");
 const courseProgressRoutes = require("./routes/courseProgress.routes");
 const mediaRoutes = require("./routes/media.route");
 const learningRoutes = require("./routes/learning.route");
 const discussionRoutes = require("./routes/discussion.route");
+const managementRoutes = require("./routes/management.route");
 
 
 const app = express();
@@ -30,7 +31,6 @@ app.disable("x-powered-by");
 if (process.env.SENTRY_DSN) {
   Sentry.init({ dsn: process.env.SENTRY_DSN, tracesSampleRate: 1.0 });
 }
-app.use(errorHandler);
 // Middleware
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(express.json());
@@ -49,6 +49,7 @@ app.use("/api/v1/courses", courseRoutes);
 app.use("/api/v1/applications", applicationRoutes);
 app.use("/api/v1/learning", learningRoutes);
 app.use("/api/v1/community", discussionRoutes);
+app.use("/api/v1/management", managementRoutes);
 
 app.use("/api/v1/notifications", notificationRoutes);
 app.use("/api/v1/course-progress", courseProgressRoutes);
@@ -57,6 +58,9 @@ app.use("/api/v1/media", mediaRoutes);
 app.get("/", (req, res) => {
   res.send("API running...");
 });
+
+// Final Error Handling Middleware
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 8000;
 
