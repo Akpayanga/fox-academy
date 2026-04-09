@@ -1,28 +1,33 @@
 const Application = require("../models/application.model");
+const { recordAudit } = require("../utilities/audit.util");
+const { success } = require("../utilities/response");
+const ApiError = require("../utilities/apiError.util");
 
 /**
  * Submit a new internship application
  */
-exports.submitApplication = async (req, res) => {
+
+exports.submitApplication = async (req, res, next) => {
   try {
-    const { 
-      fullName, 
-      email, 
-      phoneNumber, 
-      primaryDiscipline, 
-      expertiseLevel, 
-      personalStatement, 
-      portfolioUrl, 
-      githubLinkedin 
+    const {
+      fullName,
+      email,
+      phoneNumber,
+      primaryDiscipline,
+      expertiseLevel,
+      personalStatement,
+      portfolioUrl,
+      githubLinkedin,
     } = req.body;
 
-    // Check if application already exists for this email
     const existing = await Application.findOne({ email });
     if (existing) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "An application with this email has already been submitted." 
-      });
+      return next(
+        new ApiError(
+          400,
+          "An application with this email has already been submitted.",
+        ),
+      );
     }
 
     const application = await Application.create({
@@ -33,33 +38,55 @@ exports.submitApplication = async (req, res) => {
       expertiseLevel,
       personalStatement,
       portfolioUrl,
-      githubLinkedin
+      githubLinkedin,
     });
 
-    res.status(201).json({ 
-      success: true, 
-      message: "Application submitted successfully!",
-      data: application 
+    // Audit log
+    await recordAudit({
+      userId: null,
+      action: "APPLICATION_SUBMIT",
+      details: `Application submitted for ${email}`,
+      req,
+      status: "success",
+      resourceId: application._id,
+      resourceType: "Application",
     });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+
+    return success(res, application, "Application submitted successfully!");
+  } catch (err) {
+    next(err);
   }
 };
 
 /**
  * Get application status by email
  */
-exports.getApplicationStatus = async (req, res) => {
+exports.getApplicationStatus = async (req, res, next) => {
   try {
     const { email } = req.params;
     const application = await Application.findOne({ email });
 
     if (!application) {
-      return res.status(404).json({ success: false, message: "Application not found." });
+      return next(new ApiError(404, "Application not found."));
     }
 
-    res.status(200).json({ success: true, data: { status: application.status } });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    // Audit log
+    await recordAudit({
+  userId: null,
+  action: "APPLICATION_STATUS",
+  details: `Status checked for ${email}`,
+  req,
+  status: "success",
+  resourceId: application._id,
+  resourceType: "Application",
+});
+
+    return success(
+      res,
+      { status: application.status },
+      "Application status retrieved",
+    );
+  } catch (err) {
+    next(err);
   }
 };

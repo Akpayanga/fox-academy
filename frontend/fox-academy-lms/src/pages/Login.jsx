@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import auth2 from "../assets/images/auth2.png";
+import foxLogo from "../assets/images/foxlogo.svg";
 import { loginUser } from "../services/authService";
 
 export default function Login() {
@@ -88,7 +89,7 @@ export default function Login() {
           <div className="w-full max-w-md">
             {/* LOGO */}
             <div className="flex items-center gap-2 mb-8">
-              <span className="w-6 h-6 bg-[#F38821]" />
+              <img src={foxLogo} alt="Fox Academy Logo" className="w-6 h-6" />
               <span className="text-[#F38821] font-bold text-lg">
                 FoxAcademy
               </span>

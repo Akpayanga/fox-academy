@@ -8,7 +8,7 @@ export default function Navbar() {
         <div className="flex items-start gap-3">
           <img src={foxLogo} alt="Fox Academy Logo" className="mt-1 h-6 w-6" />
           <div>
-            <h1 className="text-[24px] font-bold leading-none text-[#111827]">FoxAcademy</h1>
+            <h1 className="text-[24px] font-bold leading-none text-[#F38821]">FoxAcademy</h1>
             <p className="mt-1 text-xs text-[#6B7280]">By Fox Academy Innovations Ltd</p>
           </div>
         </div>

@@ -22,7 +22,7 @@ export default function DashboardNavbar() {
         {/* Logo */}
         <div className="flex items-center gap-2">
           <img src={foxLogo} alt="Fox Academy Logo" className="h-8 w-8" />
-          <span className="text-xl font-bold tracking-tight text-[#111827]">
+          <span className="text-xl font-bold tracking-tight text-[#F38821]">
             Fox <span className="text-[#F38821]">Academy</span>
           </span>
         </div>

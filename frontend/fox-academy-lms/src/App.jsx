@@ -14,13 +14,15 @@ import OnboardingComplete from "./pages/OnboardingComplete";
 import ApplicationForm from "./pages/ApplicationForm";
 import ApplicationReceived from "./pages/ApplicationReceived";
 import WatchCourse from "./pages/WatchCourse";
+import MyProgress from './pages/Progress';
+import MyProgressNew from './pages/progressPhase2';
 import Dashboard from "./pages/Dashboard";
 import MyLearning from "./pages/MyLearning";
 import Assignments from "./pages/Assignments";
 import UserPersonaAssignment from "./pages/UserPersonaAssignment";
-import Progress from "./pages/Progress";
 import Resources from "./pages/Resources";
 import Community from "./pages/Community";
+import CreateDiscussion from "./pages/CreateDiscussion";
 import TeamDirectory from "./pages/TeamDirectory";
 import WorkBoard from "./pages/WorkBoard";
 import ModuleDetail from "./pages/ModuleDetail";
@@ -45,6 +47,8 @@ function App() {
         <Route path="/onboarding/learn" element={<LearnPreview />} />
         <Route path="/onboarding/complete" element={<OnboardingComplete />} />
         <Route path="/watch-course" element={<WatchCourse />} />
+        <Route path="/progress" element={<MyProgress />} />
+        <Route path="/progressNew" element={<MyProgressNew />} />
         <Route
           path="/course/:courseId/module/:moduleId"
           element={<WatchCourse />}
@@ -56,9 +60,9 @@ function App() {
         <Route path="/learning/module" element={<ModuleDetail />} />
         <Route path="/assignments" element={<Assignments />} />
         <Route path="/assignments/user-persona" element={<UserPersonaAssignment />} />
-        <Route path="/progress" element={<Progress />} />
         <Route path="/resources" element={<Resources />} />
         <Route path="/community" element={<Community />} />
+        <Route path="/community/create" element={<CreateDiscussion />} />
         <Route path="/team" element={<TeamDirectory />} />
         <Route path="/work-board" element={<WorkBoard />} />
       </Routes>

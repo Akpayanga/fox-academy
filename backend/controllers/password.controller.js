@@ -1,4 +1,6 @@
 const { success } = require("../utilities/response");
+const ApiError = require("../utilities/apiError.util");
+const { recordAudit } = require("../utilities/audit.util");
 
 // Utility: password strength feedback
 const getPasswordFeedback = (password) => {
@@ -27,12 +29,19 @@ const getPasswordFeedback = (password) => {
 exports.checkStrength = async (req, res, next) => {
   try {
     const { password } = req.body;
-
-    if (!password) {
-      return res.status(400).json({ status: "error", message: "Password is required" });
-    }
+    if (!password) throw new ApiError(400, "Password is required");
 
     const { score, suggestions } = getPasswordFeedback(password);
+
+    //audit log
+    await recordAudit({
+      userId: req.user?._id || null,
+      action: "PASSWORD_STRENGTH_CHECK",
+      details: "Password strength checked",
+      req,
+      status: "success",
+      resourceType: "Password",
+    });
 
     return success(res, { score, suggestions }, "Password strength checked");
   } catch (err) {

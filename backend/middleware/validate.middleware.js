@@ -1,11 +1,19 @@
 const ApiError = require("../utilities/apiError.util");
 
-const validate = (schema) => (req, res, next) => {
-  const { error } = schema.validate(req.body);
-  if (error) {
-    return next(new ApiError(400, error.details[0].message));
-  }
-  next();
-};
+module.exports = (schema) => {
+  return (req, res, next) => {
+    const { error } = schema.validate(req.body, { abortEarly: false });
 
-module.exports = validate;
+    if (error) {
+      // Collect all error messages
+      const messages = error.details.map((detail) => detail.message);
+
+      // Join them into a single friendly string
+      const formattedMessage = messages.join("; ");
+
+      return next(new ApiError(400, formattedMessage));
+    }
+
+    next();
+  };
+};
