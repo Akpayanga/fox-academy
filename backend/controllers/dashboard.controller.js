@@ -6,6 +6,7 @@ const Course = require("../models/course.model");
 const { recordAudit } = require("../utilities/audit.util");
 const { success } = require("../utilities/response");
 const ApiError = require("../utilities/apiError.util");
+const AuditLog = require("../models/AuditLog.model");
 
 /**
  * Aggregates all data required for the student dashboard

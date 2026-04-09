@@ -9,7 +9,7 @@ const getNotifyList = async (req, res, next) => {
     const { userId, message } = req.body;
 
     const NotifyUser = await Notification.find({
-      message: userId,
+      user: userId,
       message,
       isRead: { $nin: [userId] },
     })

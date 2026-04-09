@@ -5,7 +5,7 @@ const passport = require("passport");
 const adminAuthController = require("../controllers/Admin.Auth.controller");
 
 const requireAuthAndRole = require("../middleware/AuthRole.middleware");
-const { adminRegisterSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema } = require("../validation/Auth.validation");
+const { adminRegisterSchema } = require("../validation/Auth.validation");
 const validate = require("../middleware/validate.middleware");
 
 // Only admin-specific flows

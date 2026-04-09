@@ -3,6 +3,7 @@ const ApiError = require("../utilities/apiError.util");
 const Sentry = require("@sentry/node");
 
 // Global error handler
+// eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
   console.error(err); // optional: log locally for debugging
 

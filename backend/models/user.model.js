@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: function () {
-        return this.provider === "local";
+        return this.provider === "local" && !this.preRegistered;
       },
       minlength: 8,
     },
@@ -55,11 +55,10 @@ const userSchema = new mongoose.Schema(
 userSchema.index({ email: 1, provider: 1 }, { unique: true });
 
 // Pre-save hook to hash password automatically
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function () {
   if (this.isModified("password") && this.provider === "local") {
     this.password = await bcrypt.hash(this.password, 10);
   }
-  next();
 });
 
 // Method to compare passwords

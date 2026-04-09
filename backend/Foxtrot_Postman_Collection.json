@@ -1,0 +1,2960 @@
+{
+  "info": {
+    "name": "Foxtrot TalentFlow LMS API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "System Health",
+      "item": [
+        {
+          "name": "/api/v1/live",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/live"
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/live"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/live"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/health",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/health"
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/health"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/health"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/"
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "User & Instructor Auth",
+      "item": [
+        {
+          "name": "/api/v1/auth/pre-register",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/auth/pre-register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"adeboiz2021@gmail.com\",\n  \"role\": \"student\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ]
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/pre-register"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/pre-register"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/auth/verify-invitation",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/auth/verify-invitation",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"dummy-token-12345\",\n  \"code\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ]
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/verify-invitation"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/verify-invitation"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/auth/complete-registration",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/auth/complete-registration",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"adeboiz2021@gmail.com\",\n  \"password\": \"Str0ng_P@ssw0rd!123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ]
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/complete-registration"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/complete-registration"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/auth/login",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"adeboiz2021@gmail.com\",\n  \"password\": \"Str0ng_P@ssw0rd!123\",\n  \"provider\": \"local\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ]
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/login"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/login"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/auth/refresh-token",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/auth/refresh-token",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"dummy-refresh-token\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ]
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/refresh-token"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/refresh-token"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/auth/forgot-password",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/auth/forgot-password",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"adeboiz2021@gmail.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ]
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/forgot-password"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/forgot-password"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/auth/reset-password",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/auth/reset-password",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"reset-token-xyz\",\n  \"newPassword\": \"Str0ng_P@ssw0rd!123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ]
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/reset-password"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/reset-password"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/auth/profile",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/auth/profile",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/auth/profile"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/auth/profile"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/auth/complete-student-profile",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/auth/complete-student-profile",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"course\": \"backend\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/complete-student-profile"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/complete-student-profile"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/auth/complete-mentor-profile",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/auth/complete-mentor-profile",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"I am a senior developer...\",\n  \"roleTitle\": \"Senior Engineer\",\n  \"linkedIn\": \"https://linkedin.com/in/dummy\",\n  \"phoneNumber\": \"+1234567890\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/complete-mentor-profile"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/complete-mentor-profile"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/auth/logout",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/auth/logout",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/logout"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/logout"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/auth/google",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/auth/google",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/auth/google"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/auth/google"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/auth/google/callback",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/auth/google/callback",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/auth/google/callback"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/auth/google/callback"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/auth/password-strength",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/auth/password-strength",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"Str0ng_P@ssw0rd!123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/password-strength"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/password-strength"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Admin Auth",
+      "item": [
+        {
+          "name": "/api/v1/auth/admin/register",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/auth/admin/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Admin\",\n  \"lastName\": \"User\",\n  \"email\": \"adeboiz2021@gmail.com\",\n  \"password\": \"Str0ng_P@ssw0rd!123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ]
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/admin/register"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/auth/admin/register"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/auth/admin/verify",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/auth/admin/verify",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/auth/admin/verify"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/auth/admin/verify"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/auth/admin/google",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/auth/admin/google",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/auth/admin/google"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/auth/admin/google"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/auth/admin/google/callback",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/auth/admin/google/callback",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/auth/admin/google/callback"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/auth/admin/google/callback"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Media",
+      "item": [
+        {
+          "name": "/api/v1/media/upload",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/media/upload",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/media/upload"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/media/upload"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/media/delete/:id",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/media/delete/:id",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "DELETE",
+                "url": "{{baseUrl}}/api/v1/media/delete/:id"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "DELETE",
+                "url": "{{baseUrl}}/api/v1/media/delete/:id"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/media/many-upload",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/media/many-upload",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/media/many-upload"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/media/many-upload"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Management",
+      "item": [
+        {
+          "name": "/api/v1/management/mentors",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/management/mentors",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/management/mentors"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/management/mentors"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/management/interns",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/management/interns",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/management/interns"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/management/interns"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Courses",
+      "item": [
+        {
+          "name": "/api/v1/courses/",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/courses/",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/courses/"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/courses/"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/courses/:id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/courses/:id",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/courses/:id"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/courses/:id"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Applications",
+      "item": [
+        {
+          "name": "/api/v1/applications/submit",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/applications/submit",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Jane Doe\",\n  \"email\": \"adeboiz2021@gmail.com\",\n  \"phoneNumber\": \"+1987654321\",\n  \"primaryDiscipline\": \"frontend\",\n  \"expertiseLevel\": \"intermediate\",\n  \"personalStatement\": \"I am very eager to learn...\",\n  \"portfolioUrl\": \"https://janedoe.me\",\n  \"githubLinkedin\": \"https://github.com/janedoe\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ]
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/applications/submit"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/applications/submit"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/applications/status/:email",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/applications/status/:email",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/applications/status/:email"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/applications/status/:email"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Learning",
+      "item": [
+        {
+          "name": "/api/v1/learning/",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/learning/",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/learning/"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/learning/"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/learning/:courseId",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/learning/:courseId",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/learning/:courseId"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/learning/:courseId"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Audit",
+      "item": [
+        {
+          "name": "/api/v1/audit/",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/audit/",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/audit/"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/audit/"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "/api/v1/dashboard/",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/dashboard/",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/dashboard/"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/dashboard/"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/dashboard/admin",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/dashboard/admin",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/dashboard/admin"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/dashboard/admin"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/dashboard/mentor",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/dashboard/mentor",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/dashboard/mentor"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/dashboard/mentor"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Course Progress",
+      "item": [
+        {
+          "name": "/api/v1/course-progress/get/:userId/:courseId",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/course-progress/get/:userId/:courseId",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/course-progress/get/:userId/:courseId"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/course-progress/get/:userId/:courseId"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/course-progress/mark-lecture-viewed",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/course-progress/mark-lecture-viewed",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"64a2c0a1f0a123456789abcd\",\n  \"courseId\": \"64a2c0a1f0a123456789abcd\",\n  \"lectureId\": \"12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/course-progress/mark-lecture-viewed"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/course-progress/mark-lecture-viewed"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/course-progress/reset-progress",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/course-progress/reset-progress",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"64a2c0a1f0a123456789abcd\",\n  \"courseId\": \"64a2c0a1f0a123456789abcd\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/course-progress/reset-progress"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/course-progress/reset-progress"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Community / Discussions",
+      "item": [
+        {
+          "name": "/api/v1/community/discussions",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/community/discussions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"How to export modules in Node.js?\",\n  \"content\": \"I am struggling with module.exports versus export default...\",\n  \"channel\": \"general\",\n  \"tags\": [\n    \"nodejs\",\n    \"javascript\"\n  ],\n  \"attachments\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/community/discussions"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/community/discussions"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/community/discussions",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/community/discussions",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/community/discussions"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/community/discussions"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/community/discussions/:id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/community/discussions/:id",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/community/discussions/:id"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/community/discussions/:id"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/community/discussions/:id/replies",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/community/discussions/:id/replies",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"You should use module.exports for CommonJS.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/community/discussions/:id/replies"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/community/discussions/:id/replies"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/community/resources/pinned",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/community/resources/pinned",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/community/resources/pinned"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/community/resources/pinned"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Assignments",
+      "item": [
+        {
+          "name": "/api/v1/assignments/",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/assignments/",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/assignments/"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/assignments/"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/assignments/:id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/assignments/:id",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/assignments/:id"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/assignments/:id"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/assignments/:id/submit",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/assignments/:id/submit",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fileUrl\": \"https://s3.dummy.com/submission.zip\",\n  \"linkUrl\": \"https://github.com/dummy/repo\",\n  \"mentorNote\": \"Please review my assignment.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/assignments/:id/submit"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "POST",
+                "url": "{{baseUrl}}/api/v1/assignments/:id/submit"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "/api/v1/notifications/",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/notifications/",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/notifications/"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/v1/notifications/"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/notifications/read-notify",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/notifications/read-notify",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "PUT",
+                "url": "{{baseUrl}}/api/v1/notifications/read-notify"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "PUT",
+                "url": "{{baseUrl}}/api/v1/notifications/read-notify"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

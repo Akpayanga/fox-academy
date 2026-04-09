@@ -2,7 +2,6 @@ const User = require("../models/user.model");
 const Enrollment = require("../models/enrollment.model");
 const Submission = require("../models/submission.model");
 const { success } = require("../utilities/response");
-const ApiError = require("../utilities/apiError.util");
 
 /**
  * Lists all mentors (instructors) with performance metrics for Admin
@@ -46,7 +45,7 @@ exports.listMentors = async (req, res, next) => {
  */
 exports.listInterns = async (req, res, next) => {
   try {
-    const { mentorId, discipline, status } = req.query;
+    const { mentorId, discipline } = req.query;
     
     let query = { role: "student", deletedAt: null };
     if (discipline) query.course = discipline.toLowerCase();
