@@ -33,3 +33,18 @@ exports.resetPasswordSchema = Joi.object({
   token: Joi.string().required(),
   newPassword: Joi.string().min(8).required(),
 });
+
+// Student profile completion
+exports.completeStudentProfileSchema = Joi.object({
+  course: Joi.string()
+    .valid("backend", "cybersecurity", "frontend", "product design")
+    .required()
+});
+
+// Mentor profile completion
+exports.completeMentorProfileSchema = Joi.object({
+  bio: Joi.string().min(10).required(),
+  roleTitle: Joi.string().required(),
+  linkedIn: Joi.string().uri().optional(),
+  phoneNumber: Joi.string().optional()
+});

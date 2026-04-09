@@ -1,10 +1,14 @@
 const Assignment = require("../models/assignment.model");
 const Submission = require("../models/submission.model");
+const { recordAudit } = require("../utilities/audit.util");
+const { success } = require("../utilities/response");
+const ApiError = require("../utilities/apiError.util");
 
 /**
  * Get all assignments for the logged-in user, grouped by status
  */
-exports.getAssignments = async (req, res) => {
+
+exports.getAssignments = async (req, res, next) => {
   try {
     const userId = req.user._id;
 
@@ -17,9 +21,8 @@ exports.getAssignments = async (req, res) => {
     // Combine assignment data with submission status
     const result = assignments.map((assignment) => {
       const submission = submissions.find(
-        (s) => s.assignmentId.toString() === assignment._id.toString()
+        (s) => s.assignmentId.toString() === assignment._id.toString(),
       );
-
       return {
         ...assignment.toObject(),
         status: submission ? submission.status : "pending",
@@ -28,55 +31,74 @@ exports.getAssignments = async (req, res) => {
     });
 
     // Grouping
-    const pending = result.filter((a) => a.status === "pending" || a.status === "in-progress");
+    const pending = result.filter(
+      (a) => a.status === "pending" || a.status === "in-progress",
+    );
     const submitted = result.filter((a) => a.status === "submitted");
     const graded = result.filter((a) => a.status === "graded");
 
-    res.status(200).json({
-      success: true,
-      data: {
-        all: result,
-        pending,
-        submitted,
-        graded,
-      },
+    // Audit log
+    await recordAudit({
+      userId,
+      action: "ASSIGNMENTS_FETCH",
+      details: "User fetched assignments list",
+      req,
+      status: "success",
+      resourceType: "Assignment",
     });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+
+    return success(
+      res,
+      { all: result, pending, submitted, graded },
+      "Assignments fetched",
+    );
+  } catch (err) {
+    next(err);
   }
 };
 
 /**
  * Get a single assignment by ID with submission details
  */
-exports.getAssignmentById = async (req, res) => {
+
+exports.getAssignmentById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const userId = req.user._id;
 
     const assignment = await Assignment.findById(id).populate("linkedCourseId");
     if (!assignment) {
-      return res.status(404).json({ success: false, message: "Assignment not found" });
+      return next(new ApiError(404, "Assignment not found"));
     }
 
     const submission = await Submission.findOne({ userId, assignmentId: id });
 
-    res.status(200).json({
-      success: true,
-      data: {
-        ...assignment.toObject(),
-        userSubmission: submission || null,
-      },
+    // Audit log
+    await recordAudit({
+      userId,
+      action: "ASSIGNMENT_VIEW",
+      details: `Viewed assignment ${id}`,
+      req,
+      status: "success",
+      resourceId: id,
+      resourceType: "Assignment",
     });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+
+    return success(
+      res,
+      { ...assignment.toObject(), userSubmission: submission || null },
+      "Assignment retrieved",
+    );
+  } catch (err) {
+    next(err);
   }
 };
 
 /**
  * Submit an assignment
  */
-exports.submitAssignment = async (req, res) => {
+
+exports.submitAssignment = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { fileUrl, linkUrl, mentorNote } = req.body;
@@ -105,8 +127,19 @@ exports.submitAssignment = async (req, res) => {
       });
     }
 
-    res.status(200).json({ success: true, data: submission });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    // Audit log
+    await recordAudit({
+      userId,
+      action: "ASSIGNMENT_SUBMIT",
+      details: `Submitted assignment ${id}`,
+      req,
+      status: "success",
+      resourceId: id,
+      resourceType: "Assignment",
+    });
+
+    return success(res, submission, "Assignment submitted successfully");
+  } catch (err) {
+    next(err);
   }
 };

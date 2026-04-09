@@ -3,10 +3,10 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/user.model");
 const { generateAccessToken, generateRefreshToken } = require("../utilities/jwt");
 const crypto = require("crypto");
+const { enqueueVerificationEmail } = require("../service/email.service");
 const { sendVerificationEmail } = require("../utilities/email.util");
 const { recordAudit } = require("../utilities/audit.util");
 
-// ADMIN GOOGLE STRATEGY
 // ADMIN GOOGLE STRATEGY
 passport.use("google-admin",
   new GoogleStrategy(
@@ -37,7 +37,7 @@ passport.use("google-admin",
             verificationTokenExpiry: Date.now() + 3600000, // 1 hour
           });
 
-          await sendVerificationEmail(email, token, null);
+          await enqueueVerificationEmail(email, token, "ADMIN_FLOW");
         }
 
         if (!user.isVerified) {

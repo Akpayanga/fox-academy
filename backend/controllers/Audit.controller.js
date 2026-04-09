@@ -1,6 +1,7 @@
 const AuditLog = require("../models/AuditLog.model");
 const { success } = require("../utilities/response");
 const ApiError = require("../utilities/apiError.util");
+const { recordAudit } = require("../utilities/audit.util");
 
 exports.listAuditLogs = async (req, res, next) => {
   try {

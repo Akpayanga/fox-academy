@@ -26,14 +26,20 @@ const userSchema = new mongoose.Schema(
     isInvited: { type: Boolean, default: false },
     preRegistered: { type: Boolean, default: false }, // for step 1
 
-    // Onboarding
+    // student Onboarding
     studentId: { type: String, unique: true, sparse: true },
     course: {type: String,enum: ["backend", "cybersecurity", "frontend", "product design"],
       required: function () {
         return this.isVerified; 
       },
     },
-
+    // Instructor onboarding
+    bio: { type: String, trim: true },
+    linkedIn: { type: String, trim: true },
+    phoneNumber: { type: String, trim: true },
+    roleTitle: { type: String, trim: true },
+    cohort: { type: String, trim: true },
+    
     // Password reset
     resetToken: { type: String, default: null },
     resetTokenExpiry: { type: Date, default: null },
