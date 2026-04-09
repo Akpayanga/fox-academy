@@ -5,6 +5,7 @@ import project from "../assets/images/project.png";
 import image1 from "../assets/images/image1.png";
 import image2 from "../assets/images/image2.png";
 import image3 from "../assets/images/image3.png";
+import { Link } from "react-router-dom";
 
 const teamMembers = [
   {
@@ -55,9 +56,9 @@ export default function CollaborationPhase() {
           </div>
 
           {/* CTA Button */}
-          <button className="flex items-center justify-center gap-2 bg-[rgba(221,124,30,1)] hover:bg-orange-600 active:scale-95 transition-all text-white font-semibold text-sm rounded-xl py-4 px-6 w-full md:max-w-sm cursor-pointer">
+          <Link to='/progressNew' className="flex items-center justify-center gap-2 bg-[rgba(221,124,30,1)] hover:bg-orange-600 active:scale-95 transition-all text-white font-semibold text-sm rounded-xl py-4 px-6 w-full md:max-w-sm cursor-pointer">
             Enter Phase 2<span className="text-lg">→</span>
-          </button>
+          </Link>
         </div>
 
         {/* Divider */}
