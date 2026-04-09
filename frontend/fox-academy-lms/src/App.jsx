@@ -14,6 +14,13 @@ import OnboardingComplete from "./pages/OnboardingComplete";
 import ApplicationForm from "./pages/ApplicationForm";
 import ApplicationReceived from "./pages/ApplicationReceived";
 import WatchCourse from "./pages/WatchCourse";
+import Dashboard from "./pages/Dashboard";
+import MyLearning from "./pages/MyLearning";
+import Assignments from "./pages/Assignments";
+import UserPersonaAssignment from "./pages/UserPersonaAssignment";
+import Progress from "./pages/Progress";
+import Resources from "./pages/Resources";
+import Community from "./pages/Community";
 
 
 
@@ -37,9 +44,14 @@ function App() {
         <Route path="/onboarding/learn" element={<LearnPreview />} />
         <Route path="/onboarding/complete" element={<OnboardingComplete />} />
         <Route path="/watch-course" element={<WatchCourse />} />
-
-
-
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/mylearning" element={<MyLearning />} />
+        <Route path="/mylearning/module" element={<MyLearning />} />
+        <Route path="/assignments" element={<Assignments />} />
+        <Route path="/assignments/user-persona" element={<UserPersonaAssignment />} />
+        <Route path="/progress" element={<Progress />} />
+        <Route path="/resources" element={<Resources />} />
+        <Route path="/community" element={<Community />} />
       </Routes>
     </Router>
   );

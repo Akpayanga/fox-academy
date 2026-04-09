@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import DashboardNavbar from "../components/DashboardNavbar";
 import { 
   ChevronRight, 
@@ -7,11 +7,116 @@ import {
   CloudUpload, 
   HelpCircle,
   FileText,
-  BookOpen
+  BookOpen,
+  X,
+  Loader
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const UserPersonaAssignment = () => {
+  const [file, setFile] = useState(null);
+  const [link, setLink] = useState("");
+  const [note, setNote] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [message, setMessage] = useState("");
+  const fileInputRef = useRef(null);
+  const dropZoneRef = useRef(null);
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropZoneRef.current?.classList.add('border-[#F38821]');
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropZoneRef.current?.classList.remove('border-[#F38821]');
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropZoneRef.current?.classList.remove('border-[#F38821]');
+    
+    const droppedFile = e.dataTransfer.files?.[0];
+    if (droppedFile) {
+      setFile(droppedFile);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!file && !link) {
+      setMessage({ type: 'error', text: 'Please upload a file or provide a link' });
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const formData = new FormData();
+      if (file) formData.append('file', file);
+      if (link) formData.append('link', link);
+      if (note) formData.append('note', note);
+      formData.append('status', 'submitted');
+      formData.append('assignmentId', 'user-persona');
+
+      const response = await axios.post(
+        'http://localhost:8000/api/submissions',
+        formData,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      );
+
+      setMessage({ type: 'success', text: 'Assignment submitted successfully!' });
+      setFile(null);
+      setLink("");
+      setNote("");
+      setTimeout(() => setMessage(""), 3000);
+    } catch (error) {
+      setMessage({ type: 'error', text: error.response?.data?.message || 'Failed to submit assignment' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSaveDraft = async () => {
+    if (!file && !link && !note) {
+      setMessage({ type: 'error', text: 'Nothing to save' });
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const formData = new FormData();
+      if (file) formData.append('file', file);
+      if (link) formData.append('link', link);
+      if (note) formData.append('note', note);
+      formData.append('status', 'draft');
+      formData.append('assignmentId', 'user-persona');
+
+      await axios.post(
+        'http://localhost:8000/api/submissions',
+        formData,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      );
+
+      setMessage({ type: 'success', text: 'Draft saved successfully!' });
+      setTimeout(() => setMessage(""), 3000);
+    } catch (error) {
+      setMessage({ type: 'error', text: error.response?.data?.message || 'Failed to save draft' });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#FDFDFD] flex flex-col">
       <DashboardNavbar />
@@ -133,13 +238,44 @@ const UserPersonaAssignment = () => {
               </div>
 
               {/* Upload Area */}
-              <div className="border-2 border-dashed border-[#FFF7ED] rounded-2xl p-10 flex flex-col items-center justify-center text-center group hover:border-[#F38821] transition-colors cursor-pointer mb-8">
-                <div className="h-16 w-16 rounded-full bg-orange-50 flex items-center justify-center text-[#F38821] mb-4 group-hover:scale-110 transition-transform">
-                  <CloudUpload size={32} />
+              <input 
+                ref={fileInputRef}
+                type="file"
+                onChange={handleFileChange}
+                className="hidden"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip"
+              />
+              
+              {!file ? (
+                <div 
+                  ref={dropZoneRef}
+                  onClick={() => fileInputRef.current?.click()}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  className="border-2 border-dashed border-[#FFF7ED] rounded-2xl p-10 flex flex-col items-center justify-center text-center group hover:border-[#F38821] transition-colors cursor-pointer mb-8"
+                >
+                  <div className="h-16 w-16 rounded-full bg-orange-50 flex items-center justify-center text-[#F38821] mb-4 group-hover:scale-110 transition-transform">
+                    <CloudUpload size={32} />
+                  </div>
+                  <h3 className="text-lg font-bold text-[#111827] mb-1">Drop your file here</h3>
+                  <p className="text-xs text-gray-400 font-medium">or click to browse</p>
                 </div>
-                <h3 className="text-lg font-bold text-[#111827] mb-1">Drop your file here</h3>
-                <p className="text-xs text-gray-400 font-medium">or click to browse</p>
-              </div>
+              ) : (
+                <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-10 flex flex-col items-center justify-center text-center mb-8">
+                  <div className="h-16 w-16 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mb-4">
+                    <CheckCircle size={32} fill="currentColor" />
+                  </div>
+                  <h3 className="text-lg font-bold text-[#111827] mb-1">File uploaded</h3>
+                  <p className="text-sm text-gray-600 font-medium mb-4">{file.name}</p>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setFile(null); }}
+                    className="text-xs font-bold text-red-600 hover:text-red-700 flex items-center gap-1 transition-colors"
+                  >
+                    <X size={14} /> Remove file
+                  </button>
+                </div>
+              )}
 
               {/* Paste Link */}
               <div className="space-y-2 mb-8">
@@ -148,6 +284,8 @@ const UserPersonaAssignment = () => {
                 </label>
                 <input 
                   type="text" 
+                  value={link}
+                  onChange={(e) => setLink(e.target.value)}
                   placeholder="https://figma.com/..."
                   className="w-full bg-gray-50 border-none rounded-xl px-5 py-4 text-sm font-medium focus:ring-2 focus:ring-[#F38821]/20 outline-none placeholder:text-gray-300"
                 />
@@ -159,19 +297,42 @@ const UserPersonaAssignment = () => {
                   ADD A NOTE FOR YOUR MENTOR
                 </label>
                 <textarea 
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
                   placeholder="Any specific areas you'd like feedback on?"
                   rows={4}
                   className="w-full bg-gray-50 border-none rounded-2xl px-5 py-4 text-sm font-medium focus:ring-2 focus:ring-[#F38821]/20 outline-none placeholder:text-gray-300 resize-none"
                 />
               </div>
 
+              {/* Message Display */}
+              {message && (
+                <div className={`p-4 rounded-xl mb-6 flex items-center gap-3 ${
+                  message.type === 'success' 
+                    ? 'bg-green-50 border border-green-200 text-green-700' 
+                    : 'bg-red-50 border border-red-200 text-red-700'
+                }`}>
+                  <span className="text-sm font-semibold">{message.text}</span>
+                </div>
+              )}
+
               {/* Actions */}
               <div className="space-y-4 text-center">
-                <button className="w-full bg-[#F38821] hover:bg-[#E07A1D] text-white text-sm font-black py-5 rounded-2xl transition-all shadow-lg shadow-orange-100 hover:-translate-y-0.5 active:translate-y-0">
-                  Submit Assignment
+                <button 
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  className="w-full bg-[#F38821] hover:bg-[#E07A1D] disabled:bg-gray-300 text-white text-sm font-black py-5 rounded-2xl transition-all shadow-lg shadow-orange-100 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting && <Loader size={16} className="animate-spin" />}
+                  {isSubmitting ? 'Submitting...' : 'Submit Assignment'}
                 </button>
-                <button className="text-[10px] font-black tracking-widest text-gray-400 hover:text-[#F38821] uppercase transition-colors">
-                  Save Draft
+                <button 
+                  onClick={handleSaveDraft}
+                  disabled={isSaving}
+                  className="text-[10px] font-black tracking-widest text-gray-400 hover:text-[#F38821] uppercase transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 disabled:text-gray-300"
+                >
+                  {isSaving && <Loader size={12} className="animate-spin" />}
+                  {isSaving ? 'Saving...' : 'Save Draft'}
                 </button>
               </div>
             </div>
