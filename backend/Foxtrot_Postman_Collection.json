@@ -178,14 +178,18 @@
           },
           "response": [
             {
+    
+    
               "name": "Successful Request",
               "originalRequest": {
                 "method": "POST",
                 "url": "{{baseUrl}}/api/v1/auth/pre-register"
               },
-              "status": "OK",
+              "status": "success",
               "code": 200,
+              "message": "Pre-registration successful. Check your email including Junk/Spam mail in 10 minutes. ",
               "_postman_previewlanguage": "json",
+              
               "header": [
                 {
                   "key": "Content-Type",
@@ -825,6 +829,67 @@
               "originalRequest": {
                 "method": "POST",
                 "url": "{{baseUrl}}/api/v1/auth/logout"
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "/api/v1/auth/delete-user",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/auth/delete-user",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"adeboiz2021@gmail.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ]
+          },
+          "response": [
+            {
+              "name": "Successful Request",
+              "originalRequest": {
+                "method": "DELETE",
+                "url": "{{baseUrl}}/api/v1/auth/delete-user"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"User deleted successfully\",\n  \"data\": null\n}"
+            },
+            {
+              "name": "Error Response",
+              "originalRequest": {
+                "method": "DELETE",
+                "url": "{{baseUrl}}/api/v1/auth/delete-user"
               },
               "status": "Bad Request",
               "code": 400,

@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { Worker } = require("bullmq");
 const connection = require("../utilities/redis.util");
 const { sendVerificationEmail } = require("../utilities/email.util");
@@ -5,6 +6,7 @@ const { sendVerificationEmail } = require("../utilities/email.util");
 console.log("🚀 Email worker started...");
 const handlers = {
   sendVerificationEmail: async (data) => {
+    console.log("Processing job:", data); 
     if (!data.email || !data.code) {
       throw new Error("Missing email or code");
     }

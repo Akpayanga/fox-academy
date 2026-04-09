@@ -5,7 +5,7 @@ exports.enqueueVerificationEmail = async (email, token, code) => {
     "sendVerificationEmail",
     { email, token, code },
     {
-      delay: 10 * 60 * 1000,
+      delay: 0,
       attempts: 5,
       backoff: {
         type: "exponential",

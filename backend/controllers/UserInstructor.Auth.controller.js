@@ -22,6 +22,15 @@ exports.preRegister = async (req, res, next) => {
 
     const invitationCode = crypto.randomBytes(6).toString("hex").toUpperCase();
     const token = generateRefreshToken({ email });
+    // Role-based expiry with fallback
+    let expiryHours;
+    if (role === "student") {
+      expiryHours = Number(process.env.INVITE_EXPIRY_HOURS_STUDENT) || 48;
+    } else if (role === "instructor") {
+      expiryHours = Number(process.env.INVITE_EXPIRY_HOURS_INSTRUCTOR) || 72;
+    } else {
+      expiryHours = Number(process.env.INVITE_EXPIRY_HOURS_DEFAULT) || 24;
+    }
 
     user = await User.create({
       firstName,
@@ -31,7 +40,7 @@ exports.preRegister = async (req, res, next) => {
       preRegistered: true,
       invitationCode,
       verificationToken: token,
-      verificationTokenExpiry: Date.now() + 10 * 60 * 1000,
+      verificationTokenExpiry: Date.now() + expiryHours * 60 * 60 * 1000,
     });
 
     await enqueueVerificationEmail(email, token, invitationCode);
@@ -47,8 +56,8 @@ exports.preRegister = async (req, res, next) => {
 
     return success(
       res,
-      null,
-      "Pre-registration successful. Check your email in 10 minutes.",
+      { token, invitationCode },
+      "Pre-registration successful. Check your email including Junk/Spam mail in 10 minutes. ",
     );
   } catch (err) {
     next(err);
@@ -79,7 +88,8 @@ exports.verifyInvitation = async (req, res, next) => {
     user.isVerified = true;
     user.verificationToken = null;
     user.invitationCode = null;
-    await user.save();
+    // Skip validation here, course will be set later
+    await user.save({ validateBeforeSave: false });
 
     await recordAudit({
       userId: user._id,
@@ -110,7 +120,7 @@ exports.completeRegistration = async (req, res, next) => {
 
     user.password = password;
     user.preRegistered = false;
-    await user.save();
+    await user.save({ validateBeforeSave: false });
 
     await recordAudit({
       userId: user._id,
@@ -422,6 +432,29 @@ exports.logout = async (req, res, next) => {
     });
 
     return success(res, null, "Logout successful. Redirecting to login...");
+  } catch (err) {
+    next(err);
+  }
+};
+
+// delete user
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      throw new ApiError(400, "Email is required");
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      throw new ApiError(404, "User not found");
+    }
+
+    await User.deleteOne({ email });
+
+    return success(res, null, "User deleted successfully");
   } catch (err) {
     next(err);
   }

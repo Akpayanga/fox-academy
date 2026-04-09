@@ -33,6 +33,9 @@ router.post("/complete-mentor-profile",auth,requireRole("instructor"),validate(c
 // Logout
 router.post("/logout", auth, userInstructorAuth.logout);
 
+// delete user
+router.delete("/delete-user",userInstructorAuth.deleteUser);
+
 // GOOGLE AUTH
 router.get("/google", passport.authenticate("google-user-instructor", { scope: ["profile", "email"] }));
 router.get("/google/callback", passport.authenticate("google-user-instructor", { session: false }), userInstructorAuth.googleUserInstructorLogin);

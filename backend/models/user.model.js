@@ -14,7 +14,11 @@ const userSchema = new mongoose.Schema(
       minlength: 8,
     },
     provider: { type: String, enum: ["local", "google"], default: "local" },
-    role: { type: String, enum: ["student", "instructor", "admin"], default: "student" },
+    role: {
+      type: String,
+      enum: ["student", "instructor", "admin"],
+      default: "student",
+    },
 
     // Verification
     isVerified: { type: Boolean, default: false },
@@ -28,18 +32,21 @@ const userSchema = new mongoose.Schema(
 
     // student Onboarding
     studentId: { type: String, unique: true, sparse: true },
-    course: {type: String,enum: ["backend", "cybersecurity", "frontend", "product design"],
+    course: {
+      type: String,
+      enum: ["backend", "cybersecurity", "frontend", "product design"],
       required: function () {
-        return this.isVerified; 
+        return this.role === "student" && !this.preRegistered;
       },
     },
+
     // Instructor onboarding
     bio: { type: String, trim: true },
     linkedIn: { type: String, trim: true },
     phoneNumber: { type: String, trim: true },
     roleTitle: { type: String, trim: true },
     cohort: { type: String, trim: true },
-    
+
     // Password reset
     resetToken: { type: String, default: null },
     resetTokenExpiry: { type: Date, default: null },
@@ -48,7 +55,7 @@ const userSchema = new mongoose.Schema(
     isActive: { type: Boolean, default: true },
     deletedAt: { type: Date, default: null },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Index for faster lookups
