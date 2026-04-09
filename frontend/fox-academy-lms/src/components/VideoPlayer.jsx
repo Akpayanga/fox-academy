@@ -3,7 +3,7 @@ import auth4 from "../assets/images/auth4.png";
 
 export default function VideoPlayer({ currentTime = "0:12", totalTime = "39:27" }) {
   return (
-    <div className="relative aspect-video w-full overflow-hidden rounded-[24px] bg-black shadow-2xl group">
+    <div className="relative aspect-video w-full overflow-hidden rounded-[24px] bg-orange-700 shadow-2xl group">
       {/* Video Placeholder Image */}
       <img 
         src={auth4} 
@@ -12,14 +12,14 @@ export default function VideoPlayer({ currentTime = "0:12", totalTime = "39:27" 
       />
 
       {/* Play Overlay */}
-      <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[1px] transition-opacity group-hover:bg-black/30">
+      <div className="absolute inset-0 flex items-center justify-center bg-orange-500/20 backdrop-blur-[1px] transition-opacity group-hover:bg-orange-500/30">
         <button className="flex h-20 w-20 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-md transition-transform hover:scale-105 shadow-2xl ring-8 ring-white/10 active:scale-95">
           <Play size={32} fill="white" />
         </button>
       </div>
 
       {/* Video Controls Footer */}
-      <div className="absolute bottom-0 left-0 right-0 p-6 bg-linear-to-t from-black/80 to-transparent">
+      <div className="absolute bottom-0 left-0 right-0 p-6 bg-linear-to-t from-orange-700/80 to-transparent">
         {/* Progress Bar */}
         <div className="relative mb-4 h-1.5 w-full bg-white/20 rounded-full cursor-pointer group/progress">
           <div 

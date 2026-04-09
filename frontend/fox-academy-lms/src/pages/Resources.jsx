@@ -170,7 +170,7 @@ const ResourceCard = ({ type, title, description, thumbnail, action }) => {
         />
         
         {/* Type Badge */}
-        <div className="absolute left-4 top-4 rounded-lg bg-black/20 px-3 py-1.5 backdrop-blur-md">
+        <div className="absolute left-4 top-4 rounded-lg bg-orange-500/20 px-3 py-1.5 backdrop-blur-md">
           <span className="text-[10px] font-black tracking-widest text-white uppercase">
             {type}
           </span>
@@ -187,7 +187,7 @@ const ResourceCard = ({ type, title, description, thumbnail, action }) => {
 
         {/* Link Overlay (Figma special) */}
         {type === "LINK" && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/5">
+          <div className="absolute inset-0 flex items-center justify-center bg-orange-500/5">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white shadow-xl">
               <LinkIcon size={32} className="text-[#111827]" />
             </div>

@@ -78,13 +78,13 @@ export default function WatchCourse() {
               </div>
             ) : (
               <>
-                <div className="absolute inset-0 flex items-center justify-center bg-black/5">
-                  <button className="w-16 h-16 md:w-20 md:h-20 bg-black rounded-full flex items-center justify-center text-white hover:bg-black/90 transition-transform hover:scale-105 shadow-lg relative left-1">
+                <div className="absolute inset-0 flex items-center justify-center bg-orange-500/5">
+                  <button className="w-16 h-16 md:w-20 md:h-20 bg-orange-700 rounded-full flex items-center justify-center text-white hover:bg-orange-700/90 transition-transform hover:scale-105 shadow-lg relative left-1">
                     <Play className="w-8 h-8 md:w-10 md:h-10 fill-white" />
                   </button>
                 </div>
                 
-                <div className="bg-linear-to-t from-black/50 to-transparent p-4 flex items-center gap-4 relative z-10 w-full opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="bg-linear-to-t from-orange-600/50 to-transparent p-4 flex items-center gap-4 relative z-10 w-full opacity-0 group-hover:opacity-100 transition-opacity">
                   <button className="text-white hover:text-[#F38821]">
                     <Play className="w-5 h-5 fill-white" />
                   </button>

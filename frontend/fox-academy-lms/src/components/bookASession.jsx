@@ -74,7 +74,7 @@ function BookASession() {
               <p className="text-[rgba(107,114,128,1)] text-[12px] font-semibold uppercase tracking-wider mt-0.5">
                 {stat.label}
               </p>
-              <p className="text-black text-3xl font-bold">{stat.value}</p>
+              <p className="text-orange-700 text-3xl font-bold">{stat.value}</p>
             </div>
           ))}
         </div>

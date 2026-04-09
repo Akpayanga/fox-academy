@@ -78,7 +78,7 @@ export default function WorkBoard() {
         </div>
 
         {/* Floating Action Button (Black Plus) */}
-        <button className="fixed bottom-10 right-10 w-14 h-14 bg-black text-white rounded-full flex items-center justify-center text-2xl shadow-xl hover:bg-gray-800 transition transform hover:scale-105 z-50">
+        <button className="fixed bottom-10 right-10 w-14 h-14 bg-orange-700 text-white rounded-full flex items-center justify-center text-2xl shadow-xl hover:bg-orange-800 transition transform hover:scale-105 z-50">
           +
         </button>
       </main>

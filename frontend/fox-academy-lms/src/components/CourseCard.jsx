@@ -11,7 +11,7 @@ export default function CourseCard({ thumbnail, category, title, progress, isUnl
           className={`h-full w-full object-cover ${!isUnlocked ? "grayscale" : ""}`}
         />
         {!isUnlocked && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-[1px]">
+          <div className="absolute inset-0 flex items-center justify-center bg-orange-500/10 backdrop-blur-[1px]">
             <Lock size={20} className="text-white" />
           </div>
         )}

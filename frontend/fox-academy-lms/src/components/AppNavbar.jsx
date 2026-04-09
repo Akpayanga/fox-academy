@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Bell, Settings, LogOut } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import foxLogo from '../assets/images/foxlogo.svg';
 
 export default function AppNavbar() {
   const location = useLocation();
@@ -26,7 +27,7 @@ export default function AppNavbar() {
         <div className="flex items-center gap-10">
           {/* Logo */}
           <div className="flex items-start gap-3">
-            <span className="mt-1 h-6 w-6 bg-[#F38821]" aria-hidden="true" />
+            <img src={foxLogo} alt="Fox Academy Logo" className="h-6 w-6" />
             <div>
               <h1 className="text-[20px] md:text-[24px] font-bold leading-none text-[#F38821]">
                 Fox<br />Academy
@@ -83,7 +84,7 @@ export default function AppNavbar() {
             </button>
 
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 z-50">
+              <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white shadow-lg ring-1 ring-orange-500 ring-opacity-5 divide-y divide-gray-100 z-50">
                 <div className="py-1">
                   <Link 
                     to="/settings" 

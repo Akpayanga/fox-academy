@@ -23,6 +23,7 @@ import Resources from "./pages/Resources";
 import Community from "./pages/Community";
 import TeamDirectory from "./pages/TeamDirectory";
 import WorkBoard from "./pages/WorkBoard";
+import ModuleDetail from "./pages/ModuleDetail";
 
 function App() {
   return (
@@ -50,7 +51,9 @@ function App() {
         />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/mylearning" element={<MyLearning />} />
-        <Route path="/mylearning/module" element={<MyLearning />} />
+        <Route path="/mylearning/module" element={<ModuleDetail />} />
+        <Route path="/learning" element={<MyLearning />} />
+        <Route path="/learning/module" element={<ModuleDetail />} />
         <Route path="/assignments" element={<Assignments />} />
         <Route path="/assignments/user-persona" element={<UserPersonaAssignment />} />
         <Route path="/progress" element={<Progress />} />
