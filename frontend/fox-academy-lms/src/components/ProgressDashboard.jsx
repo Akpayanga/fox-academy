@@ -126,7 +126,7 @@ export default function ProgressDashboard() {
             </div>
             <p className="text-3xl font-bold text-gray-900">
               4.6{" "}
-              <span className="text-base font-semibold text-black">/ 5.0</span>
+              <span className="text-base font-semibold text-orange-700">/ 5.0</span>
             </p>
             <p className="text-xs text-gray-400 mt-1">
               Outstanding academic achievement across all phase 1 metrics.

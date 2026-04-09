@@ -1,5 +1,6 @@
 import { Bell } from "lucide-react";
 import amara from "../assets/images/amara.jpg";
+import foxLogo from "../assets/images/foxlogo.svg";
 import { Link, useLocation } from "react-router-dom";
 
 export default function DashboardNavbar() {
@@ -20,9 +21,7 @@ export default function DashboardNavbar() {
       <div className="mx-auto flex max-w-[1440px] items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded bg-[#F38821]">
-            <span className="text-sm font-bold text-white">F</span>
-          </div>
+          <img src={foxLogo} alt="Fox Academy Logo" className="h-8 w-8" />
           <span className="text-xl font-bold tracking-tight text-[#111827]">
             Fox <span className="text-[#F38821]">Academy</span>
           </span>
