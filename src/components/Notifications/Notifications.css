@@ -1,0 +1,16 @@
+.notif-list { display: flex; flex-direction: column; gap: 0; }
+
+.notif-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.notif-row:last-child { border-bottom: none; padding-bottom: 0; }
+.notif-row:first-child { padding-top: 0; }
+
+.notif-label {
+  font-size: var(--fs-base);
+  color: var(--color-text-primary);
+}

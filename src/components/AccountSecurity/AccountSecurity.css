@@ -1,0 +1,15 @@
+.password-dots {
+    letter-spacing: .12em;
+    font-size: var(--fs-lg);
+  }
+  
+  .btn-danger {
+    background: none;
+    border: none;
+    color: var(--color-danger);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    padding: 0;
+    transition: opacity .15s;
+  }
+  .btn-danger:hover { opacity: .7; }
