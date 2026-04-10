@@ -1,0 +1,92 @@
+.apps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .app-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .app-row:first-child { padding-top: 0; }
+  .app-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  
+  .app-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .app-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-page);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    flex-shrink: 0;
+  }
+  
+  .app-name {
+    font-size: var(--fs-base);
+    font-weight: var(--fw-medium);
+    color: var(--color-text-primary);
+  }
+  
+  .app-connected-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .app-status {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: .02em;
+  }
+  
+  .app-status--connected {
+    color: var(--color-success);
+  }
+  
+  .app-disconnect {
+    width: 20px;
+    height: 20px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-input);
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: 14px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .15s, color .15s;
+  }
+  .app-disconnect:hover {
+    background: #FEE2E2;
+    color: var(--color-danger);
+    border-color: #FECACA;
+  }
+  
+  .app-connect-btn {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    color: var(--color-text-link);
+    background: none;
+    border: none;
+    padding: 0;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: opacity .15s;
+  }
+  .app-connect-btn:hover { opacity: .7; }

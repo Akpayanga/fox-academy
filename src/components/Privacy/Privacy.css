@@ -1,0 +1,25 @@
+.privacy-list { display: flex; flex-direction: column; gap: 0; }
+
+.privacy-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.privacy-row:last-child { border-bottom: none; padding-bottom: 0; }
+.privacy-row:first-child { padding-top: 0; }
+
+.privacy-text { display: flex; flex-direction: column; gap: 2px; }
+
+.privacy-label {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  color: var(--color-text-primary);
+}
+
+.privacy-desc {
+  font-size: var(--fs-sm);
+  color: var(--color-text-secondary);
+}
