@@ -22,14 +22,10 @@ import Assignments from "./pages/Assignments";
 import UserPersonaAssignment from "./pages/UserPersonaAssignment";
 import Resources from "./pages/Resources";
 import Community from "./pages/Community";
-import CreateDiscussion from "./pages/CreateDiscussion";
-import DiscussionDetail from "./pages/DiscussionDetail";
 import TeamDirectory from "./pages/TeamDirectory";
 import WorkBoard from "./pages/WorkBoard";
 import ModuleDetail from "./pages/ModuleDetail";
-import Settings from "./pages/Settings";
-import AccountSecurity from "./pages/AccountSecurity";
-import Notifications from "./pages/Notifications";
+import Phase2overview from "./pages/phase2overview";
 
 function App() {
   return (
@@ -53,6 +49,7 @@ function App() {
         <Route path="/watch-course" element={<WatchCourse />} />
         <Route path="/progress" element={<MyProgress />} />
         <Route path="/progressNew" element={<MyProgressNew />} />
+        <Route path="/overview" element={<Phase2overview />} />
         <Route
           path="/course/:courseId/module/:moduleId"
           element={<WatchCourse />}
@@ -64,15 +61,11 @@ function App() {
         <Route path="/learning/module" element={<ModuleDetail />} />
         <Route path="/assignments" element={<Assignments />} />
         <Route path="/assignments/user-persona" element={<UserPersonaAssignment />} />
+        {/* <Route path="/progress" element={<Progress />} /> */}
         <Route path="/resources" element={<Resources />} />
         <Route path="/community" element={<Community />} />
-        <Route path="/community/create" element={<CreateDiscussion />} />
-        <Route path="/community/discussion/:id" element={<DiscussionDetail />} />
         <Route path="/team" element={<TeamDirectory />} />
         <Route path="/work-board" element={<WorkBoard />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/settings/account-security" element={<AccountSecurity />} />
-        <Route path="/settings/notifications" element={<Notifications />} />
       </Routes>
     </Router>
   );

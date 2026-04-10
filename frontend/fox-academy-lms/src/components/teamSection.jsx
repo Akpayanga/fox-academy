@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import TeamSection from "./teamSideSection";
 
 export default function Phase2Dashboard() {
@@ -29,7 +30,7 @@ export default function Phase2Dashboard() {
             </div>
 
             {/* Capstone Card */}
-            <div className="mt-6 bg-[rgba(221,124,30,1)] rounded-2xl p-6 text-white relative overflow-hidden">
+            <div className="mt-6 bg-[rgba(221,124,30,1)] rounded-2xl p-6 text-white relative overflow-hidden py-6">
               <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/10 rounded-full" />
               <div className="flex items-start justify-between gap-4">
                 <span className="text-[9px] font-bold tracking-widest uppercase bg-white text-[rgba(221,124,30,1)] px-3 py-1 rounded-full">
@@ -53,9 +54,9 @@ export default function Phase2Dashboard() {
               <h2 className="text-2xl font-extrabold leading-snug mt-5 max-w-sm">
                 FinEase - A Financial Wellness App for Young Nigerians
               </h2>
-              <button className="mt-6 bg-white text-orange-500 font-semibold text-sm px-5 py-2 rounded-xl transition-colors cursor-pointer">
+              <Link to='/overview' className="mt-6 bg-white text-orange-500 font-semibold text-sm px-5 py-2 rounded-xl transition-colors cursor-pointer">
                 Project Overview
-              </button>
+              </Link>
             </div>
 
             {/* Team section on mobile — sits right below meta */}
