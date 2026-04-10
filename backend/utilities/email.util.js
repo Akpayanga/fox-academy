@@ -27,7 +27,13 @@ if (process.env.NODE_ENV === "development") {
 
 const sendVerificationEmail = async (email, token, code, role) => {
   try {
-    const url = `${process.env.CLIENT_URL}/verify-invitation?token=${token}&code=${code}`;
+    if (!token) {
+      throw new Error("Token is required");
+    }
+    const cleanToken = token.replace(/\s/g, "");
+
+    const url = `${process.env.CLIENT_URL}/verify-invitation?token=${encodeURIComponent(cleanToken)}&code=${encodeURIComponent(code)}`;
+
     const expiryHours =
       role === "student"
         ? process.env.INVITE_EXPIRY_HOURS_STUDENT || 48
@@ -38,10 +44,9 @@ const sendVerificationEmail = async (email, token, code, role) => {
     const info = await transporter.sendMail({
       from: `"FoxtrotTalent" <${process.env.SMTP_USER}>`,
       to: email,
-      subject: "Your Fox Academy Invitation",
+      subject: "Verify Your Invitation",
       // "X-Priority": "1",
 
-      text: `Verify your invitation: ${url}`,
       html: `
 <!DOCTYPE html>
 <html>
@@ -55,13 +60,11 @@ const sendVerificationEmail = async (email, token, code, role) => {
     <p>Click the link below to verify your invitation:</p>
 
     <p>
-      <a href="${url}" target="_blank">
-        Verify Invitation
-      </a>
+     <a href="${url}" target="_blank">Verify Invitation</a>
     </p>
 
     <p>Or copy and paste this link into your browser:</p>
-    <p>${url}</p>
+    <p style="word-break: break-all;">${url}</p>
 
     <p>This link expires in ${expiryHours} hours.</p>
 

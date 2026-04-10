@@ -7,7 +7,7 @@ const {
   verifyToken,
 } = require("../utilities/jwt");
 const crypto = require("crypto");
-const { enqueueVerificationEmail } = require("../service/email.service");
+const { enqueueVerificationEmail, enqueueWelcomeEmail } = require("../service/email.service");
 const { recordAudit } = require("../utilities/audit.util");
 
 // Pre-register (students/instructors)
@@ -57,7 +57,7 @@ exports.preRegister = async (req, res, next) => {
     return success(
       res,
       { token, invitationCode },
-      `Pre-registration successful. Check your email including Junk/Spam mail for Invatation code. Link expires in ${expiryHours} hours.`,
+      `Pre-registration successful. You will get an email notification if selected. Pls, watch out for the email including your Junk/Spam mail in the next 10 minutes. Link expires in ${expiryHours} hours.`,
     );
   } catch (err) {
     next(err);
