@@ -83,7 +83,6 @@ function App() {
         />
         <Route path="/team" element={<Progress />} />
         <Route path="/work-board" element={<WorkBoard />} />
-        //Mentor Routes
         <Route path="/mentors" element={<MentorManagement />} />
         <Route path="email-preview" element={<EmailPreviewLayout />} />
         <Route path="/activate" element={<MentorActivation />} />
