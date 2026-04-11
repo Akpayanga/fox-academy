@@ -36,6 +36,13 @@ import SubmitDeliverable from "./pages/SubmitDeliverable";
 import ProfileDetails from "./pages/ProfileDetails";
 import Certifications from "./pages/Certifications";
 import AccountSecurity from "./pages/AccountSecurity";
+import AdminLanding from "./pages/Admin/AdminLanding";
+import AdminLogin from "./pages/Admin/AdminLogin";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import MentorManagement from "./pages/Admin/MentorManagement";
+import InternManagement from "./pages/Admin/InternManagement";
+import CohortManagement from "./pages/Admin/CohortManagement";
+import AdminAnalytics from "./pages/Admin/AdminAnalytics";
 
 function App() {
   return (
@@ -87,6 +94,15 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/settings/account-security" element={<AccountSecurity />} />
         <Route path="/notifications" element={<Notifications />} />
+        
+        {/* Admin / Control Room Route */}
+        <Route path="/control-room" element={<AdminLanding />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/control-room/dashboard" element={<AdminDashboard />} />
+        <Route path="/control-room/mentors" element={<MentorManagement />} />
+        <Route path="/control-room/interns" element={<InternManagement />} />
+        <Route path="/control-room/cohorts" element={<CohortManagement />} />
+        <Route path="/control-room/analytics" element={<AdminAnalytics />} />
         
         {/* Catch-all fallback Route to redirect 404s and prevent blank page */}
         <Route path="*" element={<Navigate to="/" replace />} />
