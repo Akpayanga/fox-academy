@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
-
-const port = Number(process.env.SMTP_PORT);
+const dotenv = require("dotenv");
+dotenv.config();
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,

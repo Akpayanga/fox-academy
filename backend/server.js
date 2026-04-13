@@ -23,6 +23,7 @@ const mediaRoutes = require("./routes/media.route");
 const learningRoutes = require("./routes/learning.route");
 const discussionRoutes = require("./routes/discussion.route");
 const managementRoutes = require("./routes/management.route");
+const bookingRoutes = require("./routes/booking.route");
 
 // Utilities
 const { success } = require("./utilities/response");
@@ -62,6 +63,7 @@ app.use("/api/v1/management", managementRoutes);
 app.use("/api/v1/notifications", notificationRoutes);
 app.use("/api/v1/course-progress", courseProgressRoutes);
 app.use("/api/v1/media", mediaRoutes);
+app.use("/api/v1/bookings", bookingRoutes);
 
 // Liveness check (is the API process alive?)
 app.get("/api/v1/live", (req, res) => {
