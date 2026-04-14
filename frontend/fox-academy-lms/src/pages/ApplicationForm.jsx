@@ -26,8 +26,8 @@ const disciplineOptions = [
 ];
 
 const roleOptions = [
-  "Student",
-  "Instructor",
+  "student",
+  "instructor",
 ];
 
 function SectionHeading({ step, title }) {
