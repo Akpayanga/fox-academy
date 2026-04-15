@@ -463,128 +463,7 @@
             }
           ]
         },
-        {
-          "name": "/api/v1/auth/forgot-password",
-          "request": {
-            "method": "POST",
-            "url": "{{baseUrl}}/api/v1/auth/forgot-password",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"adeboiz2021@gmail.com\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
-            ]
-          },
-          "response": [
-            {
-              "name": "Successful Request",
-              "originalRequest": {
-                "method": "POST",
-                "url": "{{baseUrl}}/api/v1/auth/forgot-password"
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
-            },
-            {
-              "name": "Error Response",
-              "originalRequest": {
-                "method": "POST",
-                "url": "{{baseUrl}}/api/v1/auth/forgot-password"
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
-            }
-          ]
-        },
-        {
-          "name": "/api/v1/auth/reset-password",
-          "request": {
-            "method": "POST",
-            "url": "{{baseUrl}}/api/v1/auth/reset-password",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"token\": \"reset-token-xyz\",\n  \"newPassword\": \"Str0ng_P@ssw0rd!123\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
-            ]
-          },
-          "response": [
-            {
-              "name": "Successful Request",
-              "originalRequest": {
-                "method": "POST",
-                "url": "{{baseUrl}}/api/v1/auth/reset-password"
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
-            },
-            {
-              "name": "Error Response",
-              "originalRequest": {
-                "method": "POST",
-                "url": "{{baseUrl}}/api/v1/auth/reset-password"
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
-            }
-          ]
-        },
+        
         {
           "name": "/api/v1/auth/profile",
           "request": {
@@ -1088,237 +967,199 @@
         }
       ]
     },
+  {
+  "name": "Admin Auth",
+  "item": [
     {
-      "name": "Admin Auth",
-      "item": [
-        {
-          "name": "/api/v1/auth/admin/register",
-          "request": {
-            "method": "POST",
-            "url": "{{baseUrl}}/api/v1/auth/admin/register",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"firstName\": \"Admin\",\n  \"lastName\": \"User\",\n  \"email\": \"adeboiz2021@gmail.com\",\n  \"password\": \"Str0ng_P@ssw0rd!123\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
-            ]
-          },
-          "response": [
+      "name": "/api/v1/auth/admin/register",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/auth/admin/register",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"Alice\",\n  \"lastName\": \"Admin\",\n  \"email\": \"admin@example.com\",\n  \"password\": \"Str0ng_P@ssw0rd!\",\n  \"role\": \"admin\"\n}"
+        }
+      }
+    },
+    {
+      "name": "/api/v1/auth/admin/verify",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/auth/admin/verify?token={{verificationToken}}",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      }
+    },
+    {
+      "name": "/api/v1/auth/admin/login",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/auth/admin/login",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"Str0ng_P@ssw0rd!\"\n}"
+        }
+      }
+    },
+    {
+      "name": "/api/v1/auth/admin/refresh-token",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/auth/admin/refresh-token",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      }
+    },
+    {
+      "name": "/api/v1/auth/admin/logout",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/auth/admin/logout",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
             {
-              "name": "Successful Request",
-              "originalRequest": {
-                "method": "POST",
-                "url": "{{baseUrl}}/api/v1/auth/admin/register"
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
-            },
-            {
-              "name": "Error Response",
-              "originalRequest": {
-                "method": "POST",
-                "url": "{{baseUrl}}/api/v1/auth/admin/register"
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
-            }
-          ]
-        },
-        {
-          "name": "/api/v1/auth/admin/verify",
-          "request": {
-            "method": "GET",
-            "url": "{{baseUrl}}/api/v1/auth/admin/verify",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "Successful Request",
-              "originalRequest": {
-                "method": "GET",
-                "url": "{{baseUrl}}/api/v1/auth/admin/verify"
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
-            },
-            {
-              "name": "Error Response",
-              "originalRequest": {
-                "method": "GET",
-                "url": "{{baseUrl}}/api/v1/auth/admin/verify"
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
-            }
-          ]
-        },
-        {
-          "name": "/api/v1/auth/admin/google",
-          "request": {
-            "method": "GET",
-            "url": "{{baseUrl}}/api/v1/auth/admin/google",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "Successful Request",
-              "originalRequest": {
-                "method": "GET",
-                "url": "{{baseUrl}}/api/v1/auth/admin/google"
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
-            },
-            {
-              "name": "Error Response",
-              "originalRequest": {
-                "method": "GET",
-                "url": "{{baseUrl}}/api/v1/auth/admin/google"
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
-            }
-          ]
-        },
-        {
-          "name": "/api/v1/auth/admin/google/callback",
-          "request": {
-            "method": "GET",
-            "url": "{{baseUrl}}/api/v1/auth/admin/google/callback",
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{accessToken}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "Successful Request",
-              "originalRequest": {
-                "method": "GET",
-                "url": "{{baseUrl}}/api/v1/auth/admin/google/callback"
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Request successful\",\n  \"data\": {}\n}"
-            },
-            {
-              "name": "Error Response",
-              "originalRequest": {
-                "method": "GET",
-                "url": "{{baseUrl}}/api/v1/auth/admin/google/callback"
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n  \"status\": \"error\",\n  \"message\": \"Bad request\",\n  \"data\": null\n}"
+              "key": "token",
+              "value": "{{accessToken}}"
             }
           ]
         }
+      }
+    }
+  ]
+},
+
+    {
+  "name": "Admin Google Auth",
+  "item": [
+    {
+      "name": "/api/v1/auth/admin/google",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/auth/admin/google"
+      },
+      "response": [
+        {
+          "name": "Redirect to Google",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"status\": \"success\",\n  \"message\": \"Redirecting to Google OAuth\",\n  \"data\": {}\n}"
+        }
       ]
     },
+    {
+      "name": "/api/v1/auth/admin/google/callback",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/auth/admin/google/callback"
+      },
+      "response": [
+        {
+          "name": "Successful Login",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"status\": \"success\",\n  \"message\": \"Admin Google login successful\",\n  \"data\": { \"user\": { \"email\": \"admin@example.com\" }, \"token\": \"...\" }\n}"
+        },
+        {
+          "name": "Error Response",
+          "status": "Forbidden",
+          "code": 403,
+          "body": "{\n  \"status\": \"error\",\n  \"message\": \"Please verify your admin email first\",\n  \"data\": null\n}"
+        }
+      ]
+    }
+  ]
+},
+ 
+{
+  "name": "Shared Forgot/Reset Password",
+  "item": [
+    {
+      "name": "/api/v1/auth/forgot-password",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/auth/forgot-password",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@example.com\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ]
+      },
+      "response": [
+        {
+          "name": "Successful Request",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"status\": \"success\",\n  \"message\": \"Password reset token generated\",\n  \"data\": { \"resetToken\": \"...\" }\n}"
+        },
+        {
+          "name": "Error Response",
+          "status": "Bad Request",
+          "code": 400,
+          "body": "{\n  \"status\": \"error\",\n  \"message\": \"User not found\",\n  \"data\": null\n}"
+        }
+      ]
+    },
+    {
+      "name": "/api/v1/auth/reset-password",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/auth/reset-password",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"token\": \"dummy-reset-token\",\n  \"newPassword\": \"Str0ng_P@ssw0rd!123\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ]
+      },
+      "response": [
+        {
+          "name": "Successful Request",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"status\": \"success\",\n  \"message\": \"Password reset successful\",\n  \"data\": null\n}"
+        },
+        {
+          "name": "Error Response",
+          "status": "Bad Request",
+          "code": 400,
+          "body": "{\n  \"status\": \"error\",\n  \"message\": \"Invalid or expired token\",\n  \"data\": null\n}"
+        }
+      ]
+    }
+  ]
+},
     {
       "name": "Media",
       "item": [

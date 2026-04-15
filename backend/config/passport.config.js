@@ -1,14 +1,21 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/user.model");
-const { generateAccessToken, generateRefreshToken } = require("../utilities/jwt");
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require("../utilities/jwt");
 const crypto = require("crypto");
-const { enqueueVerificationEmail } = require("../service/email.service");
+const {
+  enqueueVerificationEmail,
+  enqueueWelcomeEmail,
+} = require("../service/email.service");
 const { sendVerificationEmail } = require("../utilities/email.util");
 const { recordAudit } = require("../utilities/audit.util");
 
 // ADMIN GOOGLE STRATEGY
-passport.use("google-admin",
+passport.use(
+  "google-admin",
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
@@ -20,7 +27,11 @@ passport.use("google-admin",
         const email = profile.emails?.[0]?.value;
         if (!email) return done(new Error("No email found from Google"), null);
 
-        let user = await User.findOne({ email, provider: "google", role: "admin" });
+        let user = await User.findOne({
+          email,
+          provider: "google",
+          role: "admin",
+        });
 
         if (!user) {
           // Normal registration flow for admin
@@ -40,26 +51,57 @@ passport.use("google-admin",
           await enqueueVerificationEmail(email, token, "ADMIN_FLOW");
         }
 
+        //Audit log for Google Admin registration
+        await recordAudit({
+          userId: user._id,
+          action: "ADMIN_GOOGLE_REGISTER",
+          details: "Admin registered via Google OAuth",
+          req: {},
+          status: "success",
+          resourceId: user._id,
+          resourceType: "User",
+          metadata: { role: "admin", provider: "google" },
+        });
+
         if (!user.isVerified) {
-          return done(null, false, { message: "Please verify your admin email first" });
+          return done(null, false, {
+            message: "Please verify your admin email first",
+          });
         }
 
+        //Send welcome email once verified
+        await enqueueWelcomeEmail(user.email);
+
         const token = generateAccessToken({ id: user._id, role: user.role });
+
+        //Audit log for Google Admin login
+        await recordAudit({
+          userId: user._id,
+          action: "ADMIN_GOOGLE_LOGIN",
+          details: "Admin logged in via Google OAuth",
+          req: {},
+          status: "success",
+          resourceId: user._id,
+          resourceType: "User",
+          metadata: { role: "admin", provider: "google" },
+        });
         return done(null, { user, token });
       } catch (err) {
         return done(err, null);
       }
-    }
-  )
+    },
+  ),
 );
 
 // USER/INSTRUCTOR GOOGLE STRATEGY
-passport.use("google-user-instructor",
+passport.use(
+  "google-user-instructor",
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:8000/api/v1/auth/user-instructor/google/callback",
+      callbackURL:
+        "http://localhost:8000/api/v1/auth/user-instructor/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -69,7 +111,10 @@ passport.use("google-user-instructor",
         let user = await User.findOne({ email, provider: "google" });
 
         if (!user) {
-          const invitationCode = crypto.randomBytes(6).toString("hex").toUpperCase();
+          const invitationCode = crypto
+            .randomBytes(6)
+            .toString("hex")
+            .toUpperCase();
           const token = generateRefreshToken({ email });
 
           user = await User.create({
@@ -85,21 +130,48 @@ passport.use("google-user-instructor",
           });
 
           await sendVerificationEmail(email, token, invitationCode);
-          await recordAudit({ userId: user._id, action: "USER_GOOGLE_PRE_REGISTER", details: "User pre-registered via Google", req: {} });
+
+          //Audit log for Google User/Instructor registration
+          await recordAudit({
+            userId: user._id,
+            action: "USER_GOOGLE_PRE_REGISTER",
+            details: "User pre-registered via Google OAuth",
+            req: {},
+            status: "success",
+            resourceId: user._id,
+            resourceType: "User",
+            metadata: { role: user.role, provider: "google" },
+          });
         }
 
         if (!user.isInvited || !user.isVerified) {
-          return done(null, false, { message: "Please verify your invitation code first" });
+          return done(null, false, {
+            message: "Please verify your invitation code first",
+          });
         }
 
+        //Send welcome email once verified
+        await enqueueWelcomeEmail(user.email);
+
         const token = generateAccessToken({ id: user._id, role: user.role });
-        await recordAudit({ userId: user._id, action: "USER_GOOGLE_LOGIN", details: "User logged in via Google", req: {} });
+
+        await recordAudit({
+          userId: user._id,
+          action: "USER_GOOGLE_LOGIN",
+          details: `${user.role} logged in via Google OAuth`,
+          req: {},
+          status: "success",
+          resourceId: user._id,
+          resourceType: "User",
+          metadata: { role: user.role, provider: "google" },
+        });
+
         return done(null, { user, token });
       } catch (err) {
         return done(err, null);
       }
-    }
-  )
+    },
+  ),
 );
 
 module.exports = passport;

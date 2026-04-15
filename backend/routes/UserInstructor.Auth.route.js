@@ -3,6 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 
 const userInstructorAuth = require("../controllers/UserInstructor.Auth.controller");
+const authController = require("../controllers/ForgetResetSharedPassword");
 const validate = require("../middleware/validate.middleware");
 const requireRole = require("../middleware/role.middleware");
 const auth = require("../middleware/Auth.middle"); 
@@ -18,8 +19,8 @@ router.post("/complete-registration", userInstructorAuth.completeRegistration);
 // Shared auth flows
 router.post("/login", validate(loginSchema), userInstructorAuth.login);
 router.post("/refresh-token", userInstructorAuth.refreshToken);
-router.post("/forgot-password", validate(forgotPasswordSchema), userInstructorAuth.forgotPassword);
-router.post("/reset-password", validate(resetPasswordSchema), userInstructorAuth.resetPassword);
+router.post("/forgot-password", validate(forgotPasswordSchema), authController.forgotPassword);
+router.post("/reset-password", validate(resetPasswordSchema), authController.resetPassword);
 
 // Profile & onboarding
 router.get("/profile", auth, requireOnboarding, userInstructorAuth.profile);
