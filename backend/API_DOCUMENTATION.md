@@ -1667,3 +1667,107 @@ This document provides full details on how to interact with the API endpoints. B
 ```
 
 ---
+
+## Bookings
+
+### /api/v1/bookings/
+
+**Endpoint:** `POST /api/v1/bookings/`
+
+**Authentication Required:** Bearer Token (`Authorization: Bearer <token>`)
+
+**Request Body:**
+
+```json
+{
+  "mentorId": "64a2c0a1f0a123456789aaaa",
+  "studentId": "64a2c0a1f0a123456789bbbb",
+  "date": "2026-05-01",
+  "time": "14:00",
+  "purpose": "Discuss backend architecture design"
+}
+```
+
+**Expected Responses:**
+
+#### Successful Request (201)
+
+```json
+{
+  "status": "success",
+  "message": "Session Booked!",
+  "data": {}
+}
+```
+
+#### Error Response (400)
+
+```json
+{
+  "status": "error",
+  "message": "All fields (mentorId, studentId, date, time, purpose) are required",
+  "data": null
+}
+```
+
+---
+
+### /api/v1/bookings/mentor/:mentorId
+
+**Endpoint:** `GET /api/v1/bookings/mentor/:mentorId`
+
+**Authentication Required:** Bearer Token (`Authorization: Bearer <token>`)
+
+**Expected Responses:**
+
+#### Successful Request (200)
+
+```json
+{
+  "status": "success",
+  "message": "Mentor bookings fetched successfully",
+  "data": []
+}
+```
+
+#### Error Response (400)
+
+```json
+{
+  "status": "error",
+  "message": "Bad request",
+  "data": null
+}
+```
+
+---
+
+### /api/v1/bookings/student/:studentId
+
+**Endpoint:** `GET /api/v1/bookings/student/:studentId`
+
+**Authentication Required:** Bearer Token (`Authorization: Bearer <token>`)
+
+**Expected Responses:**
+
+#### Successful Request (200)
+
+```json
+{
+  "status": "success",
+  "message": "Student bookings fetched successfully",
+  "data": []
+}
+```
+
+#### Error Response (400)
+
+```json
+{
+  "status": "error",
+  "message": "Bad request",
+  "data": null
+}
+```
+
+---

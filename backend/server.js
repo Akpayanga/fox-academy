@@ -40,7 +40,12 @@ if (process.env.SENTRY_DSN) {
 }
 
 // Middleware
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://fox-academy.vercel.app"],
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.use(passport.initialize());
 app.use(cookieParser());
@@ -67,25 +72,37 @@ app.use("/api/v1/bookings", bookingRoutes);
 
 // Liveness check (is the API process alive?)
 app.get("/api/v1/live", (req, res) => {
-  return success(res, {
-    uptime: process.uptime(),
-    timestamp: new Date().toISOString(),
-  }, "API is live");
+  return success(
+    res,
+    {
+      uptime: process.uptime(),
+      timestamp: new Date().toISOString(),
+    },
+    "API is live",
+  );
 });
 
 // Readiness check (is the API ready, including DB?)
 app.get("/api/v1/health", (req, res) => {
   const dbState = mongoose.connection.readyState;
   const dbStatus =
-    dbState === 1 ? "connected" :
-    dbState === 2 ? "connecting" :
-    dbState === 0 ? "disconnected" : "disconnecting";
+    dbState === 1
+      ? "connected"
+      : dbState === 2
+        ? "connecting"
+        : dbState === 0
+          ? "disconnected"
+          : "disconnecting";
 
-  return success(res, {
-    uptime: process.uptime(),
-    timestamp: new Date().toISOString(),
-    database: dbStatus
-  }, "API is healthy");
+  return success(
+    res,
+    {
+      uptime: process.uptime(),
+      timestamp: new Date().toISOString(),
+      database: dbStatus,
+    },
+    "API is healthy",
+  );
 });
 
 // Root endpoint
@@ -93,7 +110,7 @@ app.get("/", (req, res) => {
   return success(res, null, "API running...");
 });
 
-// Error handler 
+// Error handler
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 8000;
