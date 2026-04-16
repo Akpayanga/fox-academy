@@ -15,14 +15,18 @@ import {
   ExternalLink,
   Info
 } from "lucide-react";
+import { createDiscussionReply } from "../services/communityService";
 
 import amara from "../assets/images/amara.jpg";
 
 const DiscussionDetail = () => {
-  useParams();
+  const { id: discussionId } = useParams();
   const [activeChannel, setActiveChannel] = useState("UX-DESIGN");
   const [activeSubChannel, setActiveSubChannel] = useState("GENERAL");
   const [replyText, setReplyText] = useState("");
+  const [isReplying, setIsReplying] = useState(false);
+  const [replyError, setReplyError] = useState("");
+  const [replySuccess, setReplySuccess] = useState("");
 
   const originalPost = {
     author: "Alex Livinus",
@@ -35,7 +39,7 @@ const DiscussionDetail = () => {
     channel: "# ux-design"
   };
 
-  const replies = [
+  const [replies, setReplies] = useState([
     {
       id: 1,
       author: "Miracle Kalu",
@@ -66,7 +70,44 @@ const DiscussionDetail = () => {
       time: "1h ago",
       content: "The mobile app actually has an offline download feature too!"
     }
-  ];
+  ]);
+
+  const handlePostReply = async () => {
+    if (!replyText.trim()) {
+      setReplyError("Reply cannot be empty.");
+      return;
+    }
+
+    setIsReplying(true);
+    setReplyError("");
+    setReplySuccess("");
+
+    try {
+      const response = await createDiscussionReply(discussionId || "1", {
+        content: replyText.trim(),
+      });
+
+      const replyPayload = response?.data || response?.reply || response || {};
+      const newReply = {
+        id: replyPayload?.id || replyPayload?._id || Date.now(),
+        author: replyPayload?.authorName || replyPayload?.author || "You",
+        avatar: replyPayload?.authorAvatar || amara,
+        time: "Now",
+        isCurrentUser: true,
+        content: replyPayload?.content || replyText.trim(),
+      };
+
+      setReplies((prev) => [...prev, newReply]);
+      setReplyText("");
+      setReplySuccess(response?.message || "Reply posted.");
+    } catch (error) {
+      setReplyError(
+        error?.response?.data?.message || "Could not post reply right now."
+      );
+    } finally {
+      setIsReplying(false);
+    }
+  };
 
   const channels = [
     { name: "UX-DESIGN", subChannels: ["GENERAL", "SOCIALS", "SHOWCASE"], expanded: true },
@@ -89,9 +130,9 @@ const DiscussionDetail = () => {
     <div className="min-h-screen bg-[#FDFDFD] flex flex-col">
       <DashboardNavbar />
       
-      <main className="flex-1 flex max-w-[1440px] mx-auto w-full">
+      <main className="flex-1 flex max-w-360 mx-auto w-full">
         {/* Left Sidebar - Channels */}
-        <aside className="w-[280px] shrink-0 border-r border-gray-50 p-8 hidden lg:block">
+        <aside className="w-70 shrink-0 border-r border-gray-50 p-8 hidden lg:block">
           <div className="mb-10">
             <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-6">
               STUDENT PORTAL
@@ -187,12 +228,24 @@ const DiscussionDetail = () => {
             <h3 className="text-[11px] font-black tracking-[0.2em] text-[#4F46E5] uppercase mb-8 ml-4">
               {replies.length} REPLIES
             </h3>
+
+            {replyError ? (
+              <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {replyError}
+              </p>
+            ) : null}
+
+            {replySuccess ? (
+              <p className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+                {replySuccess}
+              </p>
+            ) : null}
             
             <div className="space-y-6">
               {replies.map((reply) => (
                 <div 
                   key={reply.id} 
-                  className={`rounded-[32px] p-8 border transition-all
+                  className={`rounded-4xl p-8 border transition-all
                     ${reply.isCurrentUser ? 'bg-white border-orange-100 border-l-4 border-l-[#F38821]' : 'bg-white border-gray-50 shadow-sm'}
                   `}
                 >
@@ -234,7 +287,7 @@ const DiscussionDetail = () => {
 
           {/* Reply Input Bar */}
           <div className="mt-12 sticky bottom-0 bg-[#FDFDFD]/90 backdrop-blur-md pt-4 pb-8">
-            <div className="flex items-center gap-4 bg-white border border-gray-100 rounded-[32px] p-3 shadow-xl shadow-gray-100/50">
+            <div className="flex items-center gap-4 bg-white border border-gray-100 rounded-4xl p-3 shadow-xl shadow-gray-100/50">
               <div className="h-10 w-10 rounded-full overflow-hidden shrink-0">
                 <img src={amara} alt="Amara" className="h-full w-full object-cover" />
               </div>
@@ -256,8 +309,13 @@ const DiscussionDetail = () => {
                   <button className="text-gray-300 hover:text-gray-600 transition-colors">
                     <Paperclip size={18} />
                   </button>
-                  <button className="h-10 px-6 rounded-2xl bg-[#F38821] text-xs font-black uppercase tracking-widest text-white transition-all hover:bg-[#e37b1d] shadow-lg shadow-orange-100">
-                    Reply
+                  <button
+                    type="button"
+                    onClick={handlePostReply}
+                    disabled={isReplying}
+                    className="h-10 px-6 rounded-2xl bg-[#F38821] text-xs font-black uppercase tracking-widest text-white transition-all hover:bg-[#e37b1d] shadow-lg shadow-orange-100 disabled:cursor-not-allowed disabled:opacity-70"
+                  >
+                    {isReplying ? "Posting..." : "Reply"}
                   </button>
                 </div>
               </div>
@@ -266,7 +324,7 @@ const DiscussionDetail = () => {
         </section>
 
         {/* Right Sidebar - Status & Pinned (Same as Community) */}
-        <aside className="w-[340px] shrink-0 p-8 pt-12 space-y-10 hidden xl:block border-l border-gray-50">
+        <aside className="w-85 shrink-0 p-8 pt-12 space-y-10 hidden xl:block border-l border-gray-50">
           <div>
             <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-8">ACTIVE NOW</h3>
             <div className="space-y-6">
@@ -311,7 +369,7 @@ const DiscussionDetail = () => {
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-[32px] bg-[#F38821] p-8 text-white shadow-2xl shadow-orange-100/50">
+          <div className="relative overflow-hidden rounded-4xl bg-[#F38821] p-8 text-white shadow-2xl shadow-orange-100/50">
             <div className="relative z-10 flex flex-col gap-4">
               <div className="h-10 w-10 rounded-xl bg-white/20 flex items-center justify-center">
                 <Info size={20} />

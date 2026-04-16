@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Camera, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { uploadSingleMedia } from "../services/mediaService";
 
 /**
  * Onboarding Step 2: Set Up Your Profile
@@ -10,16 +11,36 @@ const SetProfile = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [profileImage, setProfileImage] = useState(null);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [imageUploadError, setImageUploadError] = useState("");
 
   const handleImageClick = () => {
     fileInputRef.current?.click();
   };
 
-  const handleImageChange = (event) => {
+  const handleImageChange = async (event) => {
     const file = event.target.files?.[0];
     if (file) {
+      setImageUploadError("");
       const imageUrl = URL.createObjectURL(file);
       setProfileImage(imageUrl);
+
+      setIsUploadingImage(true);
+      try {
+        const response = await uploadSingleMedia(file, { type: "profile-photo" });
+        const remoteUrl =
+          response?.data?.url || response?.url || response?.data?.secure_url || response?.secure_url;
+
+        if (remoteUrl) {
+          setProfileImage(remoteUrl);
+        }
+      } catch (error) {
+        setImageUploadError(
+          error?.response?.data?.message || "Photo upload failed. You can still continue."
+        );
+      } finally {
+        setIsUploadingImage(false);
+      }
     }
   };
 
@@ -79,8 +100,13 @@ const SetProfile = () => {
           onClick={handleImageClick}
           className="text-sm font-medium text-[#6B7280] hover:text-[#111827]"
         >
-          Upload a profile photo
+          {isUploadingImage ? "Uploading photo..." : "Upload a profile photo"}
         </button>
+        {imageUploadError ? (
+          <p className="mt-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">
+            {imageUploadError}
+          </p>
+        ) : null}
       </div>
 
       {/* 4. Form Section */}

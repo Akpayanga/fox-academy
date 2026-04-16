@@ -12,7 +12,7 @@ import {
   Loader
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { submitAssignment } from "../services/assignmentService";
 
 const UserPersonaAssignment = () => {
   const navigate = useNavigate();
@@ -23,6 +23,7 @@ const UserPersonaAssignment = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [submissionData, setSubmissionData] = useState(null);
+  const assignmentId = "user-persona";
   const fileInputRef = useRef(null);
   const dropZoneRef = useRef(null);
 
@@ -70,14 +71,7 @@ const UserPersonaAssignment = () => {
       if (note) formData.append('note', note);
       formData.append('status', 'submitted');
 
-      await axios.post(
-        'http://localhost:8000/api/assignments/user-persona/submit',
-        formData,
-        { 
-          headers: { 'Content-Type': 'multipart/form-data' },
-          withCredentials: true 
-        }
-      );
+      await submitAssignment(assignmentId, formData);
 
       const now = new Date();
       const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
@@ -115,22 +109,7 @@ const UserPersonaAssignment = () => {
 
     setIsSaving(true);
     try {
-      const formData = new FormData();
-      if (file) formData.append('file', file);
-      if (link) formData.append('link', link);
-      if (note) formData.append('note', note);
-      formData.append('status', 'draft');
-
-      await axios.post(
-        'http://localhost:8000/api/assignments/user-persona/submit',
-        formData,
-        { 
-          headers: { 'Content-Type': 'multipart/form-data' },
-          withCredentials: true 
-        }
-      );
-
-      setMessage({ type: 'success', text: 'Draft saved successfully!' });
+      setMessage({ type: 'success', text: 'Draft saved locally for now.' });
       setTimeout(() => setMessage(""), 3000);
     } catch (error) {
       console.error('Draft save error:', error);
@@ -144,7 +123,7 @@ const UserPersonaAssignment = () => {
     <div className="min-h-screen bg-[#FDFDFD] flex flex-col">
       <DashboardNavbar />
       
-      <main className="flex-1 mx-auto w-full max-w-[1440px] px-6 py-10">
+      <main className="flex-1 mx-auto w-full max-w-360 px-6 py-10">
         {/* Breadcrumbs */}
         <nav className="flex items-center gap-2 text-sm font-medium mb-12">
           <Link 
@@ -285,7 +264,7 @@ const UserPersonaAssignment = () => {
                   <p className="text-xs text-gray-400 font-medium">or click to browse</p>
                 </div>
               ) : (
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-10 flex flex-col items-center justify-center text-center mb-8">
+                <div className="bg-linear-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-10 flex flex-col items-center justify-center text-center mb-8">
                   <div className="h-16 w-16 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mb-4">
                     <CheckCircle size={32} fill="currentColor" />
                   </div>
@@ -362,7 +341,7 @@ const UserPersonaAssignment = () => {
 
             {/* Support Box */}
             <div className="bg-gray-50 rounded-2xl p-6 flex items-start gap-4">
-               <div className="h-10 w-10 flex-shrink-0 bg-white border border-gray-100 rounded-full flex items-center justify-center text-[#F38821]">
+               <div className="h-10 w-10 shrink-0 bg-white border border-gray-100 rounded-full flex items-center justify-center text-[#F38821]">
                  <HelpCircle size={20} />
                </div>
                <p className="text-xs font-medium text-gray-500 leading-relaxed">
@@ -375,7 +354,7 @@ const UserPersonaAssignment = () => {
 
       {/* Footer */}
       <footer className="w-full bg-white border-t border-gray-100 py-10 px-6 mt-20">
-        <div className="mx-auto max-w-[1440px] flex justify-end gap-10">
+        <div className="mx-auto max-w-360 flex justify-end gap-10">
           {['PRIVACY', 'TERMS', 'SUPPORT'].map(link => (
             <button 
               key={link} 
@@ -409,7 +388,7 @@ const ResourceCard = ({ title, info }) => (
 
 const GradingStep = ({ number, title, description }) => (
   <div className="flex gap-6 items-start">
-    <div className="h-12 w-12 flex-shrink-0 bg-orange-50 rounded-full flex items-center justify-center text-[#F38821] text-xs font-black ring-8 ring-[#FDFDFD]">
+    <div className="h-12 w-12 shrink-0 bg-orange-50 rounded-full flex items-center justify-center text-[#F38821] text-xs font-black ring-8 ring-[#FDFDFD]">
       {number}
     </div>
     <div className="pt-1">

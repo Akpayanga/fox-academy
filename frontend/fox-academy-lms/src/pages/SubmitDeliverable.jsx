@@ -1,16 +1,31 @@
 import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AppNavbar from "../components/AppNavbar";
 import funke from "../assets/images/funke.jpg";
+import { submitAssignment } from "../services/assignmentService";
+import { deleteMediaFile, uploadBulkMedia } from "../services/mediaService";
 
 export default function SubmitDeliverable() {
+  const location = useLocation();
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+  const assignment = location.state || {};
+  const assignmentId = assignment.assignmentId || "general-deliverable";
+  const title = assignment.title || "UX Research Report";
+  const moduleLabel = assignment.module || "Phase 2 Foundations";
+  const dueDate = assignment.dueDate || "Oct 24, 2024";
+  const brief = assignment.brief || "Present your synthesis of user interviews and competitive analysis. Focus on the core friction points identified during the empathy phase. Your report should be structured for stakeholder presentation.";
+
   const [isBriefOpen, setIsBriefOpen] = useState(true);
   const [link, setLink] = useState("");
   const [notes, setNotes] = useState("");
-  const [uploadedFile, setUploadedFile] = useState(null);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [uploadedMedia, setUploadedMedia] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [isUploadingFiles, setIsUploadingFiles] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [message, setMessage] = useState("");
   const [checklist, setChecklist] = useState({
     aligned: false,
     publicLinks: false,
@@ -21,17 +36,170 @@ export default function SubmitDeliverable() {
   const toggleCheck = (key) =>
     setChecklist((prev) => ({ ...prev, [key]: !prev[key] }));
 
+  const normalizeMediaPayload = (payload) => {
+    const possibleList =
+      payload?.data?.files ||
+      payload?.files ||
+      payload?.data?.uploads ||
+      payload?.uploads ||
+      payload?.data ||
+      payload;
+
+    const list = Array.isArray(possibleList) ? possibleList : [possibleList].filter(Boolean);
+
+    return list.map((item, index) => ({
+      id: item?.id || item?._id || item?.fileId || item?.public_id || `${Date.now()}-${index}`,
+      name: item?.name || item?.originalName || item?.filename || `Uploaded file ${index + 1}`,
+      url: item?.url || item?.secure_url || item?.fileUrl || item?.location || "",
+      size: Number(item?.size || item?.bytes || 0),
+      raw: item,
+    }));
+  };
+
+  const uploadSelectedFiles = async (files) => {
+    if (!files.length) {
+      return;
+    }
+
+    setMessage("");
+    setIsUploadingFiles(true);
+
+    const optimisticFiles = files.map((file) => ({
+      id: `local-${file.name}-${file.lastModified}`,
+      name: file.name,
+      size: file.size,
+      url: "",
+      localFile: file,
+      isUploaded: false,
+    }));
+
+    setUploadedFiles((prev) => [...prev, ...optimisticFiles]);
+
+    try {
+      const response = await uploadBulkMedia(files, { type: "assignment-deliverable" });
+      const uploaded = normalizeMediaPayload(response);
+
+      setUploadedMedia((prev) => [...prev, ...uploaded]);
+      setUploadedFiles((prev) =>
+        prev.map((fileItem) => {
+          const matched = uploaded.find((u) => u.name === fileItem.name);
+          return matched
+            ? {
+                ...fileItem,
+                id: matched.id,
+                url: matched.url,
+                isUploaded: true,
+              }
+            : fileItem;
+        })
+      );
+
+      setMessage({ type: "success", text: "Files uploaded successfully." });
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text: error?.response?.data?.message || "File upload failed. Please try again.",
+      });
+    } finally {
+      setIsUploadingFiles(false);
+    }
+  };
+
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      setUploadedFile(e.dataTransfer.files[0]);
+    if (e.dataTransfer.files?.length) {
+      const files = Array.from(e.dataTransfer.files);
+      uploadSelectedFiles(files);
     }
   };
 
   const handleFileSelect = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setUploadedFile(e.target.files[0]);
+    if (e.target.files?.length) {
+      const files = Array.from(e.target.files);
+      uploadSelectedFiles(files);
+      e.target.value = "";
+    }
+  };
+
+  const handleDeleteUploadedFile = async (file) => {
+    try {
+      if (file?.id && !String(file.id).startsWith("local-")) {
+        await deleteMediaFile(file.id);
+      }
+
+      setUploadedFiles((prev) => prev.filter((item) => item.id !== file.id));
+      setUploadedMedia((prev) => prev.filter((item) => item.id !== file.id));
+      setMessage({ type: "success", text: "File removed." });
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text: error?.response?.data?.message || "Could not remove file right now.",
+      });
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!uploadedFiles.length && !link) {
+      setMessage({ type: "error", text: "Please upload a file or provide a link" });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData();
+      uploadedFiles.forEach((file) => {
+        if (file.localFile) {
+          formData.append("files", file.localFile);
+        }
+      });
+
+      if (uploadedMedia.length) {
+        formData.append(
+          "uploadedMedia",
+          JSON.stringify(uploadedMedia.map((file) => file.raw || file))
+        );
+      }
+
+      if (link) formData.append("link", link);
+      if (notes) formData.append("note", notes);
+      formData.append("checklist", JSON.stringify(checklist));
+      formData.append("status", "submitted");
+
+      await submitAssignment(assignmentId, formData);
+
+      setMessage({ type: "success", text: "Assignment submitted successfully." });
+      setTimeout(() => {
+        navigate('/assignments/submitted', {
+          state: {
+            assignmentTitle: title,
+            assignmentId,
+          },
+        });
+      }, 500);
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text: error?.response?.data?.message || "Failed to submit assignment",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSaveDraft = async () => {
+    if (!uploadedFiles.length && !link && !notes) {
+      setMessage({ type: "error", text: "Nothing to save" });
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      setMessage({ type: "success", text: "Draft saved locally for now." });
+      setTimeout(() => setMessage(""), 3000);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -39,7 +207,7 @@ export default function SubmitDeliverable() {
     <div className="min-h-screen bg-[#FDFDFD] font-sans pb-20">
       <AppNavbar />
 
-      <main className="max-w-[1216px] mx-auto p-4 md:p-8 mt-4">
+      <main className="max-w-304 mx-auto p-4 md:p-8 mt-4">
         {/* Breadcrumb */}
         <button
           onClick={() => navigate('/my-work-board')}
@@ -54,10 +222,10 @@ export default function SubmitDeliverable() {
           <div className="lg:col-span-8">
             {/* Page Title */}
             <h1 className="text-[28px] md:text-[36px] font-bold text-gray-900 tracking-tight mb-1">
-              Submit: UX Research Report
+              Submit: {title}
             </h1>
             <p className="text-sm text-gray-400 mb-8">
-              Track: Phase 2 Foundations &nbsp;·&nbsp; Due: Oct 24, 2024 &nbsp;·
+              Track: {moduleLabel} &nbsp;·&nbsp; Due: {dueDate} &nbsp;·
             </p>
 
             {/* Deliverable Brief */}
@@ -87,10 +255,7 @@ export default function SubmitDeliverable() {
               {isBriefOpen && (
                 <div className="px-6 pb-6 -mt-2">
                   <p className="text-[13.5px] text-gray-600 leading-relaxed mb-6">
-                    Present your synthesis of user interviews and competitive
-                    analysis. Focus on the core friction points identified during
-                    the empathy phase. Your report should be structured for
-                    stakeholder presentation.
+                    {brief}
                   </p>
 
                   {/* Requirements Checklist */}
@@ -101,7 +266,7 @@ export default function SubmitDeliverable() {
                     <div className="flex flex-col gap-3">
                       <div className="flex items-center gap-2.5">
                         <svg
-                          className="w-[18px] h-[18px] text-[#22C55E] shrink-0"
+                          className="w-4.5 h-4.5 text-[#22C55E] shrink-0"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
@@ -119,7 +284,7 @@ export default function SubmitDeliverable() {
                       </div>
                       <div className="flex items-center gap-2.5">
                         <svg
-                          className="w-[18px] h-[18px] text-[#22C55E] shrink-0"
+                          className="w-4.5 h-4.5 text-[#22C55E] shrink-0"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
@@ -137,7 +302,7 @@ export default function SubmitDeliverable() {
                       </div>
                       <div className="flex items-center gap-2.5">
                         <svg
-                          className="w-[18px] h-[18px] text-[#22C55E] shrink-0"
+                          className="w-4.5 h-4.5 text-[#22C55E] shrink-0"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
@@ -175,7 +340,7 @@ export default function SubmitDeliverable() {
                 className={`border-2 border-dashed rounded-xl flex flex-col items-center justify-center py-14 px-6 cursor-pointer transition-colors ${
                   isDragging
                     ? "border-[#F38821] bg-orange-50/40"
-                    : uploadedFile
+                    : uploadedFiles.length
                       ? "border-green-300 bg-green-50/30"
                       : "border-gray-200 bg-white hover:border-gray-300"
                 }`}
@@ -184,10 +349,11 @@ export default function SubmitDeliverable() {
                   ref={fileInputRef}
                   type="file"
                   accept=".pdf,.docx,.zip"
+                  multiple
                   onChange={handleFileSelect}
                   className="hidden"
                 />
-                {uploadedFile ? (
+                {uploadedFiles.length ? (
                   <div className="flex flex-col items-center gap-2">
                     <svg
                       className="w-8 h-8 text-[#22C55E]"
@@ -203,10 +369,10 @@ export default function SubmitDeliverable() {
                       />
                     </svg>
                     <p className="text-sm font-semibold text-gray-800">
-                      {uploadedFile.name}
+                      {uploadedFiles.length} file{uploadedFiles.length > 1 ? "s" : ""} ready
                     </p>
                     <p className="text-xs text-gray-400">
-                      {(uploadedFile.size / 1024 / 1024).toFixed(2)} MB
+                      {isUploadingFiles ? "Uploading to media service..." : "Upload complete"}
                     </p>
                   </div>
                 ) : (
@@ -235,11 +401,37 @@ export default function SubmitDeliverable() {
                       </span>
                     </p>
                     <p className="text-xs text-gray-400 mt-3">
-                      Maximum file size: 25MB (PDF, DOCX, ZIP)
+                      Maximum file size: 25MB each (PDF, DOCX, ZIP)
                     </p>
                   </>
                 )}
               </div>
+
+              {uploadedFiles.length ? (
+                <div className="mt-4 space-y-3">
+                  {uploadedFiles.map((file) => (
+                    <div
+                      key={file.id}
+                      className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3"
+                    >
+                      <div>
+                        <p className="text-sm font-semibold text-gray-800">{file.name}</p>
+                        <p className="text-xs text-gray-400">
+                          {(file.size / 1024 / 1024).toFixed(2)} MB
+                          {file.isUploaded ? " · Synced" : " · Pending sync"}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteUploadedFile(file)}
+                        className="rounded-lg border border-red-200 bg-red-50 px-3 py-1 text-xs font-semibold text-red-700 hover:bg-red-100"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
             </div>
 
             {/* Or Paste a Link */}
@@ -269,6 +461,18 @@ export default function SubmitDeliverable() {
                 className="w-full border border-gray-200 rounded-xl px-4 py-3.5 text-sm text-gray-700 placeholder-gray-300 outline-none focus:border-[#F38821] focus:ring-1 focus:ring-[#F38821]/20 transition resize-none bg-white"
               />
             </div>
+
+            {message ? (
+              <div
+                className={`mb-8 rounded-xl border px-4 py-3 text-sm ${
+                  message.type === "success"
+                    ? "border-green-200 bg-green-50 text-green-700"
+                    : "border-red-200 bg-red-50 text-red-700"
+                }`}
+              >
+                {message.text}
+              </div>
+            ) : null}
 
             {/* Before You Submit */}
             <div className="bg-[#FFF8F0] border border-[#F3882133] rounded-xl p-6 mb-10">
@@ -340,11 +544,16 @@ export default function SubmitDeliverable() {
 
             {/* Action Buttons */}
             <div className="flex items-center gap-6">
-              <button className="text-[#F38821] text-sm font-bold hover:underline transition">
+              <button type="button" onClick={handleSaveDraft} className="text-[#F38821] text-sm font-bold hover:underline transition">
                 ← Save Draft
               </button>
-              <button className="bg-[#F38821] text-white px-8 py-3 rounded-xl text-sm font-bold hover:bg-[#e07a1a] transition shadow-sm">
-                Submit Deliverable
+              <button
+                type="button"
+                onClick={handleSubmit}
+                disabled={isSubmitting || isUploadingFiles}
+                className="bg-[#F38821] text-white px-8 py-3 rounded-xl text-sm font-bold hover:bg-[#e07a1a] transition shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? "Submitting..." : "Submit Deliverable"}
               </button>
             </div>
           </div>

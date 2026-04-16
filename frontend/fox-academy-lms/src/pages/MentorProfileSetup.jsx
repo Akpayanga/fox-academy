@@ -1,13 +1,50 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StepProgress from "../components/StepProgress";
 import ProfileField from "../components/ProfileField";
+import { uploadSingleMedia } from "../services/mediaService";
 
 export default function MentorProfileSetup() {
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
 
   // Track the bio text in state
   const [bio, setBio] = useState("");
+  const [profileImage, setProfileImage] = useState("");
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [imageUploadError, setImageUploadError] = useState("");
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleImageChange = async (event) => {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    setImageUploadError("");
+    setProfileImage(URL.createObjectURL(file));
+    setIsUploadingImage(true);
+
+    try {
+      const response = await uploadSingleMedia(file, { type: "mentor-profile-photo" });
+      const remoteUrl =
+        response?.data?.url || response?.url || response?.data?.secure_url || response?.secure_url;
+
+      if (remoteUrl) {
+        setProfileImage(remoteUrl);
+      }
+    } catch (error) {
+      setImageUploadError(
+        error?.response?.data?.message || "Photo upload failed. You can still continue."
+      );
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
 
   const handleFinishSetup = (e) => {
     e.preventDefault();
@@ -16,6 +53,14 @@ export default function MentorProfileSetup() {
 
   return (
     <div className="min-h-screen bg-[#F9FAFB] flex flex-col items-center py-10 px-4 md:px-8 font-sans w-full">
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleImageChange}
+        className="hidden"
+      />
+
       <div className="flex flex-col items-center mb-8">
         <h2 className="text-[22px] font-black text-gray-900 tracking-[0.2em] mb-8">
           FOX ACADEMY
@@ -23,13 +68,13 @@ export default function MentorProfileSetup() {
         <StepProgress currentStep={2} />
       </div>
 
-      <div className="w-full max-w-[800px] bg-white border border-gray-100 rounded-xl overflow-hidden shadow-[0_2px_15px_rgba(0,0,0,0.03)] focus-within:shadow-[0_4px_25px_rgba(0,0,0,0.05)] transition-shadow">
+      <div className="w-full max-w-200 bg-white border border-gray-100 rounded-xl overflow-hidden shadow-[0_2px_15px_rgba(0,0,0,0.03)] focus-within:shadow-[0_4px_25px_rgba(0,0,0,0.05)] transition-shadow">
         <div className="p-8 md:p-12">
           <div className="text-center mb-10">
             <h1 className="text-[26px] font-bold text-gray-900 mb-2.5">
               Set Up Your Profile
             </h1>
-            <p className="text-[14px] text-gray-400 font-medium leading-relaxed max-w-[480px] mx-auto">
+            <p className="text-[14px] text-gray-400 font-medium leading-relaxed max-w-120 mx-auto">
               This information will be visible to your assigned interns. Take a
               moment to make a good first impression.
             </p>
@@ -39,15 +84,24 @@ export default function MentorProfileSetup() {
             <p className="text-[10px] font-bold text-gray-900 mb-3 uppercase tracking-wide">
               Upload a profile photo
             </p>
-            <div className="w-[110px] h-[110px] rounded-[16px] bg-[#FFF4E8] border-2 border-dashed border-gray-200 flex items-center justify-center mb-4">
-              <span className="text-[28px] font-bold text-gray-400">FA</span>
+            <div className="w-27.5 h-27.5 rounded-2xl bg-[#FFF4E8] border-2 border-dashed border-gray-200 flex items-center justify-center mb-4 overflow-hidden">
+              {profileImage ? (
+                <img
+                  src={profileImage}
+                  alt="Mentor Profile"
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <span className="text-[28px] font-bold text-gray-400">FA</span>
+              )}
             </div>
             <div className="flex items-center gap-3">
               <button
                 type="button"
+                onClick={handleImageClick}
                 className="text-[13px] font-bold text-gray-900 hover:underline underline-offset-4"
               >
-                Upload Photo
+                {isUploadingImage ? "Uploading Photo..." : "Upload Photo"}
               </button>
               <span className="text-gray-200 text-[10px]">•</span>
               <button
@@ -58,6 +112,11 @@ export default function MentorProfileSetup() {
                 Skip for now
               </button>
             </div>
+            {imageUploadError ? (
+              <p className="mt-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">
+                {imageUploadError}
+              </p>
+            ) : null}
           </div>
 
           <form className="flex flex-col gap-6" onSubmit={handleFinishSetup}>
@@ -120,9 +179,9 @@ export default function MentorProfileSetup() {
                 </span>
                 <button
                   type="button"
-                  className="w-[42px] h-[22px] bg-[#4CAF50] rounded-full relative transition-colors cursor-pointer shrink-0"
+                  className="w-10.5 h-5.5 bg-[#4CAF50] rounded-full relative transition-colors cursor-pointer shrink-0"
                 >
-                  <div className="absolute right-[4px] top-[4px] w-[14px] h-[14px] bg-white rounded-full shadow-sm"></div>
+                  <div className="absolute right-1 top-1 w-3.5 h-3.5 bg-white rounded-full shadow-sm"></div>
                 </button>
               </div>
             </div>

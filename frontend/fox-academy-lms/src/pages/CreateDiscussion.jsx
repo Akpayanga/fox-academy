@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DashboardNavbar from "../components/DashboardNavbar";
 import { 
   ChevronDown, 
@@ -12,14 +12,21 @@ import {
   Upload,
   Info
 } from "lucide-react";
+import { createDiscussion } from "../services/communityService";
 
 const CreateDiscussion = () => {
+  const navigate = useNavigate();
 
   const [activeChannel, setActiveChannel] = useState("UX-DESIGN");
   const [activeSubChannel, setActiveSubChannel] = useState("GENERAL");
   const [selectedTag, setSelectedTag] = useState("Wireframing");
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState("");
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const fileInputRef = useRef(null);
 
   const channels = [
@@ -59,13 +66,64 @@ const CreateDiscussion = () => {
     }
   };
 
+  const handleSubmit = async () => {
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    if (!title.trim()) {
+      setErrorMessage("Discussion title is required.");
+      return;
+    }
+
+    if (!body.trim()) {
+      setErrorMessage("Discussion content is required.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const payload = {
+        title: title.trim(),
+        content: body.trim(),
+        tag: selectedTag,
+        channel: activeChannel,
+        subChannel: activeSubChannel,
+      };
+
+      if (fileName) {
+        payload.attachmentName = fileName;
+      }
+
+      const response = await createDiscussion(payload);
+      const discussionId = response?.data?.id || response?.data?._id || response?.id || response?._id;
+
+      setSuccessMessage(response?.message || "Discussion posted successfully.");
+
+      setTimeout(() => {
+        if (discussionId) {
+          navigate(`/community/discussion/${discussionId}`);
+          return;
+        }
+
+        navigate("/community");
+      }, 500);
+    } catch (error) {
+      setErrorMessage(
+        error?.response?.data?.message || "Unable to create discussion right now."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#FDFDFD] flex flex-col">
       <DashboardNavbar />
       
-      <main className="flex-1 flex max-w-[1440px] mx-auto w-full">
+      <main className="flex-1 flex max-w-360 mx-auto w-full">
         {/* Left Sidebar - Channels (Shared) */}
-        <aside className="w-[280px] shrink-0 border-r border-gray-50 p-8 hidden lg:block">
+        <aside className="w-70 shrink-0 border-r border-gray-50 p-8 hidden lg:block">
           <div className="mb-10">
             <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-6">
               STUDENT PORTAL
@@ -133,6 +191,8 @@ const CreateDiscussion = () => {
               <label className="text-[12px] font-black text-[#111827] uppercase tracking-widest ml-1">Discussion Title</label>
               <input 
                 type="text" 
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
                 placeholder="Give your discussion a clear, specific title..."
                 className="w-full rounded-2xl border border-gray-100 bg-white px-6 py-4 text-sm font-medium outline-none transition-all focus:border-[#F38821] focus:ring-4 focus:ring-orange-50 shadow-sm"
               />
@@ -141,7 +201,7 @@ const CreateDiscussion = () => {
             {/* Body Content */}
             <div className="space-y-3">
               <label className="text-[12px] font-black text-[#111827] uppercase tracking-widest ml-1">What's on your mind?</label>
-              <div className="overflow-hidden rounded-[32px] border border-gray-100 bg-white shadow-sm transition-all focus-within:border-[#F38821] focus-within:ring-4 focus-within:ring-orange-50">
+              <div className="overflow-hidden rounded-4xl border border-gray-100 bg-white shadow-sm transition-all focus-within:border-[#F38821] focus-within:ring-4 focus-within:ring-orange-50">
                 <div className="flex items-center gap-6 border-b border-gray-50 px-8 py-4 bg-gray-50/30">
                   <button className="text-gray-400 hover:text-[#111827] transition-colors"><Bold size={18} /></button>
                   <button className="text-gray-400 hover:text-[#111827] transition-colors"><Italic size={18} /></button>
@@ -151,6 +211,8 @@ const CreateDiscussion = () => {
                 <textarea 
                   placeholder="Ask a question, share a resource..."
                   rows={8}
+                  value={body}
+                  onChange={(event) => setBody(event.target.value)}
                   className="w-full px-8 py-6 text-sm font-medium outline-none bg-transparent resize-none"
                 />
               </div>
@@ -181,7 +243,7 @@ const CreateDiscussion = () => {
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current.click()}
-                className={`flex flex-col items-center justify-center rounded-[32px] border-2 border-dashed p-12 transition-all cursor-pointer
+                className={`flex flex-col items-center justify-center rounded-4xl border-2 border-dashed p-12 transition-all cursor-pointer
                   ${isDragging ? 'border-[#F38821] bg-orange-50/50' : 'border-gray-100 bg-white hover:border-gray-200 hover:bg-gray-50/30'}`}
               >
                 <input 
@@ -216,17 +278,34 @@ const CreateDiscussion = () => {
                 >
                   Cancel
                 </Link>
-                <button className="px-10 py-4 rounded-2xl bg-[#F38821] text-[12px] font-black uppercase tracking-widest text-white shadow-xl shadow-orange-100 transition-all hover:bg-[#e37b1d]">
-                  Post
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  className="px-10 py-4 rounded-2xl bg-[#F38821] text-[12px] font-black uppercase tracking-widest text-white shadow-xl shadow-orange-100 transition-all hover:bg-[#e37b1d] disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {isSubmitting ? "Posting..." : "Post"}
                 </button>
               </div>
             </div>
+
+            {errorMessage ? (
+              <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {errorMessage}
+              </p>
+            ) : null}
+
+            {successMessage ? (
+              <p className="rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+                {successMessage}
+              </p>
+            ) : null}
           </div>
         </section>
 
         {/* Right Sidebar - Tips & Rules */}
-        <aside className="w-[340px] shrink-0 p-8 pt-12 space-y-10 hidden xl:block border-l border-gray-50">
-          <div className="rounded-[32px] bg-white border border-gray-50 p-8 shadow-sm">
+        <aside className="w-85 shrink-0 p-8 pt-12 space-y-10 hidden xl:block border-l border-gray-50">
+          <div className="rounded-4xl bg-white border border-gray-50 p-8 shadow-sm">
             <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-8">TIPS FOR A GOOD POST</h3>
             <div className="space-y-8">
               {[
@@ -242,7 +321,7 @@ const CreateDiscussion = () => {
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-[32px] bg-[#F38821] p-8 text-white shadow-2xl shadow-orange-100/50">
+          <div className="relative overflow-hidden rounded-4xl bg-[#F38821] p-8 text-white shadow-2xl shadow-orange-100/50">
             <div className="relative z-10 flex flex-col gap-4">
               <div className="h-10 w-10 rounded-xl bg-white/20 flex items-center justify-center">
                 <Info size={20} />

@@ -5,6 +5,7 @@ import CourseCard from "../components/CourseCard";
 import { ChevronRight } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { listAllCourses } from "../services/courseService";
+import { getServerHealth } from "../services/systemService";
 
 // Importing demo images
 import auth1 from "../assets/images/auth1.png";
@@ -15,6 +16,8 @@ export default function Dashboard() {
   const [courses, setCourses] = useState([]);
   const [isLoadingCourses, setIsLoadingCourses] = useState(true);
   const [coursesError, setCoursesError] = useState("");
+  const [healthStatus, setHealthStatus] = useState("checking");
+  const [healthMessage, setHealthMessage] = useState("Checking server...");
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -36,6 +39,26 @@ export default function Dashboard() {
     };
 
     fetchCourses();
+  }, []);
+
+  useEffect(() => {
+    const checkHealth = async () => {
+      try {
+        const response = await getServerHealth();
+        const status =
+          response?.status || response?.data?.status || response?.message || "healthy";
+
+        setHealthStatus("healthy");
+        setHealthMessage(String(status));
+      } catch (error) {
+        const message =
+          error?.response?.data?.message || error?.message || "Server currently unavailable";
+        setHealthStatus("down");
+        setHealthMessage(message);
+      }
+    };
+
+    checkHealth();
   }, []);
 
   const activeCourses = useMemo(() => {
@@ -68,6 +91,20 @@ export default function Dashboard() {
           <div className="space-y-12">
             {/* Welcome Section */}
             <WelcomeBanner name="Amara" progress={18} />
+
+            <div className="flex items-center justify-start">
+              <span
+                className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${
+                  healthStatus === "healthy"
+                    ? "bg-[#ECFDF3] text-[#166534]"
+                    : healthStatus === "down"
+                    ? "bg-[#FEF2F2] text-[#B91C1C]"
+                    : "bg-[#F3F4F6] text-[#4B5563]"
+                }`}
+              >
+                API Health: {healthMessage}
+              </span>
+            </div>
 
             {/* Courses Section */}
             <div className="space-y-6">

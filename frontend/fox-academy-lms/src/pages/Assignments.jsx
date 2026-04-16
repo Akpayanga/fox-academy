@@ -101,6 +101,18 @@ const Assignments = () => {
                 dueDate="Due Mar 22"
                 actionText="Complete Task"
                 actionType="primary"
+                onClick={() =>
+                  navigate('/submit-deliverable', {
+                    state: {
+                      assignmentId: 'interview-script',
+                      title: 'Interview Script',
+                      module: 'Module 2',
+                      dueDate: 'Due Mar 22',
+                      brief:
+                        'Write a structured interview script that captures user pain points, motivations, and context for research.',
+                    },
+                  })
+                }
               />
 
               {/* Card 2: User Persona Document */}
@@ -115,7 +127,18 @@ const Assignments = () => {
                 dueDate="Due Mar 24"
                 actionText="Continue Draft"
                 actionType="primary"
-                onClick={() => navigate('/assignments/user-persona')}
+                onClick={() =>
+                  navigate('/submit-deliverable', {
+                    state: {
+                      assignmentId: 'user-persona',
+                      title: 'User Persona Document',
+                      module: 'Module 3: Synthesizing Research Data',
+                      dueDate: 'Due Mar 24',
+                      brief:
+                        'Synthesize your user research into three distinct personas with goals, behaviors, and workflows.',
+                    },
+                  })
+                }
               />
 
               {/* Card 3: Usability Quiz */}
@@ -127,6 +150,18 @@ const Assignments = () => {
                 dueDate="Due Mar 26"
                 actionText="Start Task"
                 actionType="secondary"
+                onClick={() =>
+                  navigate('/submit-deliverable', {
+                    state: {
+                      assignmentId: 'usability-quiz',
+                      title: 'Usability Quiz',
+                      module: 'Module 3',
+                      dueDate: 'Due Mar 26',
+                      brief:
+                        'Complete the quiz and submit any supporting notes or files requested by the mentor.',
+                    },
+                  })
+                }
               />
 
               {/* Card 4: UX Foundations Reflection */}
@@ -138,6 +173,18 @@ const Assignments = () => {
                 dueDate="Due Mar 28"
                 actionText="Start Quiz"
                 actionType="secondary"
+                onClick={() =>
+                  navigate('/submit-deliverable', {
+                    state: {
+                      assignmentId: 'ux-foundations-reflection',
+                      title: 'UX Foundations Reflection',
+                      module: 'Module 1',
+                      dueDate: 'Due Mar 28',
+                      brief:
+                        'Share your reflection on the foundational UX concepts covered in the module.',
+                    },
+                  })
+                }
               />
             </div>
           </section>
@@ -261,6 +308,7 @@ const AssignmentCard = ({
         {actionType === 'primary' ? (
           <button 
             onClick={onClick}
+            type="button"
             className="w-full sm:w-40 bg-[#F38821] hover:bg-[#E07A1D] text-white text-xs font-black py-3 rounded-full transition-colors shadow-lg shadow-orange-100"
           >
             {actionText}
@@ -268,6 +316,7 @@ const AssignmentCard = ({
         ) : (
           <button 
             onClick={onClick}
+            type="button"
             className="w-full sm:w-40 border-2 border-[#FFF7ED] hover:border-[#F38821] text-[#F38821] text-xs font-black py-3 rounded-full transition-colors"
           >
             {actionText}
