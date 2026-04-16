@@ -2,6 +2,11 @@ const Application = require("../models/application.model");
 const { recordAudit } = require("../utilities/audit.util");
 const { success } = require("../utilities/response");
 const ApiError = require("../utilities/apiError.util");
+const crypto = require("crypto");
+const { generateRefreshToken } = require("../utilities/jwt");
+const { enqueueVerificationEmail } = require("../service/email.service");
+const dotenv = require("dotenv");
+dotenv.config();
 
 /**
  * Submit a new internship application
@@ -30,6 +35,10 @@ exports.submitApplication = async (req, res, next) => {
       );
     }
 
+    const invitationCode = crypto.randomBytes(6).toString("hex").toUpperCase();
+    const token = generateRefreshToken({ email });
+    let expiryHours = Number(process.env.INVITE_EXPIRY_HOURS_STUDENT) || 48; // Default expiry
+
     const application = await Application.create({
       fullName,
       email,
@@ -40,6 +49,8 @@ exports.submitApplication = async (req, res, next) => {
       portfolioUrl,
       githubLinkedin,
     });
+
+    await enqueueVerificationEmail(email, token, invitationCode, "student");
 
     // Audit log
     await recordAudit({
@@ -72,14 +83,14 @@ exports.getApplicationStatus = async (req, res, next) => {
 
     // Audit log
     await recordAudit({
-  userId: null,
-  action: "APPLICATION_STATUS",
-  details: `Status checked for ${email}`,
-  req,
-  status: "success",
-  resourceId: application._id,
-  resourceType: "Application",
-});
+      userId: null,
+      action: "APPLICATION_STATUS",
+      details: `Status checked for ${email}`,
+      req,
+      status: "success",
+      resourceId: application._id,
+      resourceType: "Application",
+    });
 
     return success(
       res,

@@ -32,7 +32,7 @@ const sendVerificationEmail = async (email, token, code, role) => {
     }
     const cleanToken = token.replace(/\s/g, "");
 
-    const url = `${process.env.CLIENT_URL}/verify-invitation?token=${encodeURIComponent(cleanToken)}&code=${encodeURIComponent(code)}`;
+    const url = `${process.env.CLIENT_URL}/verify-email?token=${encodeURIComponent(cleanToken)}&code=${encodeURIComponent(code)}`;
 
     const expiryHours =
       role === "student"
