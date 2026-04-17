@@ -8,6 +8,9 @@ const mongoose = require("mongoose");
 const connectDB = require("./config/database");
 require("./config/passport.config");
 
+// Setup Background Workers
+require("./workers/emailWorker");
+
 // Import routes
 const authRoutes = require("./routes/UserInstructor.Auth.route");
 const passwordRoutes = require("./routes/password.route");
