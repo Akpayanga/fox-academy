@@ -70,7 +70,18 @@ passport.use(
         }
 
         //Send welcome email once verified
-        await enqueueWelcomeEmail(user.email);
+        await enqueueWelcomeEmailAdmin(user._id, user.email, user.firstName);
+
+        await recordAudit({
+          userId: user._id,
+          action: "EMAIL_ENQUEUED:WELCOME_ADMIN",
+          details: `Admin welcome email enqueued for ${user.email}`,
+          req: {},
+          status: "success",
+          resourceId: user._id,
+          resourceType: "User",
+          metadata: { provider: "google" },
+        });
 
         const token = generateAccessToken({ id: user._id, role: user.role });
 
@@ -154,7 +165,18 @@ passport.use(
           });
         }
 
-        await enqueueWelcomeEmail(user.email);
+        await enqueueWelcomeEmailStudent(user._id, user.email, user.firstName);
+
+        await recordAudit({
+          userId: user._id,
+          action: "EMAIL_ENQUEUED:WELCOME_STUDENT",
+          details: `Student welcome email enqueued for ${user.email}`,
+          req: {},
+          status: "success",
+          resourceId: user._id,
+          resourceType: "User",
+          metadata: { provider: "google" },
+        });
 
         const token = generateAccessToken({ id: user._id, role: user.role });
 

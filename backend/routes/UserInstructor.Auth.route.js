@@ -11,28 +11,23 @@ const requireOnboarding = require("../middleware/Require.Onboarding.middleware")
 
 const { preRegisterSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema, completeStudentProfileSchema, completeMentorProfileSchema, updateProfileSchema } = require("../validation/Auth.validation");
 
-// Invitation flows
-router.post(
-  "/pre-register",
-  validate(preRegisterSchema),
-  userInstructorAuth.preRegister,
-);
+// Student invitation flows
+router.post("/pre-register", validate(preRegisterSchema), userInstructorAuth.preRegister);
 router.post("/verify-invitation", userInstructorAuth.verifyInvitation);
-router.post("/complete-registration", userInstructorAuth.completeRegistration);
+router.post("/complete-registration", userInstructorAuth.StudentcompleteRegistration);
+router.post("/login", validate(loginSchema), userInstructorAuth.Studentlogin);
+router.post("/refresh-token", userInstructorAuth.StudentrefreshToken);
+router.post("/logout", auth, userInstructorAuth.studentLogout);
 
-// Shared auth flows
-router.post("/login", validate(loginSchema), userInstructorAuth.login);
-router.post("/refresh-token", userInstructorAuth.refreshToken);
-router.post(
-  "/forgot-password",
-  validate(forgotPasswordSchema),
-  authController.forgotPassword,
-);
-router.post(
-  "/reset-password",
-  validate(resetPasswordSchema),
-  authController.resetPassword,
-);
+// Mentor invitation flows
+router.post("/mentor/verify-invitation", userInstructorAuth.mentorVerifyInvitation);
+router.post("/mentor/complete-registration", userInstructorAuth.completeMentorRegistration);
+router.post("/login", validate(loginSchema), userInstructorAuth.instructorLogin);
+router.post("/refresh-token", userInstructorAuth.instructorRefreshToken);
+
+//shared flow
+router.post("/forgot-password", validate(forgotPasswordSchema), authController.forgotPassword);
+router.post("/reset-password", validate(resetPasswordSchema), authController.resetPassword);
 
 // Profile & onboarding
 router.get("/profile", auth, requireOnboarding, userInstructorAuth.profile);
@@ -47,13 +42,8 @@ router.post(
 );
 
 // Mentor profile completion
-router.post(
-  "/complete-mentor-profile",
-  auth,
-  requireRole("instructor"),
-  validate(completeMentorProfileSchema),
-  userInstructorAuth.completeMentorProfile,
-);
+router.post("/complete-mentor-profile",auth,requireRole("instructor"),validate(completeMentorProfileSchema), userInstructorAuth.completeMentorProfile);
+router.post("/logout", auth, userInstructorAuth.instructorLogout);
 
 // Update profile
 router.put("/update-profile", auth, validate(updateProfileSchema), userInstructorAuth.updateProfile);
@@ -61,8 +51,6 @@ router.put("/update-profile", auth, validate(updateProfileSchema), userInstructo
 // Delete profile
 router.delete("/delete-profile", auth, userInstructorAuth.deleteProfile);
 
-// Logout
-router.post("/logout", auth, userInstructorAuth.logout);
 
 // delete user
 router.delete("/delete-user", userInstructorAuth.deleteUser);

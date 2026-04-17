@@ -16,12 +16,7 @@ const { recordAudit } = require("../utilities/audit.util");
 // ADMIN REGISTER
 exports.adminRegister = async (req, res, next) => {
   try {
-    const { firstName, lastName, email, password, role } = req.body;
-
-    // Require role explicitly
-    if (role !== "admin") {
-      throw new ApiError(400, "Role must be admin");
-    }
+    const { firstName, lastName, email, password } = req.body;
 
     let user = await User.findOne({ email, provider: "local" });
     if (user) throw new ApiError(400, "User already exists");
@@ -34,13 +29,12 @@ exports.adminRegister = async (req, res, next) => {
       email,
       password,
       provider: "local",
-      role,
+      role: "admin",
       isVerified: false,
       verificationToken: token,
       verificationTokenExpiry: Date.now() + 3600000,
     });
 
-    // Instead of only sending email, also return accessToken
     const accessToken = generateAccessToken({ id: user._id, role: user.role });
 
     await recordAudit({
@@ -63,7 +57,6 @@ exports.adminRegister = async (req, res, next) => {
     next(err);
   }
 };
-
 // ADMIN VERIFY EMAIL
 exports.adminVerifyEmail = async (req, res, next) => {
   try {
@@ -80,6 +73,18 @@ exports.adminVerifyEmail = async (req, res, next) => {
     user.verificationToken = null;
     user.verificationTokenExpiry = null;
     await user.save();
+    await enqueueWelcomeEmailAdmin(user._id, user.email, user.firstName);
+
+    await recordAudit({
+      userId: user._id,
+      action: "EMAIL_ENQUEUED:WELCOME_ADMIN",
+      details: `Admin welcome email enqueued for ${user.email}`,
+      req,
+      status: "success",
+      resourceId: user._id,
+      resourceType: "User",
+      metadata: { email: user.email },
+    });
 
     await recordAudit({
       userId: user._id,
@@ -91,8 +96,6 @@ exports.adminVerifyEmail = async (req, res, next) => {
       resourceType: "User",
       metadata: { role: "admin" },
     });
-
-    await enqueueWelcomeEmail(user.email);
 
     return success(res, null, "Admin email verified successfully");
   } catch (err) {
@@ -127,22 +130,24 @@ exports.googleAdminLogin = async (req, res, next) => {
   }
 };
 
-// ADMIN LOGIN
 exports.adminLogin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+
+    // Always enforce admin role internally
     const user = await User.findOne({
       email,
       provider: "local",
       role: "admin",
     }).notDeleted();
+
     if (!user) throw new ApiError(404, "Admin not found");
     if (!user.isVerified) throw new ApiError(403, "Admin account not verified");
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) throw new ApiError(401, "Invalid credentials");
 
-    const accessToken = generateAccessToken({ id: user._id, role: user.role });
+    const accessToken = generateAccessToken({ id: user._id, role: "admin" });
     const refreshToken = generateRefreshToken({ id: user._id });
 
     res.cookie("refreshToken", refreshToken, {
@@ -211,15 +216,19 @@ exports.adminLogout = async (req, res, next) => {
   try {
     res.clearCookie("refreshToken");
 
+    if (!req.user || req.user.role !== "admin") {
+      throw new ApiError(403, "Only admins can log out here");
+    }
+
     await recordAudit({
-      userId: req.user?.id,
+      userId: req.user.id,
       action: "ADMIN_LOGOUT",
       details: "Admin logged out",
       req,
       status: "success",
-      resourceId: req.user?.id,
+      resourceId: req.user.id,
       resourceType: "User",
-      metadata: { role: "admin" },
+      metadata: { role: "admin", email: req.user.email },
     });
 
     return success(res, null, "Admin logout successful");
@@ -237,23 +246,20 @@ exports.adminInviteMentor = async (req, res, next) => {
       throw new ApiError(400, "Email, discipline, and role title are required");
     }
 
-    // Check if mentor already exists
     let user = await User.findOne({ email, provider: "local" });
     if (user) throw new ApiError(400, "Mentor already exists");
 
-    // Generate invitation code + token
     const invitationCode = crypto.randomBytes(6).toString("hex").toUpperCase();
     const token = generateRefreshToken({ email });
 
     const expiryHours =
       Number(process.env.INVITE_EXPIRY_HOURS_INSTRUCTOR) || 48;
 
-    // Create mentor record
     user = await User.create({
       firstName: fullName.split(" ")[0],
       lastName: fullName.split(" ").slice(1).join(" "),
       email,
-      role: "instructor",
+      role: "instructor", // force role internally
       discipline,
       roleTitle,
       preRegistered: true,
@@ -262,10 +268,8 @@ exports.adminInviteMentor = async (req, res, next) => {
       verificationTokenExpiry: Date.now() + expiryHours * 60 * 60 * 1000,
     });
 
-    // Enqueue verification email
     await enqueueVerificationEmail(email, token, invitationCode, "instructor");
 
-    // Audit log
     await recordAudit({
       userId: user._id,
       action: "ADMIN_INVITE_MENTOR",
@@ -286,7 +290,7 @@ exports.adminInviteMentor = async (req, res, next) => {
     next(err);
   }
 };
-
+// ADMIN ADD STUDENT
 exports.adminAddStudent = async (req, res, next) => {
   try {
     const { firstName, lastName, email, course, profilePhoto } = req.body;
@@ -298,10 +302,22 @@ exports.adminAddStudent = async (req, res, next) => {
       firstName,
       lastName,
       email,
-      role: "student",
+      role: "student", // force role internally
       course,
       profilePhoto: profilePhoto || undefined,
       isVerified: true,
+    });
+    await enqueueWelcomeEmailStudent(user._id, user.email, user.firstName);
+
+    await recordAudit({
+      userId: user._id,
+      action: "EMAIL_ENQUEUED:WELCOME_STUDENT",
+      details: `Student welcome email enqueued for ${user.email}`,
+      req,
+      status: "success",
+      resourceId: user._id,
+      resourceType: "User",
+      metadata: { email: user.email },
     });
 
     await recordAudit({
@@ -320,6 +336,7 @@ exports.adminAddStudent = async (req, res, next) => {
     next(err);
   }
 };
+
 exports.adminUpdateUser = async (req, res, next) => {
   try {
     const { userId } = req.params;
