@@ -13,6 +13,11 @@ export async function submitApplication(payload) {
   return response.data;
 }
 
+export async function getApplicationStatus(email) {
+  const response = await applicationClient.get(`/applications/status/${email}`);
+  return response.data;
+}
+
 export async function verifyInviteCode(payload) {
   const response = await applicationClient.post("/applications/verify-invite", payload);
   return response.data;

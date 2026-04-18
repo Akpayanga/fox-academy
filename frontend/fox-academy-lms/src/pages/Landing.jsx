@@ -45,6 +45,13 @@ export default function Landing() {
               >
                 Log In to Your Account
               </Link>
+
+              <Link
+                to="/application/status"
+                className="rounded-xl bg-gray-100 px-6 py-3 text-lg font-semibold text-[#374151] transition hover:bg-gray-200"
+              >
+                Check Application Status
+              </Link>
             </div>
 
             <p className="mt-5 text-base text-[#6B7280]">

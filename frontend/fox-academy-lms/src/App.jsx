@@ -13,6 +13,7 @@ import JoinTeam from "./pages/JoinTeam";
 import LearnPreview from "./pages/LearnPreview";
 import OnboardingComplete from "./pages/OnboardingComplete";
 import ApplicationForm from "./pages/ApplicationForm";
+import ApplicationStatus from "./pages/ApplicationStatus";
 import ApplicationReceived from "./pages/ApplicationReceived";
 import WatchCourse from "./pages/WatchCourse";
 import CourseDetails from "./pages/CourseDetails";
@@ -59,6 +60,7 @@ function App() {
         <Route path="/signup/create" element={<SignupCreate />} />
         <Route path="/verify-email" element={<EmailVerification />} />
         <Route path="/application" element={<ApplicationForm />} />
+        <Route path="/application/status" element={<ApplicationStatus />} />
         <Route path="/application/success" element={<ApplicationReceived />} />
         <Route path="/application/success/link/:token" element={<ApplicationReceived />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />

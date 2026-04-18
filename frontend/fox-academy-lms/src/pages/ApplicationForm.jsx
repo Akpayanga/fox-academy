@@ -111,14 +111,14 @@ export default function ApplicationForm() {
     setSubmitError("");
     setIsSubmitting(true);
 
-    const expertiseLabel = expertiseOptions.find(
-      (option) => option.key === selectedLevel
-    )?.label;
-
     try {
+      const expertiseLabel = expertiseOptions.find(
+        (option) => option.key === selectedLevel
+      )?.label;
+
       const response = await submitApplication({
         ...formData,
-        expertiseLevel: expertiseLabel,
+        expertiseLevel: expertiseLabel, // e.g., 'Intermediate'
       });
       navigate("/application/success", {
         state: {

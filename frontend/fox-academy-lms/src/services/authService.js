@@ -19,12 +19,12 @@ export async function preRegisterUser(payload) {
 }
 
 export async function verifyInvitation(payload) {
-  const response = await authClient.post("/auth/verify/invitation", payload);
+  const response = await authClient.post("/auth/verify-invitation", payload);
   return response.data;
 }
 
 export async function completeRegistration(payload) {
-  const response = await authClient.post("/auth/complete/registration", payload);
+  const response = await authClient.post("/auth/complete-registration", payload);
   return response.data;
 }
 
