@@ -7,5 +7,8 @@ const auth = require("../middleware/Auth.middle");
 
 router.get("/mentors", auth, managementController.listMentors);
 router.get("/interns", auth, managementController.listInterns);
+router.get("/applications", auth, managementController.listApplications);
+router.post("/applications/:id/approve", auth, managementController.approveApplication);
+router.delete("/applications/:id/reject", auth, managementController.rejectApplication);
 
 module.exports = router;

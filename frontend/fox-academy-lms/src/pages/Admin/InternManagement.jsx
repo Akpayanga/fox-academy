@@ -45,6 +45,12 @@ export default function InternManagement() {
               Mentors
             </Link>
             <Link
+              to="/control-room/applications"
+              className="hover:text-gray-800 pb-1 border-b-2 border-transparent"
+            >
+              Applications
+            </Link>
+            <Link
               to="/control-room/interns"
               className="text-[#D97706] border-b-2 border-[#D97706] pb-1"
             >

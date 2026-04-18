@@ -1,6 +1,5 @@
 import axios from 'axios';
+import { API_BASE_URL } from './services/apiConfig';
 
-const API_URL = 'http://localhost:8000/api/v1';
-
-export const getdata = () => axios.get(`${API_URL}/data`);
-export const postdata = (data) => axios.post(`${API_URL}/data`, data);
+export const getdata = () => axios.get(`${API_BASE_URL}/data`);
+export const postdata = (data) => axios.post(`${API_BASE_URL}/data`, data);

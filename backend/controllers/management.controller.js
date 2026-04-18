@@ -1,9 +1,13 @@
 const User = require("../models/user.model");
 const Enrollment = require("../models/enrollment.model");
 const Submission = require("../models/submission.model");
+const Application = require("../models/application.model");
 const { success } = require("../utilities/response");
 const ApiError = require("../utilities/apiError.util");
-
+const crypto = require("crypto");
+const { enqueueVerificationEmail } = require("../service/email.service");
+const { recordAudit } = require("../utilities/audit.util");
+const { generateRefreshToken } = require("../utilities/jwt");
 /**
  * Lists all mentors (instructors) with performance metrics for Admin
  */
@@ -85,6 +89,106 @@ exports.listInterns = async (req, res, next) => {
     }));
 
     return success(res, internsWithStats, "Interns list fetched successfully");
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * Lists all pending applications for Admin Review
+ */
+exports.listApplications = async (req, res, next) => {
+  try {
+    const applications = await Application.find({ status: "pending" }).sort({ createdAt: -1 });
+    return success(res, applications, "Applications fetched successfully");
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * Approve application and trigger preRegister flow
+ */
+exports.approveApplication = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const application = await Application.findById(id);
+
+    if (!application) throw new ApiError(404, "Application not found");
+    if (application.status !== "pending") throw new ApiError(400, "Application is not pending");
+
+    // Check if user already exists
+    let existingUser = await User.findOne({ email: application.email });
+    if (existingUser) throw new ApiError(400, "User already exists with this email");
+
+    // Split full name
+    const nameParts = application.fullName.split(" ");
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(" ") || " ";
+
+    const invitationCode = crypto.randomBytes(6).toString("hex").toUpperCase();
+    const token = generateRefreshToken({ email: application.email });
+
+    // Pre-register user in DB
+    const user = await User.create({
+      firstName,
+      lastName,
+      email: application.email,
+      role: "student",
+      course: application.primaryDiscipline.toLowerCase().replace(" ", ""), // e.g. "Product Design" -> "productdesign"
+      preRegistered: true,
+      invitationCode,
+      verificationToken: token,
+      verificationTokenExpiry: Date.now() + 10 * 60 * 1000,
+    });
+
+    // Mark application as accepted
+    application.status = "accepted";
+    await application.save();
+
+    await enqueueVerificationEmail(application.email, token, invitationCode);
+
+    await recordAudit({
+      userId: req.user ? req.user.id : user._id,
+      action: "APPROVE_APPLICATION",
+      details: `Application approved for ${application.email}`,
+      req,
+      status: "success",
+      resourceId: application._id,
+      resourceType: "Application",
+    });
+
+    return success(res, application, "Application approved and invitation code sent.");
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * Reject application
+ */
+exports.rejectApplication = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const application = await Application.findById(id);
+
+    if (!application) throw new ApiError(404, "Application not found");
+    if (application.status !== "pending") throw new ApiError(400, "Application is not pending");
+
+    application.status = "rejected";
+    await application.save();
+
+    await recordAudit({
+      userId: req.user ? req.user.id : null,
+      action: "REJECT_APPLICATION",
+      details: `Application rejected for ${application.email}`,
+      req,
+      status: "success",
+      resourceId: application._id,
+      resourceType: "Application",
+    });
+
+    return success(res, application, "Application rejected.");
   } catch (err) {
     next(err);
   }

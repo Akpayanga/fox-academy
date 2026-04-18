@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:8000",
+        target: "https://fox-academy-8g7o.onrender.com",
         changeOrigin: true,
       },
     },

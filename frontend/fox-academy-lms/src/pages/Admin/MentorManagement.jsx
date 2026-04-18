@@ -42,6 +42,7 @@ export default function MentorManagement() {
             >
               Mentors
             </Link>
+            <Link to="/control-room/applications" className="hover:text-gray-800 pb-1 border-b-2 border-transparent">Applications</Link>
             <Link to="/control-room/interns" className="hover:text-gray-800 pb-1 border-b-2 border-transparent">Interns</Link>
             <Link to="/control-room/cohorts" className="hover:text-gray-800 pb-1 border-b-2 border-transparent">Cohorts</Link>
             <Link to="/control-room/analytics" className="hover:text-gray-800 pb-1 border-b-2 border-transparent">Analytics</Link>
