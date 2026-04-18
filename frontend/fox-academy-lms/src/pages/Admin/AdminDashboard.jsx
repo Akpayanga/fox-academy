@@ -40,7 +40,6 @@ export default function AdminDashboard() {
             >
               Dashboard
             </Link>
-            <Link to="/control-room/applications" className="hover:text-gray-800 pb-1">Applications</Link>
             <Link to="/control-room/mentors" className="hover:text-gray-800 pb-1">Mentors</Link>
             <Link to="/control-room/interns" className="hover:text-gray-800 pb-1">Interns</Link>
             <Link to="/control-room/cohorts" className="hover:text-gray-800 pb-1">Cohorts</Link>

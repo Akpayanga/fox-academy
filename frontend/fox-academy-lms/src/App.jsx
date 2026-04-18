@@ -43,7 +43,6 @@ import AdminLogin from "./pages/Admin/AdminLogin";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import MentorManagement from "./pages/Admin/MentorManagement";
 import InternManagement from "./pages/Admin/InternManagement";
-import ApplicationManagement from "./pages/Admin/ApplicationManagement";
 import CohortManagement from "./pages/Admin/CohortManagement";
 import AdminAnalytics from "./pages/Admin/AdminAnalytics";
 import AddMentor from "./pages/Admin/AddMentor";
@@ -112,7 +111,6 @@ function App() {
         <Route path="/control-room/mentors" element={<MentorManagement />} />
         <Route path="/control-room/mentors/add" element={<AddMentor />} />
         <Route path="/control-room/interns" element={<InternManagement />} />
-        <Route path="/control-room/applications" element={<ApplicationManagement />} />
         <Route path="/control-room/cohorts" element={<CohortManagement />} />
         <Route path="/control-room/analytics" element={<AdminAnalytics />} />
         

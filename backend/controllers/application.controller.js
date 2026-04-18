@@ -1,4 +1,8 @@
 const Application = require("../models/application.model");
+const User = require("../models/user.model");
+const crypto = require("crypto");
+const { generateRefreshToken } = require("../utilities/jwt");
+const { enqueueVerificationEmail } = require("../service/email.service");
 const { recordAudit } = require("../utilities/audit.util");
 const { success } = require("../utilities/response");
 const ApiError = require("../utilities/apiError.util");
@@ -30,6 +34,16 @@ exports.submitApplication = async (req, res, next) => {
       );
     }
 
+    const existingUser = await User.findOne({ email, provider: "local" });
+    if (existingUser) {
+      return next(
+        new ApiError(
+          400,
+          "A user with this email already exists.",
+        ),
+      );
+    }
+
     const application = await Application.create({
       fullName,
       email,
@@ -41,9 +55,29 @@ exports.submitApplication = async (req, res, next) => {
       githubLinkedin,
     });
 
+    const nameParts = fullName.trim().split(" ");
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(" ") || "Applicant";
+
+    const invitationCode = crypto.randomBytes(6).toString("hex").toUpperCase();
+    const token = generateRefreshToken({ email });
+
+    const user = await User.create({
+      firstName,
+      lastName,
+      email,
+      role: "student",
+      preRegistered: true,
+      invitationCode,
+      verificationToken: token,
+      verificationTokenExpiry: Date.now() + 10 * 60 * 1000,
+    });
+
+    await enqueueVerificationEmail(email, token, invitationCode);
+
     // Audit log
     await recordAudit({
-      userId: null,
+      userId: user._id,
       action: "APPLICATION_SUBMIT",
       details: `Application submitted for ${email}`,
       req,
