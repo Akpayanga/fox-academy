@@ -45,7 +45,7 @@ if (process.env.SENTRY_DSN) {
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://fox-academy.vercel.app"],
+    origin: ["http://localhost:5173", "https://fox-academy-g3f6.vercel.app"],
     credentials: true,
   }),
 );
