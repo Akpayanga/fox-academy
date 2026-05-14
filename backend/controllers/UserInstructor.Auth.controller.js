@@ -106,7 +106,13 @@ exports.preRegister = async (req, res, next) => {
 // Verify invitation
 exports.verifyInvitation = async (req, res, next) => {
   try {
-    const { token, code } = req.body;
+    const token = req.body.token || req.query.token;
+    const code = req.body.code || req.query.code;
+
+    if (!token || !code) {
+      throw new ApiError(400, "Verification token and code are required");
+    }
+
     const decoded = verifyToken(token, process.env.JWT_REFRESH_SECRET);
     const user = await User.findOne({
       email: decoded.email,
@@ -402,7 +408,13 @@ exports.studentLogout = async (req, res, next) => {
 //Mentor Verification
 exports.mentorVerifyInvitation = async (req, res, next) => {
   try {
-    const { token, code } = req.body;
+    const token = req.body.token || req.query.token;
+    const code = req.body.code || req.query.code;
+
+    if (!token || !code) {
+      throw new ApiError(400, "Verification token and code are required");
+    }
+
     const decoded = verifyToken(token, process.env.JWT_REFRESH_SECRET);
 
     const user = await User.findOne({
