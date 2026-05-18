@@ -7,11 +7,10 @@ export default function EmailVerification() {
   const location = useLocation();
   const email = location.state?.email || "amara@email.com";
   const searchParams = new URLSearchParams(location.search);
+  const verificationTokenFromUrl =
+    searchParams.get("token") || searchParams.get("invitationToken") || "";
   const invitationCodeFromUrl =
-    searchParams.get("code") ||
-    searchParams.get("token") ||
-    searchParams.get("invitation") ||
-    "";
+    searchParams.get("code") || searchParams.get("invitation") || "";
   
   const [secondsLeft, setSecondsLeft] = useState(60);
   const [invitationCode, setInvitationCode] = useState(invitationCodeFromUrl);
@@ -29,8 +28,14 @@ export default function EmailVerification() {
   const canResend = secondsLeft === 0;
 
   const handleVerify = async () => {
+    if (!verificationTokenFromUrl.trim()) {
+      setVerifyError("Verification token is missing from the link.");
+      setVerifySuccess("");
+      return;
+    }
+
     if (!invitationCode.trim()) {
-      setVerifyError("Enter your invitation code to verify your email.");
+      setVerifyError("Verification code is required.");
       setVerifySuccess("");
       return;
     }
@@ -40,7 +45,10 @@ export default function EmailVerification() {
     setIsVerifying(true);
 
     try {
-      const response = await verifyInvitation({ code: invitationCode.trim(), email });
+      const response = await verifyInvitation({
+        token: verificationTokenFromUrl.trim(),
+        code: invitationCode.trim(),
+      });
       setVerifySuccess(response?.message || "Email verified successfully.");
     } catch (error) {
       setVerifyError(
@@ -52,7 +60,7 @@ export default function EmailVerification() {
   };
 
   useEffect(() => {
-    if (!invitationCodeFromUrl) {
+    if (!verificationTokenFromUrl || !invitationCodeFromUrl) {
       return;
     }
 
@@ -76,11 +84,11 @@ export default function EmailVerification() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA] px-4">
-      <div className="w-full max-w-[480px] bg-white rounded-2xl p-8 md:p-10 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-100/50 text-center">
+      <div className="w-full max-w-120 bg-white rounded-2xl p-8 md:p-10 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-gray-100/50 text-center">
         {/* Icon */}
         <div className="mx-auto relative inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#FFF0E3] mb-6">
           <Mail className="w-8 h-8 text-[#111827]" strokeWidth={1.5} />
-          <div className="absolute top-0 right-0 bg-[#0F172A] rounded-full w-[22px] h-[22px] flex items-center justify-center border-[2.5px] border-white ring-0">
+          <div className="absolute top-0 right-0 bg-[#0F172A] rounded-full w-5.5 h-5.5 flex items-center justify-center border-[2.5px] border-white ring-0">
             <Check className="w-3.5 h-3.5 text-white" strokeWidth={3} />
           </div>
         </div>
@@ -91,7 +99,7 @@ export default function EmailVerification() {
         </h1>
 
         {/* Main Text */}
-        <p className="text-[15px] leading-relaxed text-[#4B5563] mb-8 max-w-[340px] mx-auto">
+        <p className="text-[15px] leading-relaxed text-[#4B5563] mb-8 max-w-85 mx-auto">
           We&apos;ve sent a verification link to <br className="hidden md:block" />
           <span className="font-semibold text-[#111827]">{email}</span>. Click the link in the email <br className="hidden md:block" />
           to activate your Fox Academy account.
@@ -122,13 +130,13 @@ export default function EmailVerification() {
           </button>
 
           {verifyError ? (
-            <p className="rounded-[8px] border border-[#FCA5A5] bg-[#FEF2F2] px-3 py-2 text-[13px] text-[#B91C1C]">
+            <p className="rounded-lg border border-[#FCA5A5] bg-[#FEF2F2] px-3 py-2 text-[13px] text-[#B91C1C]">
               {verifyError}
             </p>
           ) : null}
 
           {verifySuccess ? (
-            <p className="rounded-[8px] border border-[#86EFAC] bg-[#F0FDF4] px-3 py-2 text-[13px] text-[#166534]">
+            <p className="rounded-lg border border-[#86EFAC] bg-[#F0FDF4] px-3 py-2 text-[13px] text-[#166534]">
               {verifySuccess}
             </p>
           ) : null}
@@ -151,7 +159,7 @@ export default function EmailVerification() {
         </button>
 
         {/* Counter Text */}
-        <div className="h-[20px] mt-3 mb-8">
+        <div className="h-5 mt-3 mb-8">
           {!canResend && (
             <p className="text-[13px] text-[#6B7280]">
               You can resend in <strong className="text-[#111827]">{formatTime(secondsLeft)}</strong>
